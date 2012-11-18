@@ -19,9 +19,13 @@ typedef struct val_s val_t;
 
 VALUE Value_new(ValueType);
 void Value_destroy(VALUE);
+void Value_print(VALUE);
 
 VALUE Integer_new(int);
 #define VAL2INT(o) (o->data.as_int)
+
+VALUE String_new(char*);
+#define VAL2STR(o) (o->data.as_str)
 
 #endif
 

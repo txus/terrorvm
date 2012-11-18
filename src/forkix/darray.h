@@ -24,6 +24,7 @@ void DArray_clear_destroy(DArray *array);
 
 #define DArray_last(A) ((A)->contents[(A)->end - 1])
 #define DArray_first(A) ((A)->contents[0])
+#define DArray_at(A, I) ((A)->contents[(I)])
 #define DArray_end(A) ((A)->end)
 #define DArray_count(A) DArray_end(A)
 #define DArray_max(A) ((A)->max)
