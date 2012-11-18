@@ -5,6 +5,7 @@
 #include <forkix/vm.h>
 #include <forkix/state.h>
 #include <forkix/bstrlib.h>
+#include <forkix/function.h>
 
 static void dump(Stack* stack)
 {
@@ -19,13 +20,12 @@ static void dump(Stack* stack)
   }
 }
 
-#define STATE_FN(A) (int*)Hashmap_get(state->functions, bfromcstr((A)))
-#define LITERAL(A) DArray_at(literals, (A))
+#define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
+#define LITERAL(A) DArray_at(current_frame->fn->literals, (A))
 #define LOCAL(A) DArray_at(current_frame->locals, (A))
 
 void VM_start()
 {
-
   int program[] = {
     // main
     PUSHINT, 1,
@@ -41,8 +41,15 @@ void VM_start()
   };
 
   Hashmap *fns = Hashmap_create(NULL, NULL);
-  Hashmap_set(fns, bfromcstr("main"), &program[0]);
-  Hashmap_set(fns, bfromcstr("add"), &program[9]);
+
+  DArray *add_literals = DArray_create(sizeof(VALUE), 10);
+  DArray *main_literals = DArray_create(sizeof(VALUE), 10);
+  DArray_push(main_literals, String_new("add"));
+
+  Function *main_fn = Function_new(&program[0], main_literals);
+  Function *add_fn = Function_new(&program[9], add_literals);
+  Hashmap_set(fns, bfromcstr("main"), main_fn);
+  Hashmap_set(fns, bfromcstr("add"), add_fn);
 
   STATE state = State_new(fns);
 
@@ -58,11 +65,8 @@ void VM_run(STATE state, Stack *frames)
 {
   Stack *stack = Stack_create();
 
-  DArray *literals = DArray_create(sizeof(VALUE), 10);
-  DArray_push(literals, String_new("add"));
-
   CallFrame *current_frame = (CallFrame*)(Stack_peek(frames));
-  int *ip = current_frame->ip;
+  int *ip = current_frame->fn->code;
 
   while(1) {
     switch(*ip) {
@@ -91,7 +95,7 @@ void VM_run(STATE state, Stack *frames)
         VALUE name = LITERAL(op1);
         int argcount = op2;
 
-        int *fn = STATE_FN(VAL2STR(name));
+        Function *fn = STATE_FN(VAL2STR(name));
         CallFrame *new_frame = CallFrame_new(NULL, fn, ip++);
 
         while(argcount--) {
@@ -103,7 +107,7 @@ void VM_run(STATE state, Stack *frames)
         Stack_push(frames, new_frame);
 
         current_frame = (CallFrame*)(Stack_peek(frames));
-        ip = current_frame->ip;
+        ip = current_frame->fn->code;
         ip--;
 
         debug("SEND %i %i", op1, op2);
