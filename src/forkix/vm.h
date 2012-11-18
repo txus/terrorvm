@@ -6,6 +6,7 @@
 
 typedef enum {
   NOOP = 0,
+  PUSHSELF,
   PUSHINT,
 
   PUSHLOCAL = 0x20,

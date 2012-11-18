@@ -7,6 +7,7 @@ Value_new(ValueType type)
 {
   VALUE val = gc_alloc(sizeof(val_t));
   val->type = type;
+  val->table = Hashmap_create(NULL, NULL);
   return val;
 };
 
@@ -38,7 +39,6 @@ Integer_new(int num)
   val->data.as_int = num;
   return val;
 }
-
 
 VALUE
 String_new(char* value)

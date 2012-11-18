@@ -5,6 +5,7 @@
 #include <forkix/darray.h>
 
 struct call_frame_s {
+  VALUE self;
   DArray *locals;
   int *ip;
   int *ret;
@@ -12,6 +13,6 @@ struct call_frame_s {
 
 typedef struct call_frame_s CallFrame;
 
-CallFrame* CallFrame_new(int *ip, int *ret);
+CallFrame* CallFrame_new(VALUE self, int *ip, int *ret);
 
 #endif

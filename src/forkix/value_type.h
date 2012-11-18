@@ -9,7 +9,8 @@ typedef enum {
   ClosureType,
   TrueType,
   FalseType,
-  NilType
+  NilType,
+  MainType,
 } ValueType;
 
 #endif

@@ -25,30 +25,31 @@ static void dump(Stack* stack)
 
 void VM_start()
 {
+
   int program[] = {
     // main
     PUSHINT, 1,
     PUSHINT, 4,
-    SEND, 0, 2,
+    SEND, 0, 1,
     DUMP,
     RET,
     // add
+    PUSHSELF,
     PUSHLOCAL, 0,
-    PUSHLOCAL, 1,
     ADD,
     RET
   };
 
   Hashmap *fns = Hashmap_create(NULL, NULL);
-  int *main = &program[0];
-  int *add  = &program[9];
-  Hashmap_set(fns, bfromcstr("main"), main);
-  Hashmap_set(fns, bfromcstr("add"), add);
+  Hashmap_set(fns, bfromcstr("main"), &program[0]);
+  Hashmap_set(fns, bfromcstr("add"), &program[9]);
 
   STATE state = State_new(fns);
 
+  VALUE main = Value_new(MainType); // toplevel object
+
   Stack *frames = Stack_create();
-  CallFrame *top_frame = CallFrame_new(STATE_FN("main"), NULL);
+  CallFrame *top_frame = CallFrame_new(main, STATE_FN("main"), NULL);
   Stack_push(frames, top_frame);
   VM_run(state, frames);
 }
@@ -61,7 +62,6 @@ void VM_run(STATE state, Stack *frames)
   DArray_push(literals, String_new("add"));
 
   CallFrame *current_frame = (CallFrame*)(Stack_peek(frames));
-  printf("Starting at %i\n", *current_frame->ip);
   int *ip = current_frame->ip;
 
   while(1) {
@@ -92,11 +92,14 @@ void VM_run(STATE state, Stack *frames)
         int argcount = op2;
 
         int *fn = STATE_FN(VAL2STR(name));
-        CallFrame *new_frame = CallFrame_new(fn, ip++);
+        CallFrame *new_frame = CallFrame_new(NULL, fn, ip++);
 
         while(argcount--) {
           DArray_push(new_frame->locals, Stack_pop(stack));
         }
+
+        new_frame->self = Stack_pop(stack);
+
         Stack_push(frames, new_frame);
 
         current_frame = (CallFrame*)(Stack_peek(frames));
@@ -104,6 +107,11 @@ void VM_run(STATE state, Stack *frames)
         ip--;
 
         debug("SEND %i %i", op1, op2);
+        break;
+      }
+      case PUSHSELF: {
+        debug("PUSHSELF");
+        Stack_push(stack, current_frame->self);
         break;
       }
       case PUSHLOCAL: {
