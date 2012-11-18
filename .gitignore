@@ -1,4 +1,9 @@
 build
 *.o
+bin/vm
 tests/*_tests
 tests/tests.log
+*.DSYM
+callgrind.out*
+cachegrind.out*
+bin/terror

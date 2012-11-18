@@ -1,5 +1,5 @@
-#ifndef __dbg_h__
-#define __dbg_h__
+#ifndef __fx_dbg_h__
+#define __fx_dbg_h__
 
 #include <stdio.h>
 #include <errno.h>
