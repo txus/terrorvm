@@ -3,10 +3,12 @@
 
 #include <forkix/stack.h>
 #include <forkix/state.h>
+#include <forkix/input_reader.h>
 
 typedef enum {
   NOOP = 0,
-  PUSHSELF,
+
+  PUSHSELF = 0x10,
   PUSHINT,
 
   PUSHLOCAL = 0x20,
@@ -22,6 +24,6 @@ typedef enum {
 } OpCode;
 
 void VM_run(STATE state, Stack *frames);
-void VM_start();
+void VM_start(BytecodeFile *file);
 
 #endif

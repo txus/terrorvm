@@ -21,37 +21,39 @@ static void dump(Stack* stack)
 }
 
 #define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
-#define LITERAL(A) DArray_at(current_frame->fn->literals, (A))
-#define LOCAL(A) DArray_at(current_frame->locals, (A))
+#define LITERAL(A) (VALUE)DArray_at(current_frame->fn->literals, (A))
+#define LOCAL(A) (VALUE)DArray_at(current_frame->locals, (A))
 
-void VM_start()
+void VM_start(BytecodeFile *file)
 {
-  int program[] = {
-    // main
-    PUSHINT, 1,
-    PUSHINT, 4,
-    SEND, 0, 1,
-    DUMP,
-    RET,
-    // add
-    PUSHSELF,
-    PUSHLOCAL, 0,
-    ADD,
-    RET
-  };
+  /* int program[] = { */
+  /*   // main */
+  /*   PUSHINT, 0, */
+  /*   PUSHINT, 1, */
+  /*   SEND, 0, 1, */
+  /*   DUMP, */
+  /*   RET, */
+  /*   // add */
+  /*   PUSHSELF, */
+  /*   PUSHLOCAL, 0, */
+  /*   ADD, */
+  /*   RET */
+  /* }; */
 
-  Hashmap *fns = Hashmap_create(NULL, NULL);
+  /* Hashmap *fns = Hashmap_create(NULL, NULL); */
 
-  DArray *add_literals = DArray_create(sizeof(VALUE), 10);
-  DArray *main_literals = DArray_create(sizeof(VALUE), 10);
-  DArray_push(main_literals, String_new("add"));
+  /* DArray *add_literals = DArray_create(sizeof(VALUE), 10); */
+  /* DArray *main_literals = DArray_create(sizeof(VALUE), 10); */
+  /* DArray_push(main_literals, String_new("add")); */
+  /* DArray_push(main_literals, Integer_new(1)); */
+  /* DArray_push(main_literals, Integer_new(4)); */
 
-  Function *main_fn = Function_new(&program[0], main_literals);
-  Function *add_fn = Function_new(&program[9], add_literals);
-  Hashmap_set(fns, bfromcstr("main"), main_fn);
-  Hashmap_set(fns, bfromcstr("add"), add_fn);
+  /* Function *main_fn = Function_new(&program[0], main_literals); */
+  /* Function *add_fn = Function_new(&program[9], add_literals); */
+  /* Hashmap_set(fns, bfromcstr("main"), main_fn); */
+  /* Hashmap_set(fns, bfromcstr("add"), add_fn); */
 
-  STATE state = State_new(fns);
+  STATE state = State_new(file->functions);
 
   VALUE main = Value_new(MainType); // toplevel object
 
@@ -73,7 +75,7 @@ void VM_run(STATE state, Stack *frames)
       case PUSHINT: {
         ip++;
         debug("PUSHINT %i", *ip);
-        VALUE value = Integer_new(*ip);
+        VALUE value = LITERAL(*ip);
         Stack_push(stack, value);
         break;
       }
