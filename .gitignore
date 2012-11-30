@@ -1,6 +1,6 @@
 build
 *.o
-bin/vm
+bin/fxvm
 tests/*_tests
 tests/tests.log
 *.DSYM
