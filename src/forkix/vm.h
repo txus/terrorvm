@@ -8,19 +8,19 @@
 typedef enum {
   NOOP = 0,
 
-  PUSHSELF = 0x10,
-  PUSHINT,
+  PUSHSELF = 0x10,  // 16
+  PUSHINT,          // 17
 
-  PUSHLOCAL = 0x20,
+  PUSHLOCAL = 0x20, // 32
 
-  ADD,
+  ADD,              // 33
 
   POP,
 
-  SEND = 0x80,
-  RET = 0x90,
+  SEND = 0x80,      // 128
+  RET = 0x90,       // 144
 
-  DUMP,
+  DUMP,             // 145
 } OpCode;
 
 void VM_run(STATE state, Stack *frames);

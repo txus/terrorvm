@@ -50,7 +50,6 @@ error:
 static inline void
 parse_string(bstring buf, BytecodeFile *file)
 {
-  debug("PARSING STRING");
   struct bstrList *lines = bsplit(buf, '\n');
   int i = 0;
   int cnt = 0;
@@ -59,7 +58,6 @@ parse_string(bstring buf, BytecodeFile *file)
 
   while(1) {
     // eof
-    debug("First line is %s", bdata(*line));
     if (bstrcmp(bmidstr(*line, 0, 1), bfromcstr("_")) != 0) break;
 
     // Get method name
@@ -67,46 +65,36 @@ parse_string(bstring buf, BytecodeFile *file)
     bstring method = bmidstr(*line, 1, (*line)->mlen);
     line++; cnt++;
 
-    debug("getting counts...");
-
     // Get counts
     sscanf(bdata(*line), ":%i:%i",
       &num_literals, &num_instructions);
-
-    debug("counts are %i literals and %i num_instructions...", num_literals, num_instructions);
 
     line++; cnt++;
 
     DArray *literals = DArray_create(sizeof(VALUE), 10);
     // Parse the actual literals
     if (num_literals > 0) {
-      debug("parsing literals");
       literals = DArray_create(sizeof(VALUE), num_literals);
 
       for(i=0; i < num_literals; i++) {
         if (bdata(*line)[0] == '"') {
-          debug("found string");
           bstring strData = bmidstr(*line, 1, (*line)->mlen);
           // TODO: This causes a leak in the string literals because they are
           // never freed on destruction.
           DArray_push(literals, String_new(bdata(bstrcpy(strData))));
           bdestroy(strData);
         } else {
-          debug("found integer");
           DArray_push(literals, Integer_new(atoi(bdata(*line))));
         }
         line++; cnt++;
       }
     }
 
-    debug("parsing instructions");
-
     // Parse the instructions
 
     int *instructions = calloc(num_instructions, sizeof(int));
 
     for(i=0; i < num_instructions; i++) {
-      debug("parsing instr %i", i);
       int num;
       sscanf(bdata(*line), "%i", &num);
       instructions[i] = num;
@@ -115,9 +103,9 @@ parse_string(bstring buf, BytecodeFile *file)
     }
 
     Function *fn = Function_new(instructions, literals);
-    debug("setting map. fn is %i", *fn->code);
     Hashmap_set(file->functions, method, fn);
-    debug("set map");
+
+    if(cnt >= lines->qty) break; // EOF
   }
 
   bstrListDestroy(lines);
@@ -132,6 +120,7 @@ BytecodeFile *BytecodeFile_new(bstring filename)
   file->functions = Hashmap_create(NULL, NULL);
 
   bstring buf = file_read(filename);
+  check(buf, "Cannot read file %s", bdata(filename));
   parse_string(buf, file);
 
   bdestroy(buf);

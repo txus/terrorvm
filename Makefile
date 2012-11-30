@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -O2 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
+CFLAGS=-g -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
 LIBS=-ldl $(OPTLIBS)
 PREFIX?=/usr/local
 

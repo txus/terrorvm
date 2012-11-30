@@ -9,6 +9,7 @@
 
 static void dump(Stack* stack)
 {
+#ifndef NDEBUG
   printf("---STACK---\n");
   int i = 0;
   STACK_FOREACH(stack, node) {
@@ -18,6 +19,7 @@ static void dump(Stack* stack)
     }
     i++;
   }
+#endif
 }
 
 #define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
@@ -26,33 +28,6 @@ static void dump(Stack* stack)
 
 void VM_start(BytecodeFile *file)
 {
-  /* int program[] = { */
-  /*   // main */
-  /*   PUSHINT, 0, */
-  /*   PUSHINT, 1, */
-  /*   SEND, 0, 1, */
-  /*   DUMP, */
-  /*   RET, */
-  /*   // add */
-  /*   PUSHSELF, */
-  /*   PUSHLOCAL, 0, */
-  /*   ADD, */
-  /*   RET */
-  /* }; */
-
-  /* Hashmap *fns = Hashmap_create(NULL, NULL); */
-
-  /* DArray *add_literals = DArray_create(sizeof(VALUE), 10); */
-  /* DArray *main_literals = DArray_create(sizeof(VALUE), 10); */
-  /* DArray_push(main_literals, String_new("add")); */
-  /* DArray_push(main_literals, Integer_new(1)); */
-  /* DArray_push(main_literals, Integer_new(4)); */
-
-  /* Function *main_fn = Function_new(&program[0], main_literals); */
-  /* Function *add_fn = Function_new(&program[9], add_literals); */
-  /* Hashmap_set(fns, bfromcstr("main"), main_fn); */
-  /* Hashmap_set(fns, bfromcstr("add"), add_fn); */
-
   STATE state = State_new(file->functions);
 
   VALUE main = Value_new(MainType); // toplevel object
@@ -142,6 +117,7 @@ void VM_run(STATE state, Stack *frames)
         break;
       }
       case DUMP: {
+        debug("DUMP");
         dump(stack);
         break;
       }

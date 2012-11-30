@@ -11,10 +11,10 @@ char *test_load()
   Function *main = Hashmap_get(file->functions, bfromcstr("main"));
   Function *add = Hashmap_get(file->functions, bfromcstr("add"));
 
-  mu_assert(*main->code == 16, "error parsing main");
+  mu_assert(*main->code == PUSHINT, "error parsing main");
   VALUE first_lit = DArray_first(main->literals);
   mu_assert(strcmp(VAL2STR(first_lit), "add") == 0, "error parsing literal in main");
-  mu_assert(*add->code == 17, "error parsing add");
+  mu_assert(*add->code == PUSHSELF, "error parsing add");
 
   return NULL;
 }

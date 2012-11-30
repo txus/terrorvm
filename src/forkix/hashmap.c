@@ -1,4 +1,3 @@
-#undef NDEBUG
 #include <stdint.h>
 #include <forkix/hashmap.h>
 #include <forkix/dbg.h>
