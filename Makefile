@@ -1,7 +1,8 @@
 CC=clang
 CFLAGS=-g -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
-LIBS=-ldl $(OPTLIBS)
+LIBS=$(OPTLIBS)
 PREFIX?=/usr/local
+VPATH=vendor
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -15,13 +16,14 @@ PROGRAMS=$(patsubst %.c,%,$(PROGRAMS_SRC))
 TARGET=build/libforkix.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
+
 # The Target Build
 all: $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
 
 dev: CFLAGS=-g -Wall -Isrc -Wall -Werror $(OPTFLAGS)
 dev: all
 
-$(TARGET): CFLAGS += -fPIC
+$(TARGET): CFLAGS += -fPIC $(LIBS)
 $(TARGET): build $(OBJECTS)
 				ar rcs $@ $(OBJECTS)
 				ranlib $@

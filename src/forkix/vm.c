@@ -3,11 +3,13 @@
 #include <forkix/stack.h>
 #include <forkix/call_frame.h>
 #include <forkix/vm.h>
+#include <forkix/opcode.h>
 #include <forkix/state.h>
+#include <forkix/bootstrap.h>
 #include <forkix/bstrlib.h>
 #include <forkix/function.h>
 
-static void dump(Stack* stack)
+static inline void dump(Stack* stack)
 {
 #ifndef NDEBUG
   printf("---STACK---\n");
@@ -31,6 +33,8 @@ void VM_start(BytecodeFile *file)
   STATE state = State_new(file->functions);
 
   VALUE main = Value_new(MainType); // toplevel object
+
+  State_bootstrap(state);
 
   Stack *frames = Stack_create();
   CallFrame *top_frame = CallFrame_new(main, STATE_FN("main"), NULL);

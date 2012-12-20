@@ -1,6 +1,6 @@
 #include "minunit.h"
 #include <forkix/input_reader.h>
-#include <forkix/vm.h>
+#include <forkix/opcode.h>
 #include <forkix/value.h>
 #include <assert.h>
 

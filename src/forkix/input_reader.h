@@ -3,11 +3,13 @@
 
 #include <forkix/bstrlib.h>
 #include <forkix/function.h>
+#include <forkix/darray.h>
 #include <forkix/hashmap.h>
 
 typedef struct {
   bstring filename;
   int *code;
+  DArray *function_names;
   Hashmap *functions;
 } BytecodeFile;
 

@@ -103,6 +103,7 @@ parse_string(bstring buf, BytecodeFile *file)
     }
 
     Function *fn = Function_new(instructions, literals);
+    DArray_push(file->function_names, method);
     Hashmap_set(file->functions, method, fn);
 
     if(cnt >= lines->qty) break; // EOF
@@ -118,6 +119,7 @@ BytecodeFile *BytecodeFile_new(bstring filename)
 
   file->filename = filename;
   file->functions = Hashmap_create(NULL, NULL);
+  file->function_names = DArray_create(sizeof(bstring), 10);
 
   bstring buf = file_read(filename);
   check(buf, "Cannot read file %s", bdata(filename));
