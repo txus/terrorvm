@@ -31,13 +31,7 @@ void DArray_clear_destroy(DArray *array);
 
 #define DEFAULT_EXPAND_RATE 300
 
-static inline void DArray_set(DArray *array, int i, void *el)
-{
-  check(i < array->max, "darray attempt to set past max");
-  array->contents[i] = el;
-error:
-  return;
-}
+void DArray_set(DArray *array, int i, void *el);
 
 static inline void *DArray_get(DArray *array, int i)
 {

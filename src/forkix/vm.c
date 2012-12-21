@@ -5,9 +5,15 @@
 #include <forkix/vm.h>
 #include <forkix/opcode.h>
 #include <forkix/state.h>
+#include <forkix/runtime.h>
 #include <forkix/bootstrap.h>
 #include <forkix/bstrlib.h>
 #include <forkix/function.h>
+
+// Extern global objects declared in runtime.h
+VALUE TrueObject;
+VALUE FalseObject;
+VALUE NilObject;
 
 static inline void dump(Stack* stack)
 {
@@ -27,6 +33,7 @@ static inline void dump(Stack* stack)
 #define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
 #define LITERAL(A) (VALUE)DArray_at(current_frame->fn->literals, (A))
 #define LOCAL(A) (VALUE)DArray_at(current_frame->locals, (A))
+#define LOCALSET(A, B) DArray_set(current_frame->locals, (A), (B))
 
 void VM_start(BytecodeFile *file)
 {
@@ -34,15 +41,18 @@ void VM_start(BytecodeFile *file)
 
   VALUE main = Value_new(MainType); // toplevel object
 
+  Runtime_init();
   State_bootstrap(state);
 
   Stack *frames = Stack_create();
   CallFrame *top_frame = CallFrame_new(main, STATE_FN("main"), NULL);
   Stack_push(frames, top_frame);
   VM_run(state, frames);
+
+  Runtime_destroy();
 }
 
-void VM_run(STATE state, Stack *frames)
+VALUE VM_run(STATE state, Stack *frames)
 {
   Stack *stack = Stack_create();
 
@@ -51,11 +61,89 @@ void VM_run(STATE state, Stack *frames)
 
   while(1) {
     switch(*ip) {
-      case PUSHINT: {
+      case NOOP:
+        break;
+      case PUSH: {
         ip++;
-        debug("PUSHINT %i", *ip);
+        debug("PUSH %i", *ip);
         VALUE value = LITERAL(*ip);
         Stack_push(stack, value);
+        break;
+      }
+      case PUSHTRUE: {
+        debug("PUSHTRUE");
+        Stack_push(stack, TrueObject);
+        break;
+      }
+      case PUSHFALSE: {
+        debug("PUSHFALSE");
+        Stack_push(stack, FalseObject);
+        break;
+      }
+      case PUSHNIL: {
+        debug("PUSHNIL");
+        Stack_push(stack, NilObject);
+        break;
+      }
+      case JMP: {
+        ip++;
+        int jump = *ip;
+        debug("JMP %i", jump);
+        for(int i=1; i < jump; i++) {
+          ip++;
+        }
+        break;
+      }
+      case JIF: {
+        ip++;
+        int jump = *ip;
+        debug("JIF %i", jump);
+
+        VALUE value = Stack_peek(stack);
+        if (value == FalseObject || value == NilObject) {
+          for(int i=1; i < jump; i++) {
+            ip++;
+          }
+        }
+
+        break;
+      }
+      case JIT: {
+        ip++;
+        int jump = *ip;
+        debug("JIT %i", jump);
+
+        VALUE value = Stack_peek(stack);
+        if (value != FalseObject && value != NilObject) {
+          for(int i=1; i < jump; i++) {
+            ip++;
+          }
+        }
+
+        break;
+      }
+      case GETSLOT: {
+        ip++;
+        debug("GETSLOT %i", *ip);
+        VALUE receiver = Stack_pop(stack);
+        VALUE slot     = LITERAL(*ip);
+
+        check(slot->type == StringType, "Slot name must be a String.");
+
+        Stack_push(stack, VALGET(receiver, VAL2STR(slot)));
+        break;
+      }
+      case SETSLOT: {
+        ip++;
+        debug("SETSLOT %i", *ip);
+        VALUE value    = Stack_pop(stack);
+        VALUE receiver = Stack_pop(stack);
+        VALUE slot     = LITERAL(*ip);
+
+        check(slot->type == StringType, "Slot name must be a String.");
+
+        VALSET(receiver, VAL2STR(slot), value);
+        Stack_push(stack, value); // push the rhs back to the stack
         break;
       }
       case ADD: {
@@ -105,6 +193,12 @@ void VM_run(STATE state, Stack *frames)
         debug("PUSHLOCAL %i", *ip);
         break;
       }
+      case SETLOCAL: {
+        ip++;
+        debug("SETLOCAL %i", *ip);
+        LOCALSET(*ip, Stack_peek(stack));
+        break;
+      }
       case POP: {
         debug("POP");
         Stack_pop(stack);
@@ -115,7 +209,7 @@ void VM_run(STATE state, Stack *frames)
         CallFrame *old_frame = Stack_pop(frames);
 
         ip = old_frame->ret;
-        if (ip == NULL) return; // if there's nowhere to return, exit
+        if (ip == NULL) return Stack_pop(stack); // if there's nowhere to return, exit
 
         current_frame = (CallFrame*)(Stack_peek(frames));
         break;
@@ -128,4 +222,7 @@ void VM_run(STATE state, Stack *frames)
     }
     ip++;
   }
+error:
+  debug("Aborted.");
+  return NULL;
 }

@@ -5,11 +5,22 @@ typedef enum {
   NOOP = 0,
 
   PUSHSELF = 0x10,  // 16
-  PUSHINT,          // 17
+  PUSH,             // 17
+  PUSHTRUE,         // 18
+  PUSHFALSE,        // 19
+  PUSHNIL,          // 20
 
   PUSHLOCAL = 0x20, // 32
+  SETLOCAL,         // 33
 
-  ADD,              // 33
+  ADD,              // 34
+
+  JMP = 0x30,       // 48
+  JIF,              // 49
+  JIT,              // 50
+
+  GETSLOT = 0x40,   // 64
+  SETSLOT,          // 65
 
   POP,
 

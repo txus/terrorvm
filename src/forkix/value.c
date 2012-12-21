@@ -25,6 +25,26 @@ Value_print(VALUE o)
       printf("#<Integer %p @value=%i>\n", o, VAL2INT(o));
       break;
     }
+    case StringType: {
+      printf("#<String %p @value=%s>\n", o, VAL2STR(o));
+      break;
+    }
+    case TrueType: {
+      printf("#<True %p>\n", o);
+      break;
+    }
+    case FalseType: {
+      printf("#<False %p>\n", o);
+      break;
+    }
+    case NilType: {
+      printf("#<Nil %p>\n", o);
+      break;
+    }
+    case MainType: {
+      printf("#<Main %p>\n", o);
+      break;
+    }
     default: {
       printf("#<Object %p>\n", o);
       break;
@@ -47,4 +67,3 @@ String_new(char* value)
   val->data.as_str = value;
   return val;
 }
-

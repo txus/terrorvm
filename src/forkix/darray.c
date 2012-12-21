@@ -113,3 +113,12 @@ void *DArray_pop(DArray *array)
 error:
   return NULL;
 }
+
+void DArray_set(DArray *array, int i, void *el)
+{
+  check(i < array->max, "darray attempt to set past max");
+  array->contents[i] = el;
+error:
+  return;
+}
+
