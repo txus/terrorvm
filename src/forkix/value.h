@@ -29,14 +29,8 @@ VALUE Integer_new(int);
 VALUE String_new(char*);
 #define VAL2STR(o) (o->data.as_str)
 
-#define VALSET(S, K, V)                      \
-  {                                          \
-    bstring _slotname = bfromcstr((K));      \
-    Hashmap_delete((S)->table, _slotname);   \
-    Hashmap_set((S)->table, _slotname, (V)); \
-  }
-
-#define VALGET(S, K) (VALUE)Hashmap_get((S)->table, bfromcstr((K)))
+void Value_set(VALUE receiver, char *key, VALUE value);
+VALUE Value_get(VALUE receiver, char *key);
 
 #endif
 

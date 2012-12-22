@@ -130,7 +130,7 @@ VALUE VM_run(STATE state, Stack *frames)
 
         check(slot->type == StringType, "Slot name must be a String.");
 
-        Stack_push(stack, VALGET(receiver, VAL2STR(slot)));
+        Stack_push(stack, Value_get(receiver, VAL2STR(slot)));
         break;
       }
       case SETSLOT: {
@@ -142,7 +142,7 @@ VALUE VM_run(STATE state, Stack *frames)
 
         check(slot->type == StringType, "Slot name must be a String.");
 
-        VALSET(receiver, VAL2STR(slot), value);
+        Value_set(receiver, VAL2STR(slot), value);
         Stack_push(stack, value); // push the rhs back to the stack
         break;
       }

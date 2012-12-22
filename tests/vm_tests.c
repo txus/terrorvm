@@ -213,7 +213,7 @@ char *test_getslot()
   SETUP();
 
   VALUE receiver = String_new("foo");
-  VALSET(receiver, "tainted", TrueObject);
+  Value_set(receiver, "tainted", TrueObject);
   DArray_push(literals, receiver);
 
   PUSH_LITERAL(String_new("tainted"), slot);
@@ -234,7 +234,7 @@ char *test_setslot()
   SETUP();
 
   VALUE receiver = String_new("foo");
-  VALSET(receiver, "tainted", TrueObject);
+  Value_set(receiver, "tainted", TrueObject);
   DArray_push(literals, receiver);
 
   PUSH_LITERAL(String_new("tainted"), slot);
@@ -247,7 +247,7 @@ char *test_setslot()
   );
 
   mu_assert(result == FalseObject, "Setslot didn't push the rhs back to the stack.");
-  mu_assert(VALGET(receiver, "tainted") == FalseObject, "Setslot didn't set the slot.");
+  mu_assert(Value_get(receiver, "tainted") == FalseObject, "Setslot didn't set the slot.");
 
   TEARDOWN();
 }

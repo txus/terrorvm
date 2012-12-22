@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <forkix/value.h>
+#include <forkix/bstrlib.h>
+#include <forkix/runtime.h>
 #include <forkix/gc.h>
+
+VALUE NilObject;
 
 VALUE
 Value_new(ValueType type)
@@ -67,3 +71,26 @@ String_new(char* value)
   val->data.as_str = value;
   return val;
 }
+
+void
+Value_set(VALUE receiver, char *key, VALUE value)
+{
+    bstring _slotname = bfromcstr(key);
+    Hashmap_delete(receiver->table, _slotname);
+    Hashmap_set(receiver->table, _slotname, value);
+}
+
+VALUE
+Value_get(VALUE receiver, char *key)
+{
+  VALUE value = (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
+
+  if(value != NULL) {
+    return value;
+  } else {
+    return NilObject;
+  }
+}
+
+
+
