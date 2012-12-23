@@ -64,6 +64,15 @@ Value_print(VALUE o)
 #define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F))))
 
 VALUE
+Main_new()
+{
+  VALUE val = Value_new(MainType);
+  DEFNATIVE(val, "print", Primitive_print);
+  DEFNATIVE(val, "puts", Primitive_puts);
+  return val;
+}
+
+VALUE
 Integer_new(int num)
 {
   VALUE val = Value_new(IntegerType);

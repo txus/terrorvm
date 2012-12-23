@@ -39,7 +39,7 @@ void VM_start(BytecodeFile *file)
 {
   STATE state = State_new(file->functions);
 
-  VALUE main = Value_new(MainType); // toplevel object
+  VALUE main = Main_new(); // toplevel object
 
   Runtime_init();
   State_bootstrap(state);

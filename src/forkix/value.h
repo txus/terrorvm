@@ -24,6 +24,7 @@ VALUE Value_new(ValueType);
 void Value_destroy(VALUE);
 void Value_print(VALUE);
 
+VALUE Main_new();
 VALUE Integer_new(int);
 #define VAL2INT(o) (o->data.as_int)
 
