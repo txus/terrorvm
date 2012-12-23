@@ -1,1 +1,3 @@
-Object.prelude_ran = true
+def new
+  VM.new_object
+end

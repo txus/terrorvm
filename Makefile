@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
+CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
 LIBS=$(OPTLIBS)
 PREFIX?=/usr/local
 VPATH=vendor
@@ -20,7 +20,7 @@ SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 # The Target Build
 all: $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
 
-dev: CFLAGS=-g -Wall -Isrc -Wall -Werror $(OPTFLAGS)
+dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror $(OPTFLAGS)
 dev: all
 
 $(TARGET): CFLAGS += -fPIC $(LIBS)

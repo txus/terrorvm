@@ -19,12 +19,10 @@ module Terror
       instructions.map(&:to_s).join "\n"
     end
 
-    def encode
-      # Always return nil at the end of a script
-      pushnil
+    def encode(name)
       ret
 
-      output = "_main\n"
+      output = "_#{name}\n"
       output << ":%i:%i\n" % [
         @literals.size,
         @ip
@@ -110,6 +108,11 @@ module Terror
     def send_message(msg, argc)
       @ip += 1
       _send literal(msg), argc
+    end
+
+    def defn(name)
+      @ip += 1
+      _defn literal(name)
     end
 
     def ret

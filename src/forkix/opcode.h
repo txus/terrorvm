@@ -13,8 +13,6 @@ typedef enum {
   PUSHLOCAL = 0x20, // 32
   SETLOCAL,         // 33
 
-  ADD,              // 34
-
   JMP = 0x30,       // 48
   JIF,              // 49
   JIT,              // 50
@@ -22,7 +20,8 @@ typedef enum {
   GETSLOT = 0x40,   // 64
   SETSLOT,          // 65
 
-  POP,
+  POP,              // 66
+  DEFN,             // 67
 
   SEND = 0x80,      // 128
   RET = 0x90,       // 144

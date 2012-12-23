@@ -10,7 +10,8 @@ module Terror
       #
       # Returns a String encoded in hexadecimal format.
       def encode
-        [self.class.value].tap do |ary|
+        val = "#{self.class.value} #{name}"
+        [val].tap do |ary|
           ary.push(a) if respond_to?(:a)
           ary.push(b) if respond_to?(:b)
         end
@@ -20,13 +21,16 @@ module Terror
       #
       # Returns a readable String representing the instruction and its operands.
       def to_s
-        name = self.class.name.split('::').last
         output = [
-          name.upcase,
+          name,
           # self.class.value
         ] + operands
 
         output.join " "
+      end
+
+      def name
+        self.class.name.split('::').last.upcase
       end
 
       def inspect
@@ -115,8 +119,6 @@ module Terror
     op :pushlocal, 0x20, 1
     op :setlocal,  0x21, 1
 
-    op :add,       0x22, 0
-
     op :jmp,       0x30, 1
     op :jif,       0x31, 1
     op :jit,       0x32, 1
@@ -125,6 +127,7 @@ module Terror
     op :setslot,   0x41, 1
 
     op :pop,       0x42, 0
+    op :defn,      0x43, 1
 
     op :send,      0x80, 2
     op :ret,       0x90, 0

@@ -153,5 +153,14 @@ module Terror
         end
       end
     end
+
+    describe 'functions' do
+      it 'are compiled' do
+        compiles("a = -> { 3 }") do
+          _defn 0
+          _setlocal 0
+        end
+      end
+    end
   end
 end

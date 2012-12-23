@@ -3,6 +3,7 @@
 
 #include <forkix/value_type.h>
 #include <forkix/gc_header.h>
+#include <forkix/function.h>
 #include <forkix/hashmap.h>
 
 struct val_s {
@@ -28,6 +29,9 @@ VALUE Integer_new(int);
 
 VALUE String_new(char*);
 #define VAL2STR(o) (o->data.as_str)
+
+VALUE Closure_new(Function*);
+#define VAL2FN(o) ((Function*)(o->data.as_data))
 
 void Value_set(VALUE receiver, char *key, VALUE value);
 VALUE Value_get(VALUE receiver, char *key);

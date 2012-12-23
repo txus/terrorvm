@@ -45,7 +45,9 @@ void VM_start(BytecodeFile *file)
   State_bootstrap(state);
 
   Stack *frames = Stack_create();
+
   CallFrame *top_frame = CallFrame_new(main, STATE_FN("main"), NULL);
+
   Stack_push(frames, top_frame);
   VM_run(state, frames);
 
@@ -146,13 +148,12 @@ VALUE VM_run(STATE state, Stack *frames)
         Stack_push(stack, value); // push the rhs back to the stack
         break;
       }
-      case ADD: {
-        debug("ADD");
-        VALUE op1 = Stack_pop(stack);
-        VALUE op2 = Stack_pop(stack);
-        int result = VAL2INT(op1) + VAL2INT(op2);
-
-        Stack_push(stack, Integer_new(result));
+      case DEFN: {
+        ip++;
+        debug("DEFN %i", *ip);
+        VALUE fn_name = LITERAL(*ip);
+        VALUE closure = Closure_new(STATE_FN(VAL2STR(fn_name)));
+        Stack_push(stack, closure);
         break;
       }
       case SEND: {
@@ -161,25 +162,42 @@ VALUE VM_run(STATE state, Stack *frames)
         ip++;
         int op2 = *ip;
 
+        debug("SEND %i %i", op1, op2);
+
         VALUE name = LITERAL(op1);
         int argcount = op2;
 
-        Function *fn = STATE_FN(VAL2STR(name));
-        CallFrame *new_frame = CallFrame_new(NULL, fn, ip++);
-
+        DArray *locals = DArray_create(sizeof(VALUE), 10);
         while(argcount--) {
-          DArray_push(new_frame->locals, Stack_pop(stack));
+          DArray_push(locals, Stack_pop(stack));
         }
+        VALUE receiver = Stack_pop(stack);
 
-        new_frame->self = Stack_pop(stack);
+        VALUE closure = Value_get(receiver, VAL2STR(name));
+        if (op2 == 0 && closure->type != ClosureType) {
+          // GETSLOT
+          Stack_push(stack, closure);
+          break;
+        }
+        check(closure->type == ClosureType, "Cannot find function %s.", VAL2STR(name));
+        Function *fn = VAL2FN(closure);
 
-        Stack_push(frames, new_frame);
+        if(fn->c_fn) {
+          // Native function dispatch
+          VALUE result = Function_native_call(fn, receiver, locals);
+          Value_print(result);
+          Stack_push(stack, result);
+        } else {
+          CallFrame *new_frame = CallFrame_new(receiver, fn, ip++);
+          new_frame->locals = locals;
 
-        current_frame = (CallFrame*)(Stack_peek(frames));
-        ip = current_frame->fn->code;
-        ip--;
+          Stack_push(frames, new_frame);
 
-        debug("SEND %i %i", op1, op2);
+          current_frame = (CallFrame*)(Stack_peek(frames));
+
+          ip = current_frame->fn->code;
+          ip--;
+        }
         break;
       }
       case PUSHSELF: {

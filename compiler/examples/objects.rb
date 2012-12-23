@@ -1,4 +1,4 @@
-parent = Object.clone()
+parent = Object.new
 parent.age = 50
 parent.money = 1000
 child = parent.clone()

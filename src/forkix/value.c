@@ -2,6 +2,7 @@
 #include <forkix/value.h>
 #include <forkix/bstrlib.h>
 #include <forkix/runtime.h>
+#include <forkix/primitives.h>
 #include <forkix/gc.h>
 
 VALUE NilObject;
@@ -49,6 +50,10 @@ Value_print(VALUE o)
       printf("#<Main %p>\n", o);
       break;
     }
+    case ClosureType: {
+      printf("#<Closure %p>\n", o);
+      break;
+    }
     default: {
       printf("#<Object %p>\n", o);
       break;
@@ -56,11 +61,19 @@ Value_print(VALUE o)
   }
 }
 
+#define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F))))
+
 VALUE
 Integer_new(int num)
 {
   VALUE val = Value_new(IntegerType);
   val->data.as_int = num;
+
+  DEFNATIVE(val, "+", Primitive_Integer_add);
+  DEFNATIVE(val, "-", Primitive_Integer_sub);
+  DEFNATIVE(val, "*", Primitive_Integer_mul);
+  DEFNATIVE(val, "/", Primitive_Integer_div);
+
   return val;
 }
 
@@ -69,6 +82,14 @@ String_new(char* value)
 {
   VALUE val = Value_new(StringType);
   val->data.as_str = value;
+  return val;
+}
+
+VALUE
+Closure_new(Function *fn)
+{
+  VALUE val = Value_new(ClosureType);
+  val->data.as_data = fn;
   return val;
 }
 

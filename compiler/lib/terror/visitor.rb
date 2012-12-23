@@ -7,8 +7,13 @@ module Terror
     def initialize(g=Generator.new)
       @generator = g
       @slots = {}
+      @fns = []
     end
     alias_method :g, :generator
+
+    def name
+      "block_#{hash}"
+    end
 
     def fixnum_literal(node, parent)
       g.push node.value
@@ -50,8 +55,19 @@ module Terror
         return slot_retrieval(node, parent)
       end
 
+      if node.name == :lambda && node.block
+        return defn(node.block)
+      end
+
       node.receiver.lazy_visit self, node
       g.send_message node.name, 0
+    end
+
+    def defn(block)
+      visitor = Visitor.new
+      block.body.lazy_visit(visitor)
+      @fns << visitor
+      g.defn visitor.name
     end
 
     def send_with_arguments(node, parent)
@@ -147,8 +163,10 @@ module Terror
       g.getslot node.name
     end
 
-    def finalize
-      g.encode
+    def finalize(name)
+      out = g.encode(name)
+      fns = @fns.map { |fn| fn.finalize(fn.name) }.join("\n")
+      [out, fns].join("\n")
     end
   end
 end

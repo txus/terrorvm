@@ -273,25 +273,73 @@ char *test_send()
   SETUP();
 
   DEFN(
-    "add",
-    PUSHSELF,
+    "echo",
     PUSHLOCAL, 0,
-    ADD,
     RET
   );
 
   PUSH_LITERAL(Integer_new(1), a);
-  PUSH_LITERAL(Integer_new(2), b);
-  PUSH_LITERAL(String_new("add"), method);
+  PUSH_LITERAL(String_new("echo"), method);
 
   RUN(
+    PUSHSELF,
+    DEFN, 1,
+    SETSLOT, 1,
+
+    PUSHSELF,
     PUSH, 0,
-    PUSH, 1,
-    SEND, 2, 1,
+    SEND, 1, 1,
     RET
   );
 
-  mu_assert(VAL2INT(result) == 3, "Send failed.");
+  mu_assert(VAL2INT(result) == 1, "Send failed.");
+
+  TEARDOWN();
+}
+
+char *test_send_getslot()
+{
+  SETUP();
+
+  PUSH_LITERAL(Integer_new(1), a);
+  PUSH_LITERAL(String_new("value"), slot);
+
+  RUN(
+    PUSHSELF,
+    PUSH, 0,
+    SETSLOT, 1,
+    POP,
+
+    PUSHSELF,
+    SEND, 1, 0,
+    RET
+  )
+
+  mu_assert(VAL2INT(result) == 1, "Send didn't fall back to getslot.");
+
+  TEARDOWN();
+}
+
+char *test_defn()
+{
+  SETUP();
+
+  DEFN(
+    "add",
+    PUSHSELF,
+    PUSHLOCAL, 0,
+    RET
+  );
+
+  PUSH_LITERAL(String_new("add"), method);
+
+  RUN(
+    DEFN, 0,
+    RET
+  );
+
+  mu_assert(result->type == ClosureType, "Defn failed.");
+  mu_assert(*(VAL2FN(result)->code) == PUSHSELF, "Defn failed.");
 
   TEARDOWN();
 }
@@ -314,6 +362,8 @@ char *all_tests() {
   mu_run_test(test_setslot);
   mu_run_test(test_pop);
   mu_run_test(test_send);
+  mu_run_test(test_send_getslot);
+  mu_run_test(test_defn);
 
   return NULL;
 }

@@ -3,6 +3,7 @@
 
 typedef enum {
   IntegerType = 0,
+  ObjectType,
   StringType,
   ArrayType,
   HashType,

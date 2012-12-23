@@ -30,6 +30,7 @@ State_bootstrap(STATE state)
 
   Hashmap *fns = state->functions;
 
+  // Load all files.
   for(int i=0; i < count; i++) {
     bstring filename = (bstring)DArray_at(filenames, i);
     debug("[BOOTSTRAP] Loading %s...", bdata(filename));
