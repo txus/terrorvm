@@ -1,5 +1,5 @@
 _main
-:8:13
+:8:28
 3
 1
 "-
@@ -8,32 +8,32 @@ _main
 "*
 "+
 "puts
-16
-17
+16 PUSHSELF
+17 PUSH
 0
-17
+17 PUSH
 1
-128
+128 SEND
 2
 1
-17
+17 PUSH
 0
-17
+17 PUSH
 3
-17
+17 PUSH
 0
-128
+128 SEND
 4
 1
-128
+128 SEND
 5
 1
-128
+128 SEND
 6
 1
-128
+128 SEND
 7
 1
-20
-144
+20 PUSHNIL
+144 RET
 

@@ -16,7 +16,7 @@ module Terror
             value = inst.class.value
 
             inst.operands.must_equal [2, 3]
-            inst.encode.must_equal [value, 2, 3]
+            inst.encode.must_equal ["#{value} #{instruction.upcase}", 2, 3]
           end
         end
       end
@@ -30,21 +30,21 @@ module Terror
             value = inst.class.value
 
             inst.operands.must_equal [2]
-            inst.encode.must_equal [value, 2]
+            inst.encode.must_equal ["#{value} #{instruction.upcase}", 2]
           end
         end
       end
     end
 
     describe 'instructions with no operands' do
-      %w(noop pushself pushtrue pushfalse pushnil add pop ret dump).each do |instruction|
+      %w(noop pushself pushtrue pushfalse pushnil pop ret dump).each do |instruction|
         describe instruction do
           it "#{instruction} is encoded correctly" do
             inst = @g.__send__ :"_#{instruction}"
             value = inst.class.value
 
             inst.operands.must_equal []
-            inst.encode.must_equal [value]
+            inst.encode.must_equal ["#{value} #{instruction.upcase}"]
           end
         end
       end

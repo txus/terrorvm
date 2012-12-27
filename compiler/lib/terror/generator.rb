@@ -22,17 +22,17 @@ module Terror
     def encode(name)
       ret
 
+      instrs = instructions.map(&:encode).flatten
+
       output = "_#{name}\n"
-      output << ":%i:%i\n" % [
-        @literals.size,
-        @ip
-      ]
+      output << ":%i:%i\n" % [@literals.size, instrs.size]
+
       output << @literals.join("\n")
       output << "\n"
       # instructions.each do |i|
       #   p i
       # end
-      output << instructions.map(&:encode).flatten.join("\n")
+      output << instrs.join("\n")
       output
     end
 

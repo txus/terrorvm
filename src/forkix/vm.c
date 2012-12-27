@@ -174,7 +174,7 @@ VALUE VM_run(STATE state, Stack *frames)
         VALUE receiver = Stack_pop(stack);
 
         VALUE closure = Value_get(receiver, VAL2STR(name));
-        if (op2 == 0 && closure->type != ClosureType) {
+        if (op2 == 0 && closure->type != ClosureType && closure != NilObject) {
           // GETSLOT
           Stack_push(stack, closure);
           break;
@@ -185,7 +185,6 @@ VALUE VM_run(STATE state, Stack *frames)
         if(fn->c_fn) {
           // Native function dispatch
           VALUE result = Function_native_call(fn, receiver, locals);
-          Value_print(result);
           Stack_push(stack, result);
         } else {
           CallFrame *new_frame = CallFrame_new(receiver, fn, ip++);
