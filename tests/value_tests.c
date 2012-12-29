@@ -42,6 +42,15 @@ char *test_vector_new()
   return NULL;
 }
 
+char *test_map_new()
+{
+  DArray *array = DArray_create(sizeof(VALUE), 10);
+  VALUE map = Map_new(array);
+  mu_assert(map->type == MapType, "failed creating map");
+  mu_assert(VAL2HASH(map), "failed assigning hash to map");
+
+  return NULL;
+}
 
 char *test_main_new()
 {
@@ -95,6 +104,7 @@ char *all_tests() {
   mu_run_test(test_string_new);
   mu_run_test(test_closure_new);
   mu_run_test(test_vector_new);
+  mu_run_test(test_map_new);
   mu_run_test(test_main_new);
   mu_run_test(test_destroy);
 

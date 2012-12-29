@@ -1,0 +1,32 @@
+_main
+:5:24
+"hello world
+"foo
+"to_map
+"[]
+"puts
+17 PUSH
+0
+17 PUSH
+1
+68 MAKEVEC
+2
+128 SEND
+2
+0
+33 SETLOCAL
+0
+16 PUSHSELF
+32 PUSHLOCAL
+0
+17 PUSH
+1
+128 SEND
+3
+1
+128 SEND
+4
+1
+20 PUSHNIL
+144 RET
+

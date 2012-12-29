@@ -3,7 +3,7 @@
 
 #include <forkix/state.h>
 
-void State_bootstrap(STATE state);
+void State_bootstrap(STATE);
 
 #endif
 

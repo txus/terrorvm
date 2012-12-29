@@ -6,7 +6,7 @@
 #include <forkix/value.h>
 #include <forkix/input_reader.h>
 
-VALUE VM_run(STATE state, Stack *frames);
+VALUE VM_run(STATE);
 void VM_start(BytecodeFile *file);
 
 #endif

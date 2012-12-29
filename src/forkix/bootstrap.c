@@ -23,7 +23,7 @@ kernel_files()
 }
 
 void
-State_bootstrap(STATE state)
+State_bootstrap(STATE)
 {
   DArray *filenames = kernel_files();
   int count = DArray_count(filenames);

@@ -1,5 +1,7 @@
 #include <forkix/function.h>
 #include <forkix/value.h>
+#include <forkix/stack.h>
+#include <forkix/call_frame.h>
 
 Function*
 Function_new(int *code, DArray *literals)
@@ -22,16 +24,35 @@ Function_native_new(native_fn c_fn)
 }
 
 VALUE
-Function_native_call(Function *fn, VALUE receiver, DArray *locals)
+Function_native_call(STATE, Function *fn, VALUE receiver, DArray *locals)
 {
-  VALUE result = NULL;
-  if (DArray_at(locals, 1)) {
-    result = fn->c_fn(receiver, DArray_at(locals, 0), DArray_at(locals, 1));
-  } else if (DArray_at(locals, 0)) {
-    result = fn->c_fn(receiver, DArray_at(locals, 0), NULL);
-  } else {
-    result =fn->c_fn(receiver, NULL, NULL);
+  return fn->c_fn(
+    state,
+    receiver,
+    DArray_at(locals, 0),
+    DArray_at(locals, 1)
+    );
+}
+
+int*
+Function_call(
+  STATE,          // the State
+  Function *fn,   // the Function we're calling
+  VALUE receiver, // the Receiver value
+  DArray *locals, // the arguments to the function call
+  int *ret)       // where to return
+{
+  // Native function dispatch
+  if(fn->c_fn) {
+    VALUE result = Function_native_call(state, fn, receiver, locals);
+    Stack_push(STACK, result);
+    return ret; // return where we were
   }
 
-  return result;
+  // Normal dispatch
+  CallFrame *new_frame = CallFrame_new(receiver, fn, ret);
+  new_frame->locals = locals;
+  Stack_push(FRAMES, new_frame);
+
+  return new_frame->fn->code;
 }

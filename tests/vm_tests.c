@@ -14,8 +14,6 @@ VALUE TrueObject;
 VALUE FalseObject;
 VALUE NilObject;
 
-#define VM state
-#define STACK frames
 #define LOCAL(A) (VALUE)DArray_at(locals, (A))
 #define PUSH_LITERAL(A, N) VALUE (N) = (A); DArray_push(literals, (N))
 #define PUSH_LOCAL(A, N) VALUE (N) = (A); DArray_push(locals, (N))
@@ -45,13 +43,14 @@ VALUE NilObject;
   fn->code = code;                                      \
   fn->literals = literals;                              \
                                                         \
-  STATE state = State_new(fns);                         \
-  VALUE main = Main_new();                     \
+  STATE = State_new(fns);                               \
+  VALUE main = Main_new();                              \
   State_bootstrap(state);                               \
   CallFrame *top_frame = CallFrame_new(main, fn, NULL); \
   top_frame->locals = locals;                           \
   Stack_push(frames, top_frame);                        \
-  VALUE result = VM_run(state, frames);                 \
+  state->frames = frames;                               \
+  VALUE result = VM_run(state);                         \
 
 char *test_pushself()
 {
@@ -320,6 +319,34 @@ char *test_send_getslot()
   TEARDOWN();
 }
 
+char *test_send_apply()
+{
+  SETUP();
+
+  DEFN(
+    "echo",
+    PUSHSELF,
+    RET
+  );
+
+  PUSH_LITERAL(Integer_new(1), a);
+  PUSH_LITERAL(String_new("echo"), method);
+  PUSH_LITERAL(String_new("apply"), apply);
+
+  RUN(
+    DEFN, 1,
+
+    // self == closure, method = apply, first arg == Integer(1)
+    PUSH, 0,
+    SEND, 2, 1,
+    RET
+  );
+
+  mu_assert(VAL2INT(result) == 1, "Send apply failed.");
+
+  TEARDOWN();
+}
+
 char *test_defn()
 {
   SETUP();
@@ -382,6 +409,7 @@ char *all_tests() {
   mu_run_test(test_pop);
   mu_run_test(test_send);
   mu_run_test(test_send_getslot);
+  mu_run_test(test_send_apply);
   mu_run_test(test_defn);
   mu_run_test(test_makevec);
 

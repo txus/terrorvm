@@ -105,9 +105,36 @@ Vector_new(DArray *array)
   val->data.as_data = array;
 
   DEFNATIVE(val, "[]", Primitive_Vector_at);
+  DEFNATIVE(val, "to_map", Primitive_Vector_to_map);
 
   return val;
 }
+
+VALUE
+Map_new(DArray *array)
+{
+  VALUE val = Value_new(MapType);
+
+  int count = DArray_count(array);
+  assert(count % 2 == 0 && "Map element count must be even.");
+
+  // Maps are our 'object literals', so the object table will be the hash
+  // itself.
+  Hashmap *hash = val->table;
+
+  for(int i=0; i < count; i += 2) {
+    VALUE key   = (VALUE)DArray_at(array, i);
+    VALUE value = (VALUE)DArray_at(array, i+1);
+    assert(key->type == StringType && "All map keys must be strings.");
+
+    Hashmap_set(hash, key, value);
+  }
+
+  DEFNATIVE(val, "[]", Primitive_Map_get);
+  DEFNATIVE(val, "[]=", Primitive_Map_set);
+
+  return val;
+};
 
 void
 Value_set(VALUE receiver, char *key, VALUE value)

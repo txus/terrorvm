@@ -173,5 +173,17 @@ module Terror
         end
       end
     end
+
+    describe 'maps' do
+      it 'are compiled' do
+        compiles("a = { false => true }") do
+          _pushtrue
+          _pushfalse
+          _makevec 2
+          _send 0, 0
+          _setlocal 0
+        end
+      end
+    end
   end
 end

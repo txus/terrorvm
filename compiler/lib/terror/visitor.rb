@@ -135,21 +135,14 @@ module Terror
       g.makevec 0
     end
 
-    # def hash_literal(node, parent)
-    #   slf  = g.loadself
-    #   meth = g.loads :hash
+    def hash_literal(node, parent)
+      node.array.reverse.each do |element|
+        element.lazy_visit self
+      end
+      g.makevec node.array.count
 
-    #   # Create an array
-    #   first = nil
-    #   node.array.each do |element|
-    #     slot = element.lazy_visit self
-    #     # Save the register of only the first element
-    #     first ||= slot
-    #   end
-    #   ary = g.makearray first, node.array.count
-
-    #   g.send_message slf, meth, ary
-    # end
+      g.send_message :to_map, 0
+    end
 
     def symbol_literal(node, parent)
       g.push node.value
