@@ -34,6 +34,9 @@ VALUE String_new(char*);
 VALUE Closure_new(Function*);
 #define VAL2FN(o) ((Function*)(o->data.as_data))
 
+VALUE Vector_new(DArray *array);
+#define VAL2ARY(o) ((DArray*)(o->data.as_data))
+
 void Value_set(VALUE receiver, char *key, VALUE value);
 VALUE Value_get(VALUE receiver, char *key);
 

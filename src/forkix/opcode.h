@@ -22,6 +22,7 @@ typedef enum {
 
   POP,              // 66
   DEFN,             // 67
+  MAKEVEC,          // 68
 
   SEND = 0x80,      // 128
   RET = 0x90,       // 144

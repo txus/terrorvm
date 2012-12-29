@@ -46,7 +46,7 @@ VALUE NilObject;
   fn->literals = literals;                              \
                                                         \
   STATE state = State_new(fns);                         \
-  VALUE main = Value_new(MainType);                     \
+  VALUE main = Main_new();                     \
   State_bootstrap(state);                               \
   CallFrame *top_frame = CallFrame_new(main, fn, NULL); \
   top_frame->locals = locals;                           \
@@ -344,6 +344,25 @@ char *test_defn()
   TEARDOWN();
 }
 
+char *test_makevec()
+{
+  SETUP();
+
+  RUN(
+    PUSHFALSE,
+    PUSHTRUE,
+    MAKEVEC, 2,
+    RET
+  );
+
+  mu_assert(result->type == VectorType, "Makevec failed.");
+  DArray *array = VAL2ARY(result);
+  mu_assert(((VALUE)DArray_first(array))->type == TrueType, "First value is not true.");
+  mu_assert(((VALUE)DArray_last(array))->type == FalseType, "Last value is not false.");
+
+  TEARDOWN();
+}
+
 char *all_tests() {
   mu_suite_start();
 
@@ -364,6 +383,7 @@ char *all_tests() {
   mu_run_test(test_send);
   mu_run_test(test_send_getslot);
   mu_run_test(test_defn);
+  mu_run_test(test_makevec);
 
   return NULL;
 }

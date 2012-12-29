@@ -5,13 +5,12 @@ typedef enum {
   IntegerType = 0,
   ObjectType,
   StringType,
-  ArrayType,
-  HashType,
+  VectorType,
+  MapType,
   ClosureType,
   TrueType,
   FalseType,
   NilType,
-  MainType,
 } ValueType;
 
 #endif

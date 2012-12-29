@@ -16,4 +16,7 @@ VALUE Primitive_Integer_sub(void*, void*, void*);
 VALUE Primitive_Integer_mul(void*, void*, void*);
 VALUE Primitive_Integer_div(void*, void*, void*);
 
+// Vector primitive methods
+VALUE Primitive_Vector_at(void*, void*, void*);
+
 #endif

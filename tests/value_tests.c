@@ -32,10 +32,21 @@ char *test_closure_new()
   return NULL;
 }
 
+char *test_vector_new()
+{
+  DArray *array = DArray_create(sizeof(VALUE), 10);
+  VALUE vector = Vector_new(array);
+  mu_assert(vector->type == VectorType, "failed creating vector");
+  mu_assert(VAL2ARY(vector) == array, "failed assigning array to vector");
+
+  return NULL;
+}
+
+
 char *test_main_new()
 {
   VALUE main = Main_new();
-  mu_assert(main->type == MainType, "failed creating Main");
+  mu_assert(main->type == ObjectType, "failed creating Main");
 
   return NULL;
 }
@@ -83,6 +94,7 @@ char *all_tests() {
   mu_run_test(test_integer_new);
   mu_run_test(test_string_new);
   mu_run_test(test_closure_new);
+  mu_run_test(test_vector_new);
   mu_run_test(test_main_new);
   mu_run_test(test_destroy);
 

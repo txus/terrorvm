@@ -76,3 +76,23 @@ Primitive_Integer_div(void *a, void *b, void *_)
   return Integer_new(VAL2INT(left) / VAL2INT(right));
 }
 
+/*
+ * Vector primitives
+ */
+
+VALUE
+Primitive_Vector_at(void *a, void *b, void *_)
+{
+  VALUE vector = (VALUE)a;
+  VALUE index  = (VALUE)b;
+
+  CHECK_TYPE(vector, VectorType);
+  CHECK_TYPE(index, IntegerType);
+
+  VALUE result = (VALUE)DArray_at(VAL2ARY(vector), VAL2INT(index));
+
+  if(!result) result = NilObject;
+
+  return result;
+}
+

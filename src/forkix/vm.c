@@ -159,6 +159,21 @@ VALUE VM_run(STATE state, Stack *frames)
         Stack_push(stack, closure);
         break;
       }
+      case MAKEVEC: {
+        ip++;
+        debug("MAKEVEC %i", *ip);
+        int count = *ip;
+        DArray *array = DArray_create(sizeof(VALUE), 5);
+        while(count--) {
+          VALUE elem = Stack_pop(stack);
+          check(elem, "Stack underflow.");
+          DArray_push(array, elem);
+        }
+
+        VALUE vector = Vector_new(array);
+        Stack_push(stack, vector);
+        break;
+      }
       case SEND: {
         ip++;
         int op1 = *ip;

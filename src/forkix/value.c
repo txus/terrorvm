@@ -46,10 +46,6 @@ Value_print(VALUE o)
       printf("#<Nil %p>\n", o);
       break;
     }
-    case MainType: {
-      printf("#<Main %p>\n", o);
-      break;
-    }
     case ClosureType: {
       printf("#<Closure %p>\n", o);
       break;
@@ -66,7 +62,7 @@ Value_print(VALUE o)
 VALUE
 Main_new()
 {
-  VALUE val = Value_new(MainType);
+  VALUE val = Value_new(ObjectType);
   DEFNATIVE(val, "print", Primitive_print);
   DEFNATIVE(val, "puts", Primitive_puts);
   return val;
@@ -99,6 +95,17 @@ Closure_new(Function *fn)
 {
   VALUE val = Value_new(ClosureType);
   val->data.as_data = fn;
+  return val;
+}
+
+VALUE
+Vector_new(DArray *array)
+{
+  VALUE val = Value_new(VectorType);
+  val->data.as_data = array;
+
+  DEFNATIVE(val, "[]", Primitive_Vector_at);
+
   return val;
 }
 
