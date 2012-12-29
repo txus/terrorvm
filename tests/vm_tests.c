@@ -20,7 +20,6 @@ VALUE NilObject;
 
 #define SETUP() \
   DArray *literals = DArray_create(sizeof(VALUE), 10);  \
-  Stack *frames = Stack_create();                       \
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   DArray *locals = DArray_create(sizeof(VALUE), 10);    \
   Runtime_init();                                       \
@@ -44,12 +43,12 @@ VALUE NilObject;
   fn->literals = literals;                              \
                                                         \
   STATE = State_new(fns);                               \
-  VALUE main = Main_new();                              \
-  State_bootstrap(state);                               \
-  CallFrame *top_frame = CallFrame_new(main, fn, NULL); \
+  VALUE lobby = Lobby_new();                            \
+  state->lobby = lobby;                                 \
+  CallFrame *top_frame = CallFrame_new(lobby, fn, NULL);\
   top_frame->locals = locals;                           \
-  Stack_push(frames, top_frame);                        \
-  state->frames = frames;                               \
+  Stack_push(FRAMES, top_frame);                        \
+  State_bootstrap(state);                               \
   VALUE result = VM_run(state);                         \
 
 char *test_pushself()
@@ -61,7 +60,7 @@ char *test_pushself()
     RET
   );
 
-  mu_assert(result == main, "Pushself failed.");
+  mu_assert(result == lobby, "Pushself failed.");
 
   TEARDOWN();
 }

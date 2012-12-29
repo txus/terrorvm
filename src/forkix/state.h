@@ -3,12 +3,15 @@
 
 #include <forkix/hashmap.h>
 #include <forkix/darray.h>
+#include <forkix/value.h>
 #include <forkix/stack.h>
 
 struct state_s {
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
+  VALUE lobby;
+  int *ret;
   DArray *heap;
 };
 typedef struct state_s State;
@@ -21,3 +24,4 @@ State* State_new(Hashmap *functions);
 #define CURR_FRAME ((CallFrame*)(Stack_peek(FRAMES)))
 
 #endif
+

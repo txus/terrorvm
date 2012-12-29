@@ -6,7 +6,7 @@
 
 char *test_load()
 {
-  BytecodeFile *file = BytecodeFile_new(bfromcstr("tests/testfile.fx"));
+  BytecodeFile *file = BytecodeFile_new(bfromcstr("tests/testfile.tvm"));
 
   Function *main = Hashmap_get(file->functions, bfromcstr("main"));
   Function *add = Hashmap_get(file->functions, bfromcstr("add"));

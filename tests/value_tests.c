@@ -52,10 +52,10 @@ char *test_map_new()
   return NULL;
 }
 
-char *test_main_new()
+char *test_lobby_new()
 {
-  VALUE main = Main_new();
-  mu_assert(main->type == ObjectType, "failed creating Main");
+  VALUE lobby = Lobby_new();
+  mu_assert(lobby->type == ObjectType, "failed creating Lobby");
 
   return NULL;
 }
@@ -105,7 +105,7 @@ char *all_tests() {
   mu_run_test(test_closure_new);
   mu_run_test(test_vector_new);
   mu_run_test(test_map_new);
-  mu_run_test(test_main_new);
+  mu_run_test(test_lobby_new);
   mu_run_test(test_destroy);
 
   mu_run_test(test_get);

@@ -1,4 +1,4 @@
-CC=clang
+Cn=clang
 CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
 LIBS=$(OPTLIBS)
 PREFIX?=/usr/local
@@ -23,6 +23,15 @@ all: $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
 dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror $(OPTFLAGS)
 dev: all
 
+rubinius:
+	which rbx || (echo '\nYou need rubinius to compile the kernel.\n'; which rbx)
+kernel: rubinius
+	rm -rf `find kernel -name "*.tvm" -print`
+	cd compiler && rake kernel
+examples: rubinius
+	rm -rf `find examples -name "*.tvm" -print`
+	cd compiler && rake examples
+
 $(TARGET): CFLAGS += -fPIC $(LIBS)
 $(TARGET): build $(OBJECTS)
 				ar rcs $@ $(OBJECTS)
@@ -38,7 +47,7 @@ build:
 				@mkdir -p bin
 
 # The Unit Tests
-.PHONY: tests
+.PHONY: tests kernel rubinius
 tests: CFLAGS += $(TARGET)
 tests: $(TESTS)
 				sh ./tests/runtests.sh

@@ -1,8 +1,15 @@
 #include <forkix/bootstrap.h>
 #include <forkix/darray.h>
 #include <forkix/bstrlib.h>
-#include <forkix/input_reader.h>
+#include <forkix/runtime.h>
+#include <forkix/primitives.h>
 #include <dirent.h>
+
+VALUE Integer_bp;
+VALUE String_bp;
+VALUE Vector_bp;
+VALUE Map_bp;
+VALUE Closure_bp;
 
 static inline DArray*
 kernel_files()
@@ -22,26 +29,51 @@ kernel_files()
   return entries;
 }
 
+#define DEFPRIM(M, N, F) DArray_push((M), String_new((N))); DArray_push((M), Closure_new(Function_native_new((F))))
+#define DEFVALUE(M, N, V) DArray_push((M), String_new((N))); DArray_push((M), (V));
+
+static inline void
+expose_VM(VALUE lobby)
+{
+  VALUE vm = Value_new(ObjectType);
+  Value_set(lobby, "VM", vm);
+
+  // VM.primitives map
+  DArray *primitives = DArray_create(sizeof(VALUE), 10);
+
+  DEFPRIM(primitives, "print", Primitive_print);
+  DEFPRIM(primitives, "puts", Primitive_puts);
+  DEFPRIM(primitives, "require", Primitive_require);
+
+  Value_set(vm, "primitives", Map_new(primitives));
+
+  // VM.types map
+  DArray *types = DArray_create(sizeof(VALUE), 10);
+
+  DEFVALUE(types, "integer", Integer_bp);
+  DEFVALUE(types, "string", String_bp);
+  DEFVALUE(types, "vector", Vector_bp);
+  DEFVALUE(types, "map", Map_bp);
+  DEFVALUE(types, "closure", Closure_bp);
+
+  Value_set(vm, "types", Map_new(primitives));
+}
+
 void
 State_bootstrap(STATE)
 {
   DArray *filenames = kernel_files();
   int count = DArray_count(filenames);
 
-  Hashmap *fns = state->functions;
+  // Expose toplevel constants
+  expose_VM(state->lobby);
 
   // Load all files.
   for(int i=0; i < count; i++) {
     bstring filename = (bstring)DArray_at(filenames, i);
-    debug("[BOOTSTRAP] Loading %s...", bdata(filename));
-
-    BytecodeFile *file = BytecodeFile_new(filename);
-    int fn_count = DArray_count(file->function_names);
-    for(int j=0; i < fn_count; i++) {
-      bstring fn_name = (bstring)DArray_at(file->function_names, j);
-      Function *fn = (Function*)Hashmap_get(file->functions, fn_name);
-      Hashmap_set(fns, fn_name, fn);
-    }
+    bstring path = bfromcstr("kernel/");
+    bconcat(path, filename);
+    debug("[BOOTSTRAP] Loading %s...", bdata(path));
+    Primitive_require(state, String_new(bdata(path)), NULL, NULL);
   }
 }
-

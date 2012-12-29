@@ -1,6 +1,7 @@
 #include <forkix/function.h>
 #include <forkix/value.h>
 #include <forkix/stack.h>
+#include <forkix/state.h>
 #include <forkix/call_frame.h>
 
 Function*
@@ -39,9 +40,10 @@ Function_call(
   STATE,          // the State
   Function *fn,   // the Function we're calling
   VALUE receiver, // the Receiver value
-  DArray *locals, // the arguments to the function call
-  int *ret)       // where to return
+  DArray *locals) // the arguments to the function call
 {
+  int *ret = state->ret;
+
   // Native function dispatch
   if(fn->c_fn) {
     VALUE result = Function_native_call(state, fn, receiver, locals);

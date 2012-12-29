@@ -12,16 +12,13 @@
 // Generic primitive methods
 VALUE Primitive_print(PRIMITIVE_ARGS);
 VALUE Primitive_puts(PRIMITIVE_ARGS);
+VALUE Primitive_require(PRIMITIVE_ARGS);
 
 // Integer primitive methods
 VALUE Primitive_Integer_add(PRIMITIVE_ARGS);
 VALUE Primitive_Integer_sub(PRIMITIVE_ARGS);
 VALUE Primitive_Integer_mul(PRIMITIVE_ARGS);
 VALUE Primitive_Integer_div(PRIMITIVE_ARGS);
-
-// Closure primitive methods
-VALUE Primitive_Closure_apply(PRIMITIVE_ARGS);
-
 
 // Vector primitive methods
 VALUE Primitive_Vector_at(PRIMITIVE_ARGS);

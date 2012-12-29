@@ -3,6 +3,12 @@
 
 #include <forkix/value.h>
 
+extern VALUE Integer_bp;
+extern VALUE String_bp;
+extern VALUE Vector_bp;
+extern VALUE Map_bp;
+extern VALUE Closure_bp;
+
 extern VALUE TrueObject;
 extern VALUE FalseObject;
 extern VALUE NilObject;

@@ -114,7 +114,11 @@ module Terror
     end
 
     def attribute_assignment(node, parent)
-      receiver_name = node.receiver.name
+      receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
+                        'self'
+                      else
+                        node.receiver.name
+                      end
       attribute_name = node.name[0..-2].to_sym
       @slots[receiver_name] ||= []
       @slots[receiver_name] << attribute_name

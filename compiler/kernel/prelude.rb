@@ -1,3 +1,2 @@
-def new
-  VM.new_object
-end
+self.print = VM.primitives[:print]
+self.puts  = VM.primitives[:puts]

@@ -5,4 +5,22 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+desc 'Compiles kernel files'
+task :kernel do
+  Dir['kernel/*.rb'].each do |src|
+    dest = "../#{src.gsub('rb','tvm')}"
+    puts "Compiling #{src} to #{dest}..."
+    `bin/terror #{src} > #{dest}`
+  end
+end
+
+desc 'Compiles example files'
+task :examples do
+  Dir['examples/*.rb'].each do |src|
+    dest = "../#{src.gsub('rb','tvm')}"
+    puts "Compiling #{src} to #{dest}..."
+    `bin/terror #{src} > #{dest}`
+  end
+end
+
 task :default => :test

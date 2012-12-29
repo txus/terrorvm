@@ -39,16 +39,18 @@ void VM_start(BytecodeFile *file)
 {
   STATE = State_new(file->functions);
 
-  VALUE main = Main_new(); // toplevel object
+  VALUE lobby = Lobby_new(); // toplevel object
+  state->lobby = lobby;
 
   Runtime_init();
-  State_bootstrap(state);
+  CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("main"), NULL);
 
-  CallFrame *top_frame = CallFrame_new(main, STATE_FN("main"), NULL);
-
-  FRAMES = Stack_create();
   Stack_push(FRAMES, top_frame);
 
+  // now we're ready to bootstrap
+  State_bootstrap(state);
+
+  // and run the codes!
   VM_run(state);
 
   Runtime_destroy();
@@ -56,9 +58,6 @@ void VM_start(BytecodeFile *file)
 
 VALUE VM_run(STATE)
 {
-  Stack *stack = Stack_create();
-  STACK = stack;
-
   int *ip = CURR_FRAME->fn->code;
 
   while(1) {
@@ -203,7 +202,8 @@ VALUE VM_run(STATE)
           for(int i=0; i < argc; i++) {
             DArray_push(apply_locals, DArray_at(locals, i+1));
           }
-          ip = Function_call(state, VAL2FN(receiver), rcv, apply_locals, ip);
+          state->ret = ip; // save where we want to return
+          ip = Function_call(state, VAL2FN(receiver), rcv, apply_locals);
           ip--;
           break;
         }
@@ -217,7 +217,8 @@ VALUE VM_run(STATE)
           break;
         }
 
-        ip = Function_call(state, VAL2FN(closure), receiver, locals, ip);
+        state->ret = ip; // save where we want to return
+        ip = Function_call(state, VAL2FN(closure), receiver, locals);
         ip--; // because we increment after each while cycle
         break;
       }

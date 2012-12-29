@@ -27,27 +27,35 @@ Value_print(VALUE o)
 {
   switch(o->type) {
     case IntegerType: {
-      printf("#<Integer %p @value=%i>\n", o, VAL2INT(o));
+      printf("%i\n", VAL2INT(o));
       break;
     }
     case StringType: {
-      printf("#<String %p @value=%s>\n", o, VAL2STR(o));
+      printf("\"%s\"\n", VAL2STR(o));
       break;
     }
     case TrueType: {
-      printf("#<True %p>\n", o);
+      printf("true\n");
       break;
     }
     case FalseType: {
-      printf("#<False %p>\n", o);
+      printf("false\n");
       break;
     }
     case NilType: {
-      printf("#<Nil %p>\n", o);
+      printf("nil\n");
       break;
     }
     case ClosureType: {
       printf("#<Closure %p>\n", o);
+      break;
+    }
+    case VectorType: {
+      printf("#<Vector %p>\n", o);
+      break;
+    }
+    case MapType: {
+      printf("#<Map %p>\n", o);
       break;
     }
     default: {
@@ -60,11 +68,9 @@ Value_print(VALUE o)
 #define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F))))
 
 VALUE
-Main_new()
+Lobby_new()
 {
   VALUE val = Value_new(ObjectType);
-  DEFNATIVE(val, "print", Primitive_print);
-  DEFNATIVE(val, "puts", Primitive_puts);
   return val;
 }
 
@@ -127,7 +133,7 @@ Map_new(DArray *array)
     VALUE value = (VALUE)DArray_at(array, i+1);
     assert(key->type == StringType && "All map keys must be strings.");
 
-    Hashmap_set(hash, key, value);
+    Hashmap_set(hash, bfromcstr(VAL2STR(key)), value);
   }
 
   DEFNATIVE(val, "[]", Primitive_Map_get);

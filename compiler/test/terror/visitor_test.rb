@@ -185,5 +185,15 @@ module Terror
         end
       end
     end
+
+    describe 'assigning stuff to self' do
+      it 'is compiled' do
+        compiles("self.foo = 'bar'") do
+          _pushself
+          _push 0
+          _setslot 1
+        end
+      end
+    end
   end
 end

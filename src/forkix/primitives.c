@@ -1,5 +1,10 @@
 #include <forkix/primitives.h>
 #include <forkix/runtime.h>
+#include <forkix/bstrlib.h>
+#include <forkix/state.h>
+#include <forkix/call_frame.h>
+#include <forkix/input_reader.h>
+#include <forkix/vm.h>
 #include <assert.h>
 
 /*
@@ -21,6 +26,35 @@ Primitive_puts(STATE, void *a, void *b, void *c)
   return NilObject;
 }
 
+VALUE
+Primitive_require(STATE, void *a, void *_, void *__)
+{
+  VALUE filename = (VALUE)a;
+  CHECK_TYPE(filename, StringType);
+  bstring filename_str = bfromcstr(VAL2STR(filename));
+
+  Hashmap *fns = state->functions;
+
+  Function *main = NULL; // entry point
+
+  BytecodeFile *file = BytecodeFile_new(filename_str);
+  int fn_count = DArray_count(file->function_names);
+  for(int j=0; j < fn_count; j++) {
+    bstring fn_name = (bstring)DArray_at(file->function_names, j);
+    Function *fn = (Function*)Hashmap_get(file->functions, fn_name);
+
+    if(bstrcmp(fn_name, bfromcstr("main")) == 0) {
+      main = fn;
+    } else {
+      Hashmap_set(fns, fn_name, fn);
+    }
+  }
+
+  CallFrame *frame = CallFrame_new(state->lobby, main, NULL);
+  Stack_push(FRAMES, frame);
+
+  return VM_run(state);
+}
 
 /*
  * Integer primitives
@@ -74,22 +108,6 @@ Primitive_Integer_div(STATE, void *a, void *b, void *_)
   assert(VAL2INT(right) != 0 && "Cannot divide by zero");
 
   return Integer_new(VAL2INT(left) / VAL2INT(right));
-}
-
-/*
- * Closure primitives
- */
-
-VALUE
-Primitive_Closure_apply(STATE, void *a, void *b, void *_)
-{
-  VALUE left  = (VALUE)a;
-  VALUE right = (VALUE)b;
-
-  CHECK_TYPE(left, IntegerType);
-  CHECK_TYPE(right, IntegerType);
-
-  return Integer_new(VAL2INT(left) + VAL2INT(right));
 }
 
 /*
