@@ -35,14 +35,16 @@ static inline void dump(Stack* stack)
 #define LOCAL(A) (VALUE)DArray_at(CURR_FRAME->locals, (A))
 #define LOCALSET(A, B) DArray_set(CURR_FRAME->locals, (A), (B))
 
-void VM_start(BytecodeFile *file)
+void VM_start(bstring filename)
 {
+  Runtime_init();
+
+  BytecodeFile *file = BytecodeFile_new(filename);
+
   STATE = State_new(file->functions);
 
   VALUE lobby = Lobby_new(); // toplevel object
   state->lobby = lobby;
-
-  Runtime_init();
   CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("main"), NULL);
 
   Stack_push(FRAMES, top_frame);
@@ -129,10 +131,11 @@ VALUE VM_run(STATE)
         VALUE receiver = Stack_pop(STACK);
         VALUE slot     = LITERAL(*ip);
 
+        check(receiver->type != NilType, "Tried to get a slot from nil.");
         check(slot->type == StringType, "Slot name must be a String.");
 
         VALUE value = Value_get(receiver, VAL2STR(slot));
-        check(value, "Undefined slot %s.", VAL2STR(slot));
+        check(value, "Undefined slot %s on object type %i.", VAL2STR(slot), receiver->type);
 
         Stack_push(STACK, value);
         break;
@@ -144,6 +147,7 @@ VALUE VM_run(STATE)
         VALUE receiver = Stack_pop(STACK);
         VALUE slot     = LITERAL(*ip);
 
+        check(receiver->type != NilType, "Tried to set a slot on nil.");
         check(slot->type == StringType, "Slot name must be a String.");
 
         Value_set(receiver, VAL2STR(slot), value);
@@ -196,25 +200,49 @@ VALUE VM_run(STATE)
         if(receiver->type == ClosureType &&
            strcmp(VAL2STR(name), "apply") == 0) {
 
-          DArray *apply_locals = DArray_create(sizeof(VALUE), op2 + 1);
-          int argc = op2;
-          VALUE rcv = DArray_at(locals, 0);
-          for(int i=0; i < argc; i++) {
-            DArray_push(apply_locals, DArray_at(locals, i+1));
-          }
           state->ret = ip; // save where we want to return
-          ip = Function_call(state, VAL2FN(receiver), rcv, apply_locals);
+          ip = Function_call(state, VAL2FN(receiver), CURR_FRAME->self, locals);
           ip--;
           break;
         }
 
+        /* printf("Trying to get slot %s.", VAL2STR(name)); */
         VALUE closure = Value_get(receiver, VAL2STR(name));
-        check(closure, "Undefined slot %s.", VAL2STR(name));
+        /* printf("Tried to get slot %s.", VAL2STR(name)); */
+        check(closure, "Undefined slot %s on object type %i.", VAL2STR(name), receiver->type);
 
         if (op2 == 0 && closure->type != ClosureType && closure != NilObject) {
           // GETSLOT
           Stack_push(STACK, closure);
           break;
+        }
+
+        /* if(op2 == 1 && strcmp(VAL2STR(name), "[]") == 0) { // getslot */
+        /*   VALUE key = (VALUE)DArray_at(locals, 0); */
+        /*   Stack_push(STACK, Value_get(receiver, VAL2STR(key))); */
+        /*   break; */
+        /* } */
+
+        /* if(op2 == 2 && strcmp(VAL2STR(name), "[]=") == 0) { // setslot */
+        /*   VALUE key   = (VALUE)DArray_at(locals, 0); */
+        /*   VALUE value = (VALUE)DArray_at(locals, 1); */
+        /*   Value_set(receiver, VAL2STR(key), value); */
+        /*   Stack_push(STACK, value); */
+        /*   break; */
+        /* } */
+
+        if(closure->type == StringType) {
+          printf("BUG\n");
+
+          assert(receiver == Integer_bp && "Not the droids we're looking for");
+          VALUE cls = Value_get(receiver, "[]");
+          printf("SEND: Integer#[]\n\t");
+          Value_print(cls);
+          printf("\n");
+
+          printf("Calling %s on ", VAL2STR(name));
+          Value_print(receiver);
+          printf(". The closure is a string: %s.\n", VAL2STR(closure));
         }
 
         state->ret = ip; // save where we want to return

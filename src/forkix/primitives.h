@@ -10,6 +10,7 @@
 
 #define PRIMITIVE_ARGS STATE, void*, void*, void*
 // Generic primitive methods
+VALUE Primitive_clone(PRIMITIVE_ARGS);
 VALUE Primitive_print(PRIMITIVE_ARGS);
 VALUE Primitive_puts(PRIMITIVE_ARGS);
 VALUE Primitive_require(PRIMITIVE_ARGS);

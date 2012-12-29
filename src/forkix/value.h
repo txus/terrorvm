@@ -15,12 +15,14 @@ struct val_s {
     void *as_data;
   } data;
   Hashmap *table;
+  struct val_s *prototype;
 };
 
 typedef struct val_s val_t;
 #define VALUE val_t*
 
 VALUE Value_new(ValueType);
+VALUE Value_from_prototype(ValueType, VALUE);
 void Value_destroy(VALUE);
 void Value_print(VALUE);
 

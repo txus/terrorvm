@@ -7,7 +7,6 @@ int
 main(int argc, char *argv[])
 {
   bstring filename = bfromcstr(argv[1]);
-  BytecodeFile *file = BytecodeFile_new(filename);
-  VM_start(file);
+  VM_start(filename);
   return 0;
 }

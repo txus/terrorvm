@@ -324,7 +324,7 @@ char *test_send_apply()
 
   DEFN(
     "echo",
-    PUSHSELF,
+    PUSHLOCAL, 0,
     RET
   );
 

@@ -72,8 +72,9 @@ char *test_destroy()
 char *test_get()
 {
   VALUE obj = Integer_new(123);
-  VALUE closure = Value_get(obj, "+");
-  mu_assert(closure->type == ClosureType, "failed getting closure");
+  Value_set(obj, "foo", Integer_new(99));
+  VALUE number = Value_get(obj, "foo");
+  mu_assert(number->type == IntegerType, "failed getting member of integer");
 
   return NULL;
 }

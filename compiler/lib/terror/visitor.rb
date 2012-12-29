@@ -115,7 +115,7 @@ module Terror
 
     def attribute_assignment(node, parent)
       receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
-                        'self'
+                        :self
                       else
                         node.receiver.name
                       end
@@ -125,6 +125,21 @@ module Terror
 
       node.receiver.lazy_visit self
       node.arguments.array.first.lazy_visit self
+      g.setslot attribute_name
+    end
+
+    def element_assignment(node, parent)
+      receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
+                        :self
+                      else
+                        node.receiver.name
+                      end
+      attribute_name = node.arguments.array.first.value
+      @slots[receiver_name] ||= []
+      @slots[receiver_name] << attribute_name
+
+      node.receiver.lazy_visit self
+      node.arguments.array[1].lazy_visit self
       g.setslot attribute_name
     end
 

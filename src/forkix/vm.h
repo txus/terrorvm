@@ -7,6 +7,6 @@
 #include <forkix/input_reader.h>
 
 VALUE VM_run(STATE);
-void VM_start(BytecodeFile *file);
+void VM_start(bstring filename);
 
 #endif

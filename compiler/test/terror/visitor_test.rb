@@ -124,23 +124,6 @@ module Terror
           _setslot 2
         end
       end
-
-      it 'compiles objects with getters and setters' do
-        compiles("a = 3; a.foo = 9; a.foo") do
-          # a = 3
-          _push 0
-          _setlocal 0
-
-          # a.foo = 9
-          _pushlocal 0
-          _push 1
-          _setslot 2
-
-          # a.foo
-          _pushlocal 0
-          _getslot 2
-        end
-      end
     end
 
     describe 'constants' do
@@ -192,6 +175,21 @@ module Terror
           _pushself
           _push 0
           _setslot 1
+        end
+      end
+
+      it 'is compiled with hash syntax' do
+        compiles("a = 2; a[:foo] = 'bar'; a[:foo]") do
+          _push 0
+          _setlocal 0
+
+          _pushlocal 0
+          _push 1
+          _setslot 2
+
+          _pushlocal 0
+          _push 1
+          _send 2, 1
         end
       end
     end

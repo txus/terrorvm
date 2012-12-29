@@ -12,6 +12,13 @@
  */
 
 VALUE
+Primitive_clone(STATE, void *a, void *_, void *__)
+{
+  VALUE obj = (VALUE)a;
+  return Value_from_prototype(obj->type, obj);
+}
+
+VALUE
 Primitive_print(STATE, void *_, void *b, void *__)
 {
   Value_print((VALUE)b);
@@ -149,13 +156,15 @@ Primitive_Map_get(STATE, void *a, void *b, void *_)
   VALUE map = (VALUE)a;
   VALUE key = (VALUE)b;
 
-  CHECK_TYPE(map, MapType);
   CHECK_TYPE(key, StringType);
 
   VALUE result = Value_get(map, VAL2STR(key));
-  if(!result) result = NilObject;
+  check(result, "No member named %s.", VAL2STR(key));
 
   return result;
+
+error:
+  return NULL;
 }
 
 VALUE
@@ -165,7 +174,6 @@ Primitive_Map_set(STATE, void *a, void *b, void *c)
   VALUE key   = (VALUE)b;
   VALUE value = (VALUE)c;
 
-  CHECK_TYPE(map, MapType);
   CHECK_TYPE(key, StringType);
   CHECK_PRESENCE(value);
 

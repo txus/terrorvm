@@ -41,22 +41,35 @@ expose_VM(VALUE lobby)
   // VM.primitives map
   DArray *primitives = DArray_create(sizeof(VALUE), 10);
 
+  // Object
   DEFPRIM(primitives, "print", Primitive_print);
   DEFPRIM(primitives, "puts", Primitive_puts);
   DEFPRIM(primitives, "require", Primitive_require);
+  DEFPRIM(primitives, "clone", Primitive_clone);
+
+  // Vector
+  DEFPRIM(primitives, "vector_[]", Primitive_Vector_at);
+  DEFPRIM(primitives, "vector_to_map", Primitive_Vector_to_map);
+
+  // Integer
+  DEFPRIM(primitives, "integer_+", Primitive_Integer_add);
+  DEFPRIM(primitives, "integer_-", Primitive_Integer_sub);
+  DEFPRIM(primitives, "integer_*", Primitive_Integer_mul);
+  DEFPRIM(primitives, "integer_/", Primitive_Integer_div);
 
   Value_set(vm, "primitives", Map_new(primitives));
 
   // VM.types map
   DArray *types = DArray_create(sizeof(VALUE), 10);
 
+  DEFVALUE(types, "object", Object_bp);
   DEFVALUE(types, "integer", Integer_bp);
   DEFVALUE(types, "string", String_bp);
   DEFVALUE(types, "vector", Vector_bp);
   DEFVALUE(types, "map", Map_bp);
   DEFVALUE(types, "closure", Closure_bp);
 
-  Value_set(vm, "types", Map_new(primitives));
+  Value_set(vm, "types", Map_new(types));
 }
 
 void
@@ -76,4 +89,5 @@ State_bootstrap(STATE)
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
     Primitive_require(state, String_new(bdata(path)), NULL, NULL);
   }
+  debug("[BOOTSTRAP] Done!");
 }

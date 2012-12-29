@@ -5,6 +5,13 @@
 #include <forkix/primitives.h>
 #include <forkix/gc.h>
 
+VALUE Object_bp;
+VALUE Integer_bp;
+VALUE String_bp;
+VALUE Vector_bp;
+VALUE Map_bp;
+VALUE Closure_bp;
+
 VALUE NilObject;
 
 VALUE
@@ -13,8 +20,17 @@ Value_new(ValueType type)
   VALUE val = gc_alloc(sizeof(val_t));
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
+  val->prototype = Object_bp;
   return val;
 };
+
+VALUE
+Value_from_prototype(ValueType type, VALUE prototype)
+{
+  VALUE val = Value_new(type);
+  val->prototype = prototype;
+  return val;
+}
 
 void
 Value_destroy(VALUE o)
@@ -22,50 +38,90 @@ Value_destroy(VALUE o)
   gc_dealloc(o);
 }
 
-void
-Value_print(VALUE o)
+static inline int
+Hashmap_print_cb(HashmapNode *node) {
+  char *name = bdata((bstring)(node->key));
+  VALUE obj = (VALUE)(node->data);
+  Value_print(String_new(name));
+  printf(" => ");
+  Value_print(obj);
+  printf(", ");
+  return 0;
+}
+
+static inline void
+__Value_print(VALUE o)
 {
+  check(o, "Cannot print NULL value");
+
+  // Blueprints
+  if(o == Object_bp) { printf("Object"); return;
+    } else if (o == Integer_bp) { printf("Integer"); return;
+    } else if (o == String_bp) { printf("String"); return;
+    } else if (o == Closure_bp) { printf("Closure"); return;
+    } else if (o == Vector_bp) { printf("Vector"); return;
+    } else if (o == Map_bp) { printf("Map"); return;
+  }
+
   switch(o->type) {
     case IntegerType: {
-      printf("%i\n", VAL2INT(o));
+      printf("%i", VAL2INT(o));
       break;
     }
     case StringType: {
-      printf("\"%s\"\n", VAL2STR(o));
+      printf("\"%s\"", VAL2STR(o));
       break;
     }
     case TrueType: {
-      printf("true\n");
+      printf("true");
       break;
     }
     case FalseType: {
-      printf("false\n");
+      printf("false");
       break;
     }
     case NilType: {
-      printf("nil\n");
+      printf("nil");
       break;
     }
     case ClosureType: {
-      printf("#<Closure %p>\n", o);
+      printf("#<Closure %p>", o);
       break;
     }
     case VectorType: {
-      printf("#<Vector %p>\n", o);
+      printf("#<Vector %p>", o);
       break;
     }
     case MapType: {
-      printf("#<Map %p>\n", o);
+      printf("{");
+      Hashmap_traverse(o->table, Hashmap_print_cb);
+      printf("}");
       break;
     }
     default: {
-      printf("#<Object %p>\n", o);
+      printf("#<Object %p ", o);
+      printf("{");
+      Hashmap_traverse(o->table, Hashmap_print_cb);
+      printf("}>");
       break;
     }
   }
+error:
+  return;
 }
 
-#define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F))))
+void
+Value_print(VALUE o)
+{
+  __Value_print(o);
+
+  return; // for now
+  if(o->prototype) {
+    printf(" (");
+    __Value_print(o->prototype);
+    printf(")");
+  }
+}
 
 VALUE
 Lobby_new()
@@ -77,13 +133,8 @@ Lobby_new()
 VALUE
 Integer_new(int num)
 {
-  VALUE val = Value_new(IntegerType);
+  VALUE val = Value_from_prototype(IntegerType, Integer_bp);
   val->data.as_int = num;
-
-  DEFNATIVE(val, "+", Primitive_Integer_add);
-  DEFNATIVE(val, "-", Primitive_Integer_sub);
-  DEFNATIVE(val, "*", Primitive_Integer_mul);
-  DEFNATIVE(val, "/", Primitive_Integer_div);
 
   return val;
 }
@@ -91,7 +142,7 @@ Integer_new(int num)
 VALUE
 String_new(char* value)
 {
-  VALUE val = Value_new(StringType);
+  VALUE val = Value_from_prototype(StringType, String_bp);
   val->data.as_str = value;
   return val;
 }
@@ -99,7 +150,7 @@ String_new(char* value)
 VALUE
 Closure_new(Function *fn)
 {
-  VALUE val = Value_new(ClosureType);
+  VALUE val = Value_from_prototype(ClosureType, Closure_bp);
   val->data.as_data = fn;
   return val;
 }
@@ -107,11 +158,8 @@ Closure_new(Function *fn)
 VALUE
 Vector_new(DArray *array)
 {
-  VALUE val = Value_new(VectorType);
+  VALUE val = Value_from_prototype(VectorType, Vector_bp);
   val->data.as_data = array;
-
-  DEFNATIVE(val, "[]", Primitive_Vector_at);
-  DEFNATIVE(val, "to_map", Primitive_Vector_to_map);
 
   return val;
 }
@@ -119,7 +167,7 @@ Vector_new(DArray *array)
 VALUE
 Map_new(DArray *array)
 {
-  VALUE val = Value_new(MapType);
+  VALUE val = Value_from_prototype(MapType, Map_bp);
 
   int count = DArray_count(array);
   assert(count % 2 == 0 && "Map element count must be even.");
@@ -136,9 +184,6 @@ Map_new(DArray *array)
     Hashmap_set(hash, bfromcstr(VAL2STR(key)), value);
   }
 
-  DEFNATIVE(val, "[]", Primitive_Map_get);
-  DEFNATIVE(val, "[]=", Primitive_Map_set);
-
   return val;
 };
 
@@ -153,6 +198,12 @@ Value_set(VALUE receiver, char *key, VALUE value)
 VALUE
 Value_get(VALUE receiver, char *key)
 {
-  return (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
+  VALUE result = (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
+
+  if(!result && receiver->prototype) {
+    result = Value_get(receiver->prototype, key);
+  }
+
+  return result;
 }
 

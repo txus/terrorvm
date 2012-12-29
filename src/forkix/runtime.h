@@ -3,6 +3,7 @@
 
 #include <forkix/value.h>
 
+extern VALUE Object_bp;
 extern VALUE Integer_bp;
 extern VALUE String_bp;
 extern VALUE Vector_bp;

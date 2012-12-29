@@ -1,1 +1,0 @@
-puts VM.primitives
