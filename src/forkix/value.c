@@ -113,14 +113,6 @@ Value_set(VALUE receiver, char *key, VALUE value)
 VALUE
 Value_get(VALUE receiver, char *key)
 {
-  VALUE value = (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
-
-  if(value != NULL) {
-    return value;
-  } else {
-    return NilObject;
-  }
+  return (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
 }
-
-
 

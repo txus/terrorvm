@@ -2,12 +2,9 @@
 #include <forkix/value.h>
 #include <assert.h>
 
-VALUE intval = NULL;
-VALUE strval = NULL;
-
 char *test_integer_new()
 {
-  intval = Integer_new(123);
+  VALUE intval = Integer_new(123);
 
   mu_assert(intval->type == IntegerType, "failed assigning type");
   mu_assert(VAL2INT(intval) == 123, "failed assigning integer value");
@@ -17,7 +14,7 @@ char *test_integer_new()
 
 char *test_string_new()
 {
-  strval = String_new("abc");
+  VALUE strval = String_new("abc");
 
   mu_assert(strval->type == StringType, "failed assigning type");
   mu_assert(strcmp(VAL2STR(strval), "abc") == 0, "failed assigning string value");
@@ -25,10 +22,57 @@ char *test_string_new()
   return NULL;
 }
 
+char *test_closure_new()
+{
+  Function *fn = Function_new(NULL, NULL);
+  VALUE closure = Closure_new(fn);
+  mu_assert(closure->type == ClosureType, "failed creating closure");
+  mu_assert(VAL2FN(closure) == fn, "failed assigning function to closure");
+
+  return NULL;
+}
+
+char *test_main_new()
+{
+  VALUE main = Main_new();
+  mu_assert(main->type == MainType, "failed creating Main");
+
+  return NULL;
+}
+
 char *test_destroy()
 {
-  Value_destroy(intval);
-  mu_assert(!intval->type, "failed destroying integer value")
+  VALUE obj = Integer_new(123);
+  Value_destroy(obj);
+  mu_assert(!obj->type, "failed destroying object");
+
+  return NULL;
+}
+
+char *test_get()
+{
+  VALUE obj = Integer_new(123);
+  VALUE closure = Value_get(obj, "+");
+  mu_assert(closure->type == ClosureType, "failed getting closure");
+
+  return NULL;
+}
+
+char *test_get_undefined()
+{
+  VALUE obj = Integer_new(123);
+  VALUE closure = Value_get(obj, "foo");
+  mu_assert(closure == NULL, "expected NULL, got something");
+
+  return NULL;
+}
+
+char *test_set()
+{
+  VALUE obj = Integer_new(123);
+  VALUE integer = Integer_new(99);
+  Value_set(obj, "foo", integer);
+  mu_assert(Value_get(obj, "foo") == integer, "failed assigning foo");
 
   return NULL;
 }
@@ -38,7 +82,13 @@ char *all_tests() {
 
   mu_run_test(test_integer_new);
   mu_run_test(test_string_new);
+  mu_run_test(test_closure_new);
+  mu_run_test(test_main_new);
   mu_run_test(test_destroy);
+
+  mu_run_test(test_get);
+  mu_run_test(test_get_undefined);
+  mu_run_test(test_set);
 
   return NULL;
 }

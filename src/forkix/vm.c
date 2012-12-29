@@ -132,7 +132,10 @@ VALUE VM_run(STATE state, Stack *frames)
 
         check(slot->type == StringType, "Slot name must be a String.");
 
-        Stack_push(stack, Value_get(receiver, VAL2STR(slot)));
+        VALUE value = Value_get(receiver, VAL2STR(slot));
+        check(value, "Undefined slot %s.", VAL2STR(slot));
+
+        Stack_push(stack, value);
         break;
       }
       case SETSLOT: {
