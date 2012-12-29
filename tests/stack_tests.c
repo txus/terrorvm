@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <forkix/stack.h>
+#include <terror/stack.h>
 #include <assert.h>
 
 static Stack *stack = NULL;

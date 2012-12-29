@@ -1,7 +1,7 @@
 #include "minunit.h"
-#include <forkix/hashmap.h>
+#include <terror/hashmap.h>
 #include <assert.h>
-#include <forkix/bstrlib.h>
+#include <terror/bstrlib.h>
 
 Hashmap *map = NULL;
 static int traverse_called = 0;

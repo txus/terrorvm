@@ -1,12 +1,12 @@
 #include "minunit.h"
-#include <forkix/value.h>
-#include <forkix/opcode.h>
-#include <forkix/runtime.h>
-#include <forkix/call_frame.h>
-#include <forkix/darray.h>
-#include <forkix/state.h>
-#include <forkix/bootstrap.h>
-#include <forkix/vm.h>
+#include <terror/value.h>
+#include <terror/opcode.h>
+#include <terror/runtime.h>
+#include <terror/call_frame.h>
+#include <terror/darray.h>
+#include <terror/state.h>
+#include <terror/bootstrap.h>
+#include <terror/vm.h>
 #include <assert.h>
 
 // Extern global objects declared in runtime.h

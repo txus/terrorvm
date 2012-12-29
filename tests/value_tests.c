@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <forkix/value.h>
+#include <terror/value.h>
 #include <assert.h>
 
 char *test_integer_new()

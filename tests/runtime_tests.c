@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <forkix/runtime.h>
+#include <terror/runtime.h>
 #include <assert.h>
 
 char *test_init()

@@ -13,7 +13,7 @@ TESTS=$(patsubst %.c,%,$(TEST_SRC))
 PROGRAMS_SRC=$(wildcard bin/*.c)
 PROGRAMS=$(patsubst %.c,%,$(PROGRAMS_SRC))
 
-TARGET=build/libforkix.a
+TARGET=build/libterror.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
 
