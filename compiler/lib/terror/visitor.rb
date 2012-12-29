@@ -124,19 +124,16 @@ module Terror
       g.setslot attribute_name
     end
 
-    # def array_literal(node, parent)
-    #   first = nil
-    #   node.body.each do |element|
-    #     slot = element.lazy_visit self
-    #     # Save the register of only the first element
-    #     first ||= slot
-    #   end
-    #   g.makearray first, node.body.count
-    # end
+    def array_literal(node, parent)
+      node.body.reverse.each do |element|
+        element.lazy_visit self
+      end
+      g.makevec node.body.count
+    end
 
-    # def empty_array(node, parent)
-    #   g.makearray 0, 0
-    # end
+    def empty_array(node, parent)
+      g.makevec 0
+    end
 
     # def hash_literal(node, parent)
     #   slf  = g.loadself

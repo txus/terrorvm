@@ -162,5 +162,16 @@ module Terror
         end
       end
     end
+
+    describe 'vectors' do
+      it 'are compiled' do
+        compiles("a = [false,true]") do
+          _pushtrue
+          _pushfalse
+          _makevec 2
+          _setlocal 0
+        end
+      end
+    end
   end
 end

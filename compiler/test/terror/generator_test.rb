@@ -100,6 +100,12 @@ module Terror
       end
     end
 
+    describe '#defn' do
+      it 'defines a closure' do
+        @g.defn :my_closure
+      end
+    end
+
     describe '#send' do
       it 'sends a message to an object' do
         @g.send_message(:foo, 3)

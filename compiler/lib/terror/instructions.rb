@@ -128,6 +128,7 @@ module Terror
 
     op :pop,       0x42, 0
     op :defn,      0x43, 1
+    op :makevec,   0x44, 1
 
     op :send,      0x80, 2
     op :ret,       0x90, 0

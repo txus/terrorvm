@@ -115,6 +115,11 @@ module Terror
       _defn literal(name)
     end
 
+    def makevec(count)
+      @ip += 1
+      _makevec count
+    end
+
     def ret
       @ip += 1
       _ret
