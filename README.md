@@ -76,7 +76,49 @@ You can write your compiler in whatever language you prefer, of course.
 
 ### Instruction set
 
-(I have to write the new one here as well.)
+* **NOOP**: no operation -- does nothing.
+
+#### Values
+
+* **PUSHSELF**: pushes the current self to the stack.
+* **PUSH A**: pushes the literal at index `A` to the stack.
+* **PUSHTRUE**: pushes the `true` object to the stack.
+* **PUSHFALSE**: pushes the `false` object to the stack.
+* **PUSHNIL**: pushes the `nil` object to the stack.
+
+#### Local variables
+
+* **PUSHLOCAL A**: pushes the local at index `A` to the stack.
+* **SETLOCAL A**: sets the current top of the stack to the local variable `A`. Does not consume any stack.
+
+#### Branching
+
+* **JMP A**: Jumps forward as much as `A` instructions.
+* **JIF A**: Jumps forward as much as `A` instructions if the top of the stack
+  is falsy (`false` or `nil`).
+* **JIT A**: Jumps forward as much as `A` instructions if the top of the stack
+  is truthy (any value other than `false` or `nil`).
+
+#### Slots (attributes)
+
+* **GETSLOT A**: Pops the object at the top of the stack and asks for its slot with name `A` (a literal), pushing it to the stack if found -- if not, it'll raise an error.
+* **SETSLOT A**: Pops a value to be set, then pops the object at the top of the stack and sets its slot with name `A` (a literal) to the value that was first popped. Then pushes that value back to the stack.
+
+#### Misc
+
+* **POP**: pops a value off the stack.
+* **DEFN A**: takes the closure with the name `A` (a literal) and pushes it to
+  the stack.
+* **MAKEVEC A**: Pops as much as `A` elements off the stack and pushes a vector with all of them in the order they were popped (the reverse order they were pushed in the first place).
+
+#### Call frames
+
+* **SEND A, B**: Pops as much as `B` arguments off the stack, then the receiver,
+  and sends it the message with the name `A` (a literal) with those arguments.
+
+#### Debugging
+
+* **DUMP**: Prints the contents of the value stack to the standard output.
 
 ## Who's this
 
