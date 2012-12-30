@@ -70,7 +70,7 @@ __Value_print(VALUE o)
       break;
     }
     case StringType: {
-      printf("\"%s\"", VAL2STR(o));
+      printf("%s", VAL2STR(o));
       break;
     }
     case TrueType: {
@@ -90,19 +90,28 @@ __Value_print(VALUE o)
       break;
     }
     case VectorType: {
-      printf("#<Vector %p>", o);
+      printf("[");
+      DArray *array = VAL2ARY(o);
+      int count = DArray_count(array);
+      for(int i=0; i < count; i++) {
+        Value_print((VALUE)DArray_at(array, i));
+        if(i+1 < count) {
+          printf(", ");
+        }
+      }
+      printf("]");
       break;
     }
     case MapType: {
       printf("{");
-      Hashmap_traverse(o->table, Hashmap_print_cb);
+      Hashmap_traverse(VAL2HASH(o), Hashmap_print_cb);
       printf("}");
       break;
     }
     default: {
       printf("#<Object %p ", o);
       printf("{");
-      Hashmap_traverse(o->table, Hashmap_print_cb);
+      Hashmap_traverse(VAL2HASH(o), Hashmap_print_cb);
       printf("}>");
       break;
     }

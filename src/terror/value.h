@@ -42,7 +42,7 @@ VALUE Vector_new(DArray *array);
 #define VAL2ARY(o) ((DArray*)(o->data.as_data))
 
 VALUE Map_new(DArray *array);
-#define VAL2HASH(o) ((Hashmap*)(o->table))
+#define VAL2HASH(o) (o->table)
 
 void Value_set(VALUE receiver, char *key, VALUE value);
 VALUE Value_get(VALUE receiver, char *key);
