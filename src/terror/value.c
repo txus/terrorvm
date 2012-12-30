@@ -3,6 +3,7 @@
 #include <terror/bstrlib.h>
 #include <terror/runtime.h>
 #include <terror/primitives.h>
+#include <terror/call_frame.h>
 #include <terror/gc.h>
 
 VALUE Object_bp;
@@ -148,9 +149,10 @@ String_new(char* value)
 }
 
 VALUE
-Closure_new(Function *fn)
+Closure_new(Function *fn, CallFrame *scope)
 {
   VALUE val = Value_from_prototype(ClosureType, Closure_bp);
+  fn->scope = scope;
   val->data.as_data = fn;
   return val;
 }

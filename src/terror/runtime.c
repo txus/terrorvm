@@ -16,7 +16,7 @@ VALUE TrueObject  = NULL;
 VALUE FalseObject = NULL;
 VALUE NilObject   = NULL;
 
-#define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F))))
+#define DEFNATIVE(V, N, F) Value_set((V), (N), Closure_new(Function_native_new((F)), NULL))
 
 void Runtime_init() {
   Object_bp = Value_new(ObjectType);

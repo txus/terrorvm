@@ -142,6 +142,41 @@ char *test_pushlocal()
   TEARDOWN();
 }
 
+char *test_pushlocaldepth()
+{
+  SETUP();
+
+  DEFN(
+    "foo",
+    PUSHLOCALDEPTH, 1, 0,
+    RET
+  );
+
+  PUSH_LITERAL(Number_new(123), integer);
+  PUSH_LITERAL(String_new("foo"), method);
+  PUSH_LITERAL(String_new("fn"), function);
+
+  // a = 123
+  // self.fn = -> { a }
+  // fn()
+  RUN(
+    PUSH, 0,
+    SETLOCAL, 0,
+
+    PUSHSELF,
+    DEFN, 1,
+    SETSLOT, 2,
+
+    PUSHSELF,
+    SEND, 2, 0,
+    RET
+  );
+
+  mu_assert(result == integer, "Pushlocaldepth failed.");
+
+  TEARDOWN();
+}
+
 char *test_setlocal()
 {
   SETUP();
@@ -400,6 +435,8 @@ char *all_tests() {
   mu_run_test(test_pushnil);
   mu_run_test(test_pushlocal);
   mu_run_test(test_setlocal);
+  mu_run_test(test_pushlocaldepth);
+  /* mu_run_test(test_setlocaldepth); */
   mu_run_test(test_jmp);
   mu_run_test(test_jif);
   mu_run_test(test_jit);

@@ -32,8 +32,10 @@ static inline void dump(Stack* stack)
 
 #define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
 #define LITERAL(A) (VALUE)DArray_at(CURR_FRAME->fn->literals, (A))
-#define LOCAL(A) (VALUE)DArray_at(CURR_FRAME->locals, (A))
-#define LOCALSET(A, B) DArray_set(CURR_FRAME->locals, (A), (B))
+#define LOCAL(A) CallFrame_getlocal(CURR_FRAME, (A))
+#define LOCALSET(A, B) CallFrame_setlocal(CURR_FRAME, (A), (B))
+#define DEEPLOCAL(D, A) CallFrame_getlocaldepth(CURR_FRAME, (D), (A))
+#define DEEPLOCALSET(D, A, B) CallFrame_setlocaldepth(CURR_FRAME, (D), (A), (B))
 
 void VM_start(bstring filename)
 {
@@ -158,7 +160,7 @@ VALUE VM_run(STATE)
         ip++;
         debug("DEFN %i", *ip);
         VALUE fn_name = LITERAL(*ip);
-        VALUE closure = Closure_new(STATE_FN(VAL2STR(fn_name)));
+        VALUE closure = Closure_new(STATE_FN(VAL2STR(fn_name)), CURR_FRAME);
         Stack_push(STACK, closure);
         break;
       }
@@ -249,10 +251,26 @@ VALUE VM_run(STATE)
         debug("PUSHLOCAL %i", *ip);
         break;
       }
+      case PUSHLOCALDEPTH: {
+        ip++;
+        int depth = *ip;
+        ip++;
+        Stack_push(STACK, DEEPLOCAL(depth, *ip));
+        debug("PUSHLOCALDEPTH %i %i", depth, *ip);
+        break;
+      }
       case SETLOCAL: {
         ip++;
         debug("SETLOCAL %i", *ip);
         LOCALSET(*ip, Stack_peek(STACK));
+        break;
+      }
+      case SETLOCALDEPTH: {
+        ip++;
+        int depth = *ip;
+        ip++;
+        debug("SETLOCAL %i %i", depth, *ip);
+        DEEPLOCALSET(depth, *ip, Stack_peek(STACK));
         break;
       }
       case POP: {

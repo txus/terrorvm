@@ -4,6 +4,7 @@
 #include <terror/value_type.h>
 #include <terror/gc_header.h>
 #include <terror/function.h>
+#include <terror/call_frame.h>
 #include <terror/hashmap.h>
 
 struct val_s {
@@ -34,7 +35,7 @@ VALUE Number_new(double);
 VALUE String_new(char*);
 #define VAL2STR(o) (o->data.as_str)
 
-VALUE Closure_new(Function*);
+VALUE Closure_new(Function*, CallFrame *scope);
 #define VAL2FN(o) ((Function*)(o->data.as_data))
 
 VALUE Vector_new(DArray *array);

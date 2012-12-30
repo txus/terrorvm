@@ -10,6 +10,7 @@ Function_new(int *code, DArray *literals)
   Function *fn = calloc(1, sizeof(Function));
   fn->code = code;
   fn->literals = literals;
+  fn->scope = NULL;
   fn->c_fn = NULL;
   return fn;
 }
@@ -20,6 +21,7 @@ Function_native_new(native_fn c_fn)
   Function *fn = calloc(1, sizeof(Function));
   fn->code     = NULL;
   fn->literals = NULL;
+  fn->scope = NULL;
   fn->c_fn     = c_fn;
   return fn;
 }
@@ -54,6 +56,12 @@ Function_call(
   // Normal dispatch
   CallFrame *new_frame = CallFrame_new(receiver, fn, ret);
   new_frame->locals = locals;
+
+  // If it is a closure, we nest the call frames.
+  if(fn->scope) {
+    new_frame->parent = fn->scope;
+  }
+
   Stack_push(FRAMES, new_frame);
 
   return new_frame->fn->code;

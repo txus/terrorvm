@@ -116,8 +116,10 @@ module Terror
     op :pushfalse, 0x13, 0
     op :pushnil,   0x14, 0
 
-    op :pushlocal, 0x20, 1
-    op :setlocal,  0x21, 1
+    op :pushlocal,      0x20, 1
+    op :setlocal,       0x21, 1
+    op :pushlocaldepth, 0x22, 2
+    op :setlocaldepth,  0x23, 2
 
     op :jmp,       0x30, 1
     op :jif,       0x31, 1

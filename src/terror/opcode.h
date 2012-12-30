@@ -12,6 +12,8 @@ typedef enum {
 
   PUSHLOCAL = 0x20, // 32
   SETLOCAL,         // 33
+  PUSHLOCALDEPTH,   // 34
+  SETLOCALDEPTH,    // 35
 
   JMP = 0x30,       // 48
   JIF,              // 49

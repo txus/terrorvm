@@ -9,7 +9,7 @@ module Terror
     end
 
     describe 'instructions with 2 operands' do
-      %w(send).each do |instruction|
+      %w(send pushlocaldepth setlocaldepth).each do |instruction|
         describe instruction do
           it "#{instruction} is encoded correctly" do
             inst = @g.__send__ :"_#{instruction}", 2, 3

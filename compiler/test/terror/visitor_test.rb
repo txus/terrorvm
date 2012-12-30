@@ -19,6 +19,12 @@ module Terror
       visit(code).instructions.must_equal g.instructions
     end
 
+    def compiles_block(code, &block)
+      g = Generator.new
+      g.instance_eval(&block)
+      visit(code).children.first.instructions.must_equal g.instructions
+    end
+
     it 'assigns local variables' do
       compiles("a = 3; b = 3; c = 4") do
         _push 0
@@ -142,6 +148,21 @@ module Terror
         compiles("a = -> { 3 }") do
           _defn 0
           _setlocal 0
+        end
+      end
+
+      it 'are compiled with arguments' do
+        compiles("bar = 1; a = -> foo { bar }") do
+          _push 0
+          _setlocal 0
+          _defn 1
+          _setlocal 1
+        end
+
+        compiles_block("bar = 1; a = -> foo { foo + bar }") do
+          _pushlocal 0
+          _pushlocaldepth 1, 0
+          _send 0, 1
         end
       end
     end

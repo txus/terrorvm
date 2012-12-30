@@ -4,8 +4,8 @@ module Terror
   class Visitor
     attr_reader :generator
 
-    def initialize(g=Generator.new)
-      @generator = g
+    def initialize(parent=nil)
+      @generator = Generator.new(parent)
       @slots = {}
       @fns = []
     end
@@ -68,7 +68,11 @@ module Terror
     end
 
     def defn(block)
-      visitor = Visitor.new
+      visitor = Visitor.new(g)
+      block.arguments.names.each do |arg|
+        # vivify arguments as locals
+        visitor.g.scope.new_local(arg)
+      end
       block.body.lazy_visit(visitor)
       @fns << visitor
       g.defn visitor.name

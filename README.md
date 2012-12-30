@@ -210,6 +210,9 @@ That's it! :)
 
 * **PUSHLOCAL A**: pushes the local at index `A` to the stack.
 * **SETLOCAL A**: sets the current top of the stack to the local variable `A`. Does not consume any stack.
+* **PUSHLOCALDEPTH A, B**: pushes the local at index `B` from an enclosing scope
+  (at depth `A`) to the stack.
+* **SETLOCALDEPTH A, B**: sets the current top of the stack to the local variable `B` in an enclosing scope (at depth `A`). Does not consume any stack.
 
 #### Branching
 

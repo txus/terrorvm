@@ -29,7 +29,7 @@ kernel_files()
   return entries;
 }
 
-#define DEFPRIM(M, N, F) DArray_push((M), String_new((N))); DArray_push((M), Closure_new(Function_native_new((F))))
+#define DEFPRIM(M, N, F) DArray_push((M), String_new((N))); DArray_push((M), Closure_new(Function_native_new((F)), NULL))
 #define DEFVALUE(M, N, V) DArray_push((M), String_new((N))); DArray_push((M), (V));
 
 static inline void

@@ -1,16 +1,25 @@
 require 'terror/instructions'
+require 'terror/scope'
 require 'terror/branching'
 
 module Terror
   class Generator
     include Instructions
     include Branching
-    attr_reader :literals, :locals, :ip
+    attr_reader :literals, :scope, :ip, :parent
+    attr_accessor :children
 
-    Local = Struct.new(:name)
+    def initialize(parent=nil)
+      @children = []
+      @parent    = parent
 
-    def initialize
-      @locals    = []
+      if parent
+        parent.children << self
+        @scope = Scope.new(parent.scope)
+      else
+        @scope = Scope.new
+      end
+
       @literals  = []
       @ip        = 0
     end
@@ -86,13 +95,22 @@ module Terror
 
     def pushlocal(name)
       @ip += 1
-      _pushlocal local(name)
+      l = local(name)
+      if l.depth > 0
+        _pushlocaldepth l.depth, l.index
+      else
+        _pushlocal l.index
+      end
     end
 
     def setlocal(name)
       @ip += 1
-      idx = local(name)
-      _setlocal idx
+      l = local(name)
+      if l.depth > 0
+        _setlocaldepth l.depth, l.index
+      else
+        _setlocal l.index
+      end
     end
 
     def getslot(name)
@@ -128,10 +146,7 @@ module Terror
     private
 
     def local name
-      @locals.index { |l| l.name == name } or begin
-        @locals.push Local.new name
-        @locals.size - 1
-      end
+      @scope.search_local(name)
     end
 
     def literal value

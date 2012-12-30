@@ -6,11 +6,13 @@
 
 struct state_s;
 struct val_s;
+struct call_frame_s;
 typedef struct val_s* (*native_fn)(struct state_s*, void*, void*, void*);
 
 struct function_s {
   int *code;
   DArray *literals;
+  struct call_frame_s *scope;
   native_fn c_fn;
 };
 typedef struct function_s Function;

@@ -70,12 +70,10 @@ module Terror
       end
     end
 
-
-
     describe '#pushlocal' do
       it 'pushes a local variable' do
         @g.pushlocal :foo
-        @g.locals.first.name.must_equal :foo
+        @g.scope.locals.first.must_equal :foo
       end
     end
 
@@ -83,8 +81,28 @@ module Terror
       it 'sets a local variable' do
         @g.push 42
         @g.setlocal :foo
-        local = @g.locals[0]
-        local.name.must_equal :foo
+        @g.scope.locals.first.must_equal :foo
+      end
+    end
+
+    describe '#pushlocaldepth' do
+      it 'pushes a local variable from an enclosing scope' do
+        @g.scope.search_local(:foo) # vivify the local in the parent scope
+        g = Generator.new(@g)
+        g.pushlocal :foo
+        g.scope.locals.first.must_equal nil
+        @g.scope.locals.first.must_equal :foo
+      end
+    end
+
+    describe '#setlocaldepth' do
+      it 'sets a local variable in an enclosing scope' do
+        @g.scope.search_local(:foo) # vivify the local in the parent scope
+        g = Generator.new(@g)
+        g.push 42
+        g.setlocal :foo
+        g.scope.locals.first.must_equal nil
+        @g.scope.locals.first.must_equal :foo
       end
     end
 
