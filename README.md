@@ -7,7 +7,7 @@ interface (instruction set and bytecode format) is extensively documented and an
 example compiler is provided under the `compiler` folder.
 
 Before anything, I want to give special thanks to my awesome mentors [Jeremy
-Tregguna][jtregunna], [Brian Ford][brixen], [Dirkjan Bussink][dbussink] and
+Tregunna][jtregunna], [Brian Ford][brixen], [Dirkjan Bussink][dbussink] and
 [Evan Phoenix][evanphx]. Without their teachings and patience I would never have
 started this in the first place.
 
