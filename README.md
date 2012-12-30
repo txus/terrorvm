@@ -3,8 +3,8 @@
 A lightweight Virtual Machine for dynamic, object-oriented languages. It aims to
 be fast, as simple as possible, easily optimizable, with LLVM support, and
 easily targetable for language designers and implementors. That's why its
-interface (instruction set) is extensively documented and an example compiler is
-provided under the `compiler` folder.
+interface (instruction set and bytecode format) is extensively documented and an
+example compiler is provided under the `compiler` folder.
 
 Before anything, I want to give special thanks to my awesome mentors [Jeremy
 Tregguna][jtregunna], [Brian Ford][brixen], [Dirkjan Bussink][dbussink] and
@@ -87,9 +87,54 @@ coroutines, but I might change my mind as I learn more.
 
 ## Bytecode format
 
-(I rewrote it entirely so I have to write the new format here soon.)
+The bytecode format might change to be more compact, but I'll describe what it
+is for now. A file **must** contain a **main** block, and may contain other
+blocks (functions defined there). This is how a block looks like (if you're
+curious, it's just a hello world):
 
-### Examples
+```
+_main
+:2:8
+"hello world
+"puts
+16 PUSHSELF
+17 PUSH
+0
+128 SEND
+1
+1
+20 PUSHNIL
+144 RET
+```
+
+As you can see, `_main`, defines the entry point of the file. Then these
+mysterious numbers `:2:8` mean that this block has two literals and eight lines
+of instructions. There are actually only 5 instructions, but the operands for
+these instructions count
+as well, so we're in a total of 8.
+
+Right after these counts, we have the literals, each one in its own line. There
+are two kinds of literals: integers and strings. Integers are just numbers, but
+strings must be preceded by a `"`.
+
+And finally we get to eight lines of numbers, namely the instructions and their
+operands. The labels you see beside every instruction (`PUSHSELF`) are totally
+optional, the VM doesn't read them, but they help debugging when looking at a
+bytecode file manually.
+
+After that there might be more functions. Imagine our hello world defined an
+empty closure, then we'd have right after `144 RET`:
+
+```
+_block_153
+:0:2
+20 PUSHNIL
+144 RET
+```
+
+That's it! :)
+
+### Examples (high-level Ruby code and its Terror compiled counterpart)
 
 * Hello world ([Ruby code](https://github.com/txus/terrorvm/blob/master/compiler/examples/hello_world.rb), [TVM bytecode](https://github.com/txus/terrorvm/blob/master/examples/hello_world.tvm))
 * Maps ([Ruby code](https://github.com/txus/terrorvm/blob/master/compiler/examples/maps.rb), [TVM code](https://github.com/txus/terrorvm/blob/master/examples/maps.tvm))
