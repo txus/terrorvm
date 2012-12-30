@@ -26,7 +26,7 @@ doing](http://static2.fjcdn.com/comments/I+have+no+idea+what+I+m+doing+thread+_0
 In TerrorVM, everything is an object, and every object may have a prototype. The
 basic value types that the VM provides are:
 
-* `Integer`: Simple integers.
+* `Number`: Simple double-precision floating point numbers.
 * `String`: Immutable strings.
 * `Vector`: Dynamically sized vectors that may contain any type.
 * `Map`: Hashmaps (for now only strings are supported as keys).
@@ -56,7 +56,7 @@ the VM types like this:
 {
   :object => Object,
   :vector => Vector,
-  :integer => Integer,
+  :number => Number,
   ...
 }
 ```
@@ -90,10 +90,10 @@ VM.types[:object].clone = VM.primitives[:clone]
 VM.types[:object].print = VM.primitives[:print]
 VM.types[:object].puts  = VM.primitives[:puts]
 
-VM.types[:integer][:+] = VM.primitives[:'integer_+']
-VM.types[:integer][:-] = VM.primitives[:'integer_-']
-VM.types[:integer][:/] = VM.primitives[:'integer_/']
-VM.types[:integer][:*] = VM.primitives[:'integer_*']
+VM.types[:number][:+] = VM.primitives[:'number_+']
+VM.types[:number][:-] = VM.primitives[:'number_-']
+VM.types[:number][:/] = VM.primitives[:'number_/']
+VM.types[:number][:*] = VM.primitives[:'number_*']
 
 VM.types[:vector][:[]] = VM.primitives[:'vector_[]']
 VM.types[:vector][:to_map] = VM.primitives[:vector_to_map]
@@ -165,7 +165,7 @@ these instructions count
 as well, so we're in a total of 8.
 
 Right after these counts, we have the literals, each one in its own line. There
-are two kinds of literals: integers and strings. Integers are just numbers, but
+are two kinds of literals: numbers and strings. Numbers are just numbers, but
 strings must be preceded by a `"`.
 
 And finally we get to eight lines of numbers, namely the instructions and their

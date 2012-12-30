@@ -19,6 +19,10 @@ module Terror
       g.push node.value
     end
 
+    def float_literal(node, parent)
+      g.push node.value
+    end
+
     def local_variable_assignment(node, parent)
       node.value.lazy_visit self, node
       g.setlocal node.name

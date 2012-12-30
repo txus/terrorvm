@@ -10,7 +10,7 @@ struct val_s {
   GCHeader gc;
   ValueType type;
   union {
-    int as_int;
+    double as_num;
     char *as_str;
     void *as_data;
   } data;
@@ -27,8 +27,9 @@ void Value_destroy(VALUE);
 void Value_print(VALUE);
 
 VALUE Lobby_new();
-VALUE Integer_new(int);
-#define VAL2INT(o) (o->data.as_int)
+VALUE Number_new(double);
+#define VAL2NUM(o) (o->data.as_num)
+#define VAL2INT(o) ((int)(o->data.as_num))
 
 VALUE String_new(char*);
 #define VAL2STR(o) (o->data.as_str)

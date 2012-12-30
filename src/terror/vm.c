@@ -217,33 +217,21 @@ VALUE VM_run(STATE)
           break;
         }
 
-        /* if(op2 == 1 && strcmp(VAL2STR(name), "[]") == 0) { // getslot */
-        /*   VALUE key = (VALUE)DArray_at(locals, 0); */
-        /*   Stack_push(STACK, Value_get(receiver, VAL2STR(key))); */
-        /*   break; */
-        /* } */
-
-        /* if(op2 == 2 && strcmp(VAL2STR(name), "[]=") == 0) { // setslot */
-        /*   VALUE key   = (VALUE)DArray_at(locals, 0); */
-        /*   VALUE value = (VALUE)DArray_at(locals, 1); */
-        /*   Value_set(receiver, VAL2STR(key), value); */
-        /*   Stack_push(STACK, value); */
-        /*   break; */
-        /* } */
-
-        if(closure->type == StringType) {
-          printf("BUG\n");
-
-          assert(receiver == Integer_bp && "Not the droids we're looking for");
-          VALUE cls = Value_get(receiver, "[]");
-          printf("SEND: Integer#[]\n\t");
-          Value_print(cls);
-          printf("\n");
-
-          printf("Calling %s on ", VAL2STR(name));
-          Value_print(receiver);
-          printf(". The closure is a string: %s.\n", VAL2STR(closure));
+#ifdef OPTIMIZE_SEND
+        if(op2 == 1 && strcmp(VAL2STR(name), "[]") == 0) { // getslot
+          VALUE key = (VALUE)DArray_at(locals, 0);
+          Stack_push(STACK, Value_get(receiver, VAL2STR(key)));
+          break;
         }
+
+        if(op2 == 2 && strcmp(VAL2STR(name), "[]=") == 0) { // setslot
+          VALUE key   = (VALUE)DArray_at(locals, 0);
+          VALUE value = (VALUE)DArray_at(locals, 1);
+          Value_set(receiver, VAL2STR(key), value);
+          Stack_push(STACK, value);
+          break;
+        }
+#endif
 
         state->ret = ip; // save where we want to return
         ip = Function_call(state, VAL2FN(closure), receiver, locals);

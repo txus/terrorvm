@@ -2,7 +2,7 @@
 #define _tvm_value_type_h_
 
 typedef enum {
-  IntegerType = 0,
+  NumberType = 0,
   ObjectType,
   StringType,
   VectorType,

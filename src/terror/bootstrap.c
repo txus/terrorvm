@@ -5,7 +5,7 @@
 #include <terror/primitives.h>
 #include <dirent.h>
 
-VALUE Integer_bp;
+VALUE Number_bp;
 VALUE String_bp;
 VALUE Vector_bp;
 VALUE Map_bp;
@@ -51,11 +51,11 @@ expose_VM(VALUE lobby)
   DEFPRIM(primitives, "vector_[]", Primitive_Vector_at);
   DEFPRIM(primitives, "vector_to_map", Primitive_Vector_to_map);
 
-  // Integer
-  DEFPRIM(primitives, "integer_+", Primitive_Integer_add);
-  DEFPRIM(primitives, "integer_-", Primitive_Integer_sub);
-  DEFPRIM(primitives, "integer_*", Primitive_Integer_mul);
-  DEFPRIM(primitives, "integer_/", Primitive_Integer_div);
+  // Number
+  DEFPRIM(primitives, "number_+", Primitive_Number_add);
+  DEFPRIM(primitives, "number_-", Primitive_Number_sub);
+  DEFPRIM(primitives, "number_*", Primitive_Number_mul);
+  DEFPRIM(primitives, "number_/", Primitive_Number_div);
 
   Value_set(vm, "primitives", Map_new(primitives));
 
@@ -63,7 +63,7 @@ expose_VM(VALUE lobby)
   DArray *types = DArray_create(sizeof(VALUE), 10);
 
   DEFVALUE(types, "object", Object_bp);
-  DEFVALUE(types, "integer", Integer_bp);
+  DEFVALUE(types, "number", Number_bp);
   DEFVALUE(types, "string", String_bp);
   DEFVALUE(types, "vector", Vector_bp);
   DEFVALUE(types, "map", Map_bp);

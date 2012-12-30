@@ -5,7 +5,7 @@
 
 // Blueprints
 VALUE Object_bp = NULL;
-VALUE Integer_bp = NULL;
+VALUE Number_bp = NULL;
 VALUE String_bp = NULL;
 VALUE Vector_bp = NULL;
 VALUE Map_bp = NULL;
@@ -25,7 +25,7 @@ void Runtime_init() {
   DEFNATIVE(Object_bp, "[]", Primitive_Map_get);
   DEFNATIVE(Object_bp, "[]=", Primitive_Map_set);
 
-  Integer_bp = Value_from_prototype(IntegerType, Object_bp);
+  Number_bp = Value_from_prototype(NumberType, Object_bp);
   String_bp = Value_from_prototype(StringType, Object_bp);
   Vector_bp = Value_from_prototype(VectorType, Object_bp);
   Map_bp = Value_from_prototype(MapType, Object_bp);
@@ -38,13 +38,13 @@ void Runtime_init() {
 }
 
 void Runtime_destroy() {
-  Value_destroy(Integer_bp);
+  Value_destroy(Number_bp);
   Value_destroy(String_bp);
   Value_destroy(Vector_bp);
   Value_destroy(Map_bp);
   Value_destroy(Closure_bp);
   Value_destroy(Object_bp);
-  Integer_bp = NULL;
+  Number_bp = NULL;
   String_bp = NULL;
   Vector_bp = NULL;
   Map_bp = NULL;

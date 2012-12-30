@@ -4,10 +4,10 @@
 
 char *test_integer_new()
 {
-  VALUE intval = Integer_new(123);
+  VALUE intval = Number_new(123);
 
-  mu_assert(intval->type == IntegerType, "failed assigning type");
-  mu_assert(VAL2INT(intval) == 123, "failed assigning integer value");
+  mu_assert(intval->type == NumberType, "failed assigning type");
+  mu_assert(VAL2NUM(intval) == 123, "failed assigning integer value");
 
   return NULL;
 }
@@ -62,7 +62,7 @@ char *test_lobby_new()
 
 char *test_destroy()
 {
-  VALUE obj = Integer_new(123);
+  VALUE obj = Number_new(123);
   Value_destroy(obj);
   mu_assert(!obj->type, "failed destroying object");
 
@@ -71,17 +71,17 @@ char *test_destroy()
 
 char *test_get()
 {
-  VALUE obj = Integer_new(123);
-  Value_set(obj, "foo", Integer_new(99));
+  VALUE obj = Number_new(123);
+  Value_set(obj, "foo", Number_new(99));
   VALUE number = Value_get(obj, "foo");
-  mu_assert(number->type == IntegerType, "failed getting member of integer");
+  mu_assert(number->type == NumberType, "failed getting member of integer");
 
   return NULL;
 }
 
 char *test_get_undefined()
 {
-  VALUE obj = Integer_new(123);
+  VALUE obj = Number_new(123);
   VALUE closure = Value_get(obj, "foo");
   mu_assert(closure == NULL, "expected NULL, got something");
 
@@ -90,8 +90,8 @@ char *test_get_undefined()
 
 char *test_set()
 {
-  VALUE obj = Integer_new(123);
-  VALUE integer = Integer_new(99);
+  VALUE obj = Number_new(123);
+  VALUE integer = Number_new(99);
   Value_set(obj, "foo", integer);
   mu_assert(Value_get(obj, "foo") == integer, "failed assigning foo");
 

@@ -69,7 +69,7 @@ char *test_push()
 {
   SETUP();
 
-  PUSH_LITERAL(Integer_new(123), integer);
+  PUSH_LITERAL(Number_new(123), integer);
   PUSH_LITERAL(String_new("foo"), string);
 
   RUN(
@@ -130,7 +130,7 @@ char *test_pushlocal()
 {
   SETUP();
 
-  PUSH_LOCAL(Integer_new(123), integer);
+  PUSH_LOCAL(Number_new(123), integer);
 
   RUN(
     PUSHLOCAL, 0,
@@ -276,7 +276,7 @@ char *test_send()
     RET
   );
 
-  PUSH_LITERAL(Integer_new(1), a);
+  PUSH_LITERAL(Number_new(1), a);
   PUSH_LITERAL(String_new("echo"), method);
 
   RUN(
@@ -290,7 +290,7 @@ char *test_send()
     RET
   );
 
-  mu_assert(VAL2INT(result) == 1, "Send failed.");
+  mu_assert(VAL2NUM(result) == 1, "Send failed.");
 
   TEARDOWN();
 }
@@ -299,7 +299,7 @@ char *test_send_getslot()
 {
   SETUP();
 
-  PUSH_LITERAL(Integer_new(1), a);
+  PUSH_LITERAL(Number_new(1), a);
   PUSH_LITERAL(String_new("value"), slot);
 
   RUN(
@@ -313,7 +313,7 @@ char *test_send_getslot()
     RET
   )
 
-  mu_assert(VAL2INT(result) == 1, "Send didn't fall back to getslot.");
+  mu_assert(VAL2NUM(result) == 1, "Send didn't fall back to getslot.");
 
   TEARDOWN();
 }
@@ -328,20 +328,20 @@ char *test_send_apply()
     RET
   );
 
-  PUSH_LITERAL(Integer_new(1), a);
+  PUSH_LITERAL(Number_new(1), a);
   PUSH_LITERAL(String_new("echo"), method);
   PUSH_LITERAL(String_new("apply"), apply);
 
   RUN(
     DEFN, 1,
 
-    // self == closure, method = apply, first arg == Integer(1)
+    // self == closure, method = apply, first arg == Number(1)
     PUSH, 0,
     SEND, 2, 1,
     RET
   );
 
-  mu_assert(VAL2INT(result) == 1, "Send apply failed.");
+  mu_assert(VAL2NUM(result) == 1, "Send apply failed.");
 
   TEARDOWN();
 }

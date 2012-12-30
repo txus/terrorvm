@@ -31,7 +31,7 @@ module Terror
     end
 
     it 'remembers local names' do
-      compiles("a = 3; a = 4") do
+      compiles("a = 3; a = 4.3") do
         _push 0
         _setlocal 0
         _push 1
@@ -188,8 +188,8 @@ module Terror
           _setslot 2
 
           _pushlocal 0
-          _push 1
-          _send 2, 1
+          _push 2
+          _send 3, 1
         end
       end
     end

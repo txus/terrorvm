@@ -64,57 +64,57 @@ Primitive_require(STATE, void *a, void *_, void *__)
 }
 
 /*
- * Integer primitives
+ * Number primitives
  */
 
 VALUE
-Primitive_Integer_add(STATE, void *a, void *b, void *_)
+Primitive_Number_add(STATE, void *a, void *b, void *_)
 {
   VALUE left  = (VALUE)a;
   VALUE right = (VALUE)b;
 
-  CHECK_TYPE(left, IntegerType);
-  CHECK_TYPE(right, IntegerType);
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
 
-  return Integer_new(VAL2INT(left) + VAL2INT(right));
+  return Number_new(VAL2NUM(left) + VAL2NUM(right));
 }
 
 VALUE
-Primitive_Integer_sub(STATE, void *a, void *b, void *_)
+Primitive_Number_sub(STATE, void *a, void *b, void *_)
 {
   VALUE left  = (VALUE)a;
   VALUE right = (VALUE)b;
 
-  CHECK_TYPE(left, IntegerType);
-  CHECK_TYPE(right, IntegerType);
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
 
-  return Integer_new(VAL2INT(left) - VAL2INT(right));
+  return Number_new(VAL2NUM(left) - VAL2NUM(right));
 }
 
 VALUE
-Primitive_Integer_mul(STATE, void *a, void *b, void *_)
+Primitive_Number_mul(STATE, void *a, void *b, void *_)
 {
   VALUE left  = (VALUE)a;
   VALUE right = (VALUE)b;
 
-  CHECK_TYPE(left, IntegerType);
-  CHECK_TYPE(right, IntegerType);
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
 
-  return Integer_new(VAL2INT(left) * VAL2INT(right));
+  return Number_new(VAL2NUM(left) * VAL2NUM(right));
 }
 
 VALUE
-Primitive_Integer_div(STATE, void *a, void *b, void *_)
+Primitive_Number_div(STATE, void *a, void *b, void *_)
 {
   VALUE left  = (VALUE)a;
   VALUE right = (VALUE)b;
 
-  CHECK_TYPE(left, IntegerType);
-  CHECK_TYPE(right, IntegerType);
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
 
-  assert(VAL2INT(right) != 0 && "Cannot divide by zero");
+  assert(VAL2NUM(right) != 0 && "Cannot divide by zero");
 
-  return Integer_new(VAL2INT(left) / VAL2INT(right));
+  return Number_new(VAL2NUM(left) / VAL2NUM(right));
 }
 
 /*
@@ -128,7 +128,7 @@ Primitive_Vector_at(STATE, void *a, void *b, void *_)
   VALUE index  = (VALUE)b;
 
   CHECK_TYPE(vector, VectorType);
-  CHECK_TYPE(index, IntegerType);
+  CHECK_TYPE(index, NumberType);
 
   VALUE result = (VALUE)DArray_at(VAL2ARY(vector), VAL2INT(index));
 

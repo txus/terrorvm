@@ -4,7 +4,7 @@
 #include <terror/value.h>
 
 extern VALUE Object_bp;
-extern VALUE Integer_bp;
+extern VALUE Number_bp;
 extern VALUE String_bp;
 extern VALUE Vector_bp;
 extern VALUE Map_bp;

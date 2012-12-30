@@ -84,7 +84,7 @@ parse_string(bstring buf, BytecodeFile *file)
           DArray_push(literals, String_new(bdata(bstrcpy(strData))));
           bdestroy(strData);
         } else {
-          DArray_push(literals, Integer_new(atoi(bdata(*line))));
+          DArray_push(literals, Number_new(atof(bdata(*line))));
         }
         line++; cnt++;
       }

@@ -6,7 +6,7 @@
 #include <terror/gc.h>
 
 VALUE Object_bp;
-VALUE Integer_bp;
+VALUE Number_bp;
 VALUE String_bp;
 VALUE Vector_bp;
 VALUE Map_bp;
@@ -56,7 +56,7 @@ __Value_print(VALUE o)
 
   // Blueprints
   if(o == Object_bp) { printf("Object"); return;
-    } else if (o == Integer_bp) { printf("Integer"); return;
+    } else if (o == Number_bp) { printf("Number"); return;
     } else if (o == String_bp) { printf("String"); return;
     } else if (o == Closure_bp) { printf("Closure"); return;
     } else if (o == Vector_bp) { printf("Vector"); return;
@@ -64,8 +64,8 @@ __Value_print(VALUE o)
   }
 
   switch(o->type) {
-    case IntegerType: {
-      printf("%i", VAL2INT(o));
+    case NumberType: {
+      printf("%f", VAL2NUM(o));
       break;
     }
     case StringType: {
@@ -131,10 +131,10 @@ Lobby_new()
 }
 
 VALUE
-Integer_new(int num)
+Number_new(double num)
 {
-  VALUE val = Value_from_prototype(IntegerType, Integer_bp);
-  val->data.as_int = num;
+  VALUE val = Value_from_prototype(NumberType, Number_bp);
+  val->data.as_num = num;
 
   return val;
 }
