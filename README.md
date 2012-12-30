@@ -26,7 +26,7 @@ doing](http://static2.fjcdn.com/comments/I+have+no+idea+what+I+m+doing+thread+_0
 In TerrorVM, everything is an object, and every object may have a prototype. The
 basic value types that the VM provides are:
 
-* `Number`: Simple double-precision floating point numbers.
+* `Number`: Double-precision floating point numbers.
 * `String`: Immutable strings.
 * `Vector`: Dynamically sized vectors that may contain any type.
 * `Map`: Hashmaps (for now only strings are supported as keys).
