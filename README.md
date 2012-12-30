@@ -45,19 +45,70 @@ Objects are simply collections of slots that may contain any kind of object.
 I'm considering adding Traits, although I'll wait until I see a need for it. In
 the simplicity of Terror lies its power.
 
+## The VM runtime object
+
+TerrorVM exposes as much of itself as possible at runtime. The goal of this is
+to make it easily targetable and flexible. For example, the toplevel object `VM`
+exposes two subobjects (`types` and `primitives`). `VM.types` is a map of all
+the VM types like this:
+
+```ruby
+{
+  :object => Object,
+  :vector => Vector,
+  :integer => Integer,
+  ...
+}
+```
+
+Primitives contains all the native functions that the VM exposes (such as
+`puts`, `print`, `clone`, arithmetic primitives, etc):
+
+```ruby
+{
+  :clone => #<Closure ...>,
+  :puts => #<Closure ...>,
+  ...
+}
+```
+
 ## Prelude
 
-TerrorVM tries to implement as much as possible in its own code, rather than C.
+As you already know, TerrorVM tries to implement as much as possible in its own
+code, rather than C.
 This makes it a perfect candidate as a multi-language VM to implement any
 language on top of it. You can find a [high-level prelude][prelude] under
 `compiler/examples/prelude.rb` that compiles down to [Terror native
 format][prelude_native] under `examples/prelude.tvm`.
 
-This prelude wires up the VM primitives to the real objects at runtime, so that your code can use them conveniently.
+This prelude wires up the VM primitives to the real objects at runtime, so that
+your code can use them conveniently. This is our current prelude in high-level
+Ruby (interpreted by the VM in the bootstrap phase):
 
-To recompile all examples and kernel files from Ruby to Tvm, do this:
+```ruby
+VM.types[:object].clone = VM.primitives[:clone]
+VM.types[:object].print = VM.primitives[:print]
+VM.types[:object].puts  = VM.primitives[:puts]
+
+VM.types[:integer][:+] = VM.primitives[:'integer_+']
+VM.types[:integer][:-] = VM.primitives[:'integer_-']
+VM.types[:integer][:/] = VM.primitives[:'integer_/']
+VM.types[:integer][:*] = VM.primitives[:'integer_*']
+
+VM.types[:vector][:[]] = VM.primitives[:'vector_[]']
+VM.types[:vector][:to_map] = VM.primitives[:vector_to_map]
+```
+
+Beautiful, isn't it? :)
+
+If you wish to change any kernel files such as the prelude, you'll have to
+recompile the files to the native TVM format, like this:
 
     $ make kernel
+
+And if you add more high-level examples (in Ruby) under the `compiler/examples`
+folder, you must recompile them as well:
+
     $ make examples
 
 ## Implementing your own dynamic language running on TerrorVM
