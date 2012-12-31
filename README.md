@@ -37,8 +37,9 @@ basic value types that the VM provides are:
 
 These basic types are objects themselves (of type `Object`). They are the
 prototype for any objects of their own kind, and are provided
-with all the functionality that those objects will need -- this is done
-in the [prelude][prelude], I'll explain what this is a bit further ahead.
+with all the functionality that those objects will need -- this is done in the
+preludes ([alpha][alpha] and [beta][beta]), I'll explain what those are a bit
+further ahead.
 
 Objects are simply collections of slots that may contain any kind of object.
 
@@ -72,18 +73,18 @@ Primitives contains all the native functions that the VM exposes (such as
 }
 ```
 
-## Prelude
+## Preludes
 
 As you already know, TerrorVM tries to implement as much as possible in its own
 code, rather than C.
 This makes it a perfect candidate as a multi-language VM to implement any
-language on top of it. You can find a [high-level prelude][prelude] under
-`compiler/examples/prelude.rb` that compiles down to [Terror native
-format][prelude_native] under `examples/prelude.tvm`.
+language on top of it. You can find the high-level [alpha][alpha] and
+[beta][beta] preludes and their respective compiled versions
+[alpha][alpha_native] and [beta][beta_native].
 
-This prelude wires up the VM primitives to the real objects at runtime, so that
-your code can use them conveniently. This is our current prelude in high-level
-Ruby (interpreted by the VM in the bootstrap phase):
+The alpha prelude wires up the VM primitives to the real objects at runtime, so
+that your code can use them conveniently. This is our current prelude in
+high-level Ruby (interpreted by the VM in the bootstrap phase):
 
 ```ruby
 VM.types[:object].clone = VM.primitives[:clone]
@@ -100,6 +101,9 @@ VM.types[:vector][:to_map] = VM.primitives[:vector_to_map]
 ```
 
 Beautiful, isn't it? :)
+
+In later stages, such as [beta][beta], we define other high-level functions like
+`Vector#map`.
 
 If you wish to change any kernel files such as the prelude, you'll have to
 recompile the files to the native TVM format, like this:
@@ -291,8 +295,10 @@ me!).
 
 [twitter]: https://twitter.com/txustice
 [email]: mailto:josep.m.bach@gmail.com
-[prelude]: https://github.com/txus/terrorvm/blob/master/compiler/kernel/prelude.rb
-[prelude_native]: https://github.com/txus/terrorvm/blob/master/kernel/prelude.tvm
+[alpha]: https://github.com/txus/terrorvm/blob/master/compiler/kernel/alpha.rb
+[beta]: https://github.com/txus/terrorvm/blob/master/compiler/kernel/beta.rb
+[alpha_native]: https://github.com/txus/terrorvm/blob/master/kernel/alpha.tvm
+[beta_native]: https://github.com/txus/terrorvm/blob/master/kernel/beta.tvm
 [gc]: http://www.pipeline.com/~hbaker1/NoMotionGC.html
 [jtregunna]: https://twitter.com/jtregunna
 [brixen]: https://twitter.com/brixen
