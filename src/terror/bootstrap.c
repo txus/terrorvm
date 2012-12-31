@@ -42,6 +42,9 @@ expose_VM(VALUE lobby)
   DArray *primitives = DArray_create(sizeof(VALUE), 10);
 
   // Object
+  DEFPRIM(primitives, "or", Primitive_or);
+  DEFPRIM(primitives, "equals", Primitive_equals);
+  DEFPRIM(primitives, "is", Primitive_is);
   DEFPRIM(primitives, "print", Primitive_print);
   DEFPRIM(primitives, "puts", Primitive_puts);
   DEFPRIM(primitives, "require", Primitive_require);
@@ -62,6 +65,9 @@ expose_VM(VALUE lobby)
 
   // String
   DEFPRIM(primitives, "string_+", Primitive_String_concat);
+
+  // Map
+  DEFPRIM(primitives, "map_each", Primitive_Map_each);
 
   Value_set(vm, "primitives", Map_new(primitives));
 

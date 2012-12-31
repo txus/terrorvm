@@ -30,6 +30,9 @@ kernel: rubinius
 examples: rubinius
 	rm -rf `find examples -name "*.tvm" -print`
 	cd compiler && rake examples
+lib: rubinius
+	rm -rf `find lib -name "*.tvm" -print`
+	cd compiler && rake stdlib
 
 $(TARGET): CFLAGS += -fPIC -fblocks $(LIBS)
 $(TARGET): build $(OBJECTS)

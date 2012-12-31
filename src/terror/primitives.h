@@ -10,6 +10,7 @@
 
 #define PRIMITIVE_ARGS STATE, void*, void*, void*
 // Generic primitive methods
+VALUE Primitive_or(PRIMITIVE_ARGS);
 VALUE Primitive_equals(PRIMITIVE_ARGS);
 VALUE Primitive_is(PRIMITIVE_ARGS);
 VALUE Primitive_clone(PRIMITIVE_ARGS);
@@ -36,5 +37,6 @@ VALUE Primitive_Vector_each_with_index(PRIMITIVE_ARGS);
 // Map primitive methods
 VALUE Primitive_Map_get(PRIMITIVE_ARGS);
 VALUE Primitive_Map_set(PRIMITIVE_ARGS);
+VALUE Primitive_Map_each(PRIMITIVE_ARGS);
 
 #endif

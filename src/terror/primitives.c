@@ -5,12 +5,25 @@
 #include <terror/call_frame.h>
 #include <terror/input_reader.h>
 #include <terror/vector.h>
+#include <terror/map.h>
 #include <terror/vm.h>
 #include <assert.h>
 
 /*
  * Generic primitives
  */
+
+VALUE
+Primitive_or(STATE, void *a, void *b, void *__)
+{
+  VALUE self  = (VALUE)a;
+  VALUE other = (VALUE)b;
+
+  if(self == NilObject || self == FalseObject) return FalseObject;
+  if(other == NilObject || other == FalseObject) return FalseObject;
+
+  return TrueObject;
+}
 
 VALUE
 Primitive_equals(STATE, void *a, void *b, void *__)
@@ -313,5 +326,25 @@ Primitive_Map_set(STATE, void *a, void *b, void *c)
   Value_set(map, VAL2STR(key), value);
 
   return value;
+}
+
+VALUE
+Primitive_Map_each(STATE, void *a, void *b, void *_)
+{
+  VALUE map     = (VALUE)a;
+  VALUE closure = (VALUE)b;
+
+  CHECK_PRESENCE(map);
+  CHECK_TYPE(closure, ClosureType);
+
+  Map_each(map, ^ void (bstring key, VALUE value) {
+    DArray *args = DArray_create(sizeof(VALUE), 10);
+    DArray_push(args, String_new(bdata(key)));
+    DArray_push(args, value);
+
+    Closure_invoke(state, closure, NULL, args);
+  });
+
+  return map;
 }
 

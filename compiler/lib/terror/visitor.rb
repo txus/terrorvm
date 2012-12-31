@@ -137,6 +137,17 @@ module Terror
       g.setslot attribute_name
     end
 
+    def constant_assignment(node, parent)
+      receiver_name = :self
+      attribute_name = node.constant.name.to_sym
+      @slots[receiver_name] ||= []
+      @slots[receiver_name] << attribute_name
+
+      g.pushself
+      node.value.lazy_visit self
+      g.setslot attribute_name
+    end
+
     def element_assignment(node, parent)
       receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
                         :self
@@ -179,6 +190,12 @@ module Terror
     def constant_access(node, parent)
       g.pushself
       g.getslot node.name
+    end
+
+    def or(node, parent)
+      node.left.lazy_visit self
+      node.right.lazy_visit self
+      g.send_message :or, 1
     end
 
     def finalize(name)

@@ -23,4 +23,13 @@ task :examples do
   end
 end
 
+desc 'Compiles standard library'
+task :stdlib do
+  Dir['stdlib/*.rb'].each do |src|
+    dest = "../#{src.gsub('rb','tvm').gsub('std','')}"
+    puts "Compiling #{src} to #{dest}..."
+    `bin/terror #{src} > #{dest}`
+  end
+end
+
 task :default => :test
