@@ -5,3 +5,7 @@ cls = -> greeting {
 }
 greetings.each(cls)
 puts 'done!'
+
+puts(greetings.map(-> greeting {
+  greeting + '!!!!'
+}))

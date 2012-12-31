@@ -29,19 +29,14 @@ module Terror
     end
 
     def encode(name)
-      ret
+      ret unless instructions[-1].inspect == "RET"
 
       instrs = instructions.map(&:encode).flatten
 
       output = "_#{name}\n"
       output << ":%i:%i\n" % [@literals.size, instrs.size]
 
-      output << @literals.join("\n")
-      output << "\n"
-      # instructions.each do |i|
-      #   p i
-      # end
-      output << instrs.join("\n")
+      output << [@literals, instrs].flatten.join("\n")
       output
     end
 

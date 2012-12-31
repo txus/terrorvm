@@ -28,6 +28,7 @@ VALUE Primitive_String_concat(PRIMITIVE_ARGS);
 
 // Vector primitive methods
 VALUE Primitive_Vector_at(PRIMITIVE_ARGS);
+VALUE Primitive_Vector_push(PRIMITIVE_ARGS);
 VALUE Primitive_Vector_to_map(PRIMITIVE_ARGS);
 VALUE Primitive_Vector_each(PRIMITIVE_ARGS);
 VALUE Primitive_Vector_each_with_index(PRIMITIVE_ARGS);

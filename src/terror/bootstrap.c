@@ -49,6 +49,7 @@ expose_VM(VALUE lobby)
 
   // Vector
   DEFPRIM(primitives, "vector_[]", Primitive_Vector_at);
+  DEFPRIM(primitives, "vector_push", Primitive_Vector_push);
   DEFPRIM(primitives, "vector_to_map", Primitive_Vector_to_map);
   DEFPRIM(primitives, "vector_each", Primitive_Vector_each);
   DEFPRIM(primitives, "vector_each_with_index", Primitive_Vector_each_with_index);

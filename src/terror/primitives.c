@@ -218,6 +218,20 @@ Primitive_Vector_at(STATE, void *a, void *b, void *_)
 }
 
 VALUE
+Primitive_Vector_push(STATE, void *a, void *b, void *_)
+{
+  VALUE vector  = (VALUE)a;
+  VALUE element = (VALUE)b;
+
+  CHECK_TYPE(vector, VectorType);
+  CHECK_PRESENCE(element);
+
+  Vector_push(vector, element);
+
+  return vector;
+}
+
+VALUE
 Primitive_Vector_each(STATE, void *a, void *b, void *_)
 {
   VALUE vector  = (VALUE)a;

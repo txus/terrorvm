@@ -2,7 +2,7 @@ _main
 :5:26
 "hello
 "to_map
-"block_524
+"block_1db718c551ada4f2bdcda621f818fc2c
 "greet
 "world
 17 PUSH
@@ -31,7 +31,7 @@ _main
 1
 20 PUSHNIL
 144 RET
-_block_524
+_block_1db718c551ada4f2bdcda621f818fc2c
 :4:23
 " 
 "+

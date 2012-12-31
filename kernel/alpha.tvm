@@ -1,5 +1,5 @@
 _main
-:27:290
+:29:314
 "VM
 "types
 "object
@@ -21,6 +21,8 @@ _main
 "string_+
 "vector
 "vector_[]
+"vector_push
+"push
 "vector_to_map
 "to_map
 "vector_each
@@ -315,6 +317,30 @@ _main
 1
 65 SETSLOT
 26
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+1
+0
+17 PUSH
+19
+128 SEND
+3
+1
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+4
+0
+17 PUSH
+27
+128 SEND
+3
+1
+65 SETSLOT
+28
 20 PUSHNIL
 144 RET
 

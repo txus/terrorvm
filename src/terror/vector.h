@@ -12,5 +12,6 @@ void Vector_each_with_index(VALUE, Vector_iter_idx);
 #define Vector_first(V) (VALUE)(DArray_first(VAL2ARY((V))))
 #define Vector_last(V) (VALUE)(DArray_last(VAL2ARY((V))))
 #define Vector_count(V) DArray_count(VAL2ARY((V)))
+#define Vector_push(V, E) DArray_push(VAL2ARY((V)), (E))
 
 #endif

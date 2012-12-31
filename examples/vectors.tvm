@@ -1,14 +1,16 @@
 _main
-:9:35
+:11:46
 "* 
 "everyone!
 "to
 "world
 "hello
-"block_524
+"block_d06d80fd4f6cc4d0a62c4e547b0d82a6
 "each
 "done!
 "puts
+"block_49f68350b370269ba275ec8f2590154e
+"map
 17 PUSH
 0
 33 SETLOCAL
@@ -42,9 +44,20 @@ _main
 128 SEND
 8
 1
+16 PUSHSELF
+32 PUSHLOCAL
+1
+67 DEFN
+9
+128 SEND
+10
+1
+128 SEND
+8
+1
 20 PUSHNIL
 144 RET
-_block_524
+_block_d06d80fd4f6cc4d0a62c4e547b0d82a6
 :2:13
 "+
 "puts
@@ -57,6 +70,18 @@ _block_524
 128 SEND
 0
 1
+128 SEND
+1
+1
+144 RET
+_block_49f68350b370269ba275ec8f2590154e
+:2:8
+"!!!!
+"+
+32 PUSHLOCAL
+0
+17 PUSH
+0
 128 SEND
 1
 1

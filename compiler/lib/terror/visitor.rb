@@ -1,4 +1,5 @@
 require 'terror/generator'
+require 'securerandom'
 
 module Terror
   class Visitor
@@ -12,7 +13,7 @@ module Terror
     alias_method :g, :generator
 
     def name
-      "block_#{hash}"
+      @name ||= "block_#{SecureRandom.hex}"
     end
 
     def fixnum_literal(node, parent)
@@ -182,8 +183,9 @@ module Terror
 
     def finalize(name)
       out = g.encode(name)
-      fns = @fns.map { |fn| fn.finalize(fn.name) }.join("\n")
-      [out, fns].join("\n")
+      fns = @fns.map { |fn| fn.finalize(fn.name) }
+      [out, fns].flatten.join("\n")
     end
   end
 end
+
