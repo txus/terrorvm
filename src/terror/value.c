@@ -4,6 +4,8 @@
 #include <terror/runtime.h>
 #include <terror/primitives.h>
 #include <terror/call_frame.h>
+#include <terror/map.h>
+#include <terror/vector.h>
 #include <terror/gc.h>
 
 VALUE Object_bp;
@@ -37,17 +39,6 @@ void
 Value_destroy(VALUE o)
 {
   gc_dealloc(o);
-}
-
-static inline int
-Hashmap_print_cb(HashmapNode *node) {
-  char *name = bdata((bstring)(node->key));
-  VALUE obj = (VALUE)(node->data);
-  Value_print(String_new(name));
-  printf(" => ");
-  Value_print(obj);
-  printf(", ");
-  return 0;
 }
 
 static inline void
@@ -86,32 +77,51 @@ __Value_print(VALUE o)
       break;
     }
     case ClosureType: {
-      printf("#<Closure %p>", o);
+      Function *fn = VAL2FN(o);
+      int lits = DArray_count(fn->literals);
+      printf("#<Closure %p (%i literals) ", o, lits);
+      if(fn->c_fn) {
+        printf("(C code)");
+      } else {
+        printf("[");
+        int *ptr = fn->code;
+        while(*ptr != 144) {
+          printf("%i, ", *ptr);
+          ptr++;
+        }
+        printf("144]"); // RET
+      }
+      printf(">");
       break;
     }
     case VectorType: {
       printf("[");
-      DArray *array = VAL2ARY(o);
-      int count = DArray_count(array);
-      for(int i=0; i < count; i++) {
-        Value_print((VALUE)DArray_at(array, i));
-        if(i+1 < count) {
-          printf(", ");
-        }
-      }
+      __block int _count = Vector_count(o);
+      Vector_each_with_index(o, ^ void (VALUE val, int idx) {
+        Value_print(val);
+        if(idx+1 < _count) printf(", ");
+      });
       printf("]");
       break;
     }
     case MapType: {
       printf("{");
-      Hashmap_traverse(VAL2HASH(o), Hashmap_print_cb);
+      Map_each(o, ^ void (bstring key, VALUE val) {
+        printf("%s => ", bdata(key));
+        Value_print(val);
+        printf(", ");
+      });
       printf("}");
       break;
     }
     default: {
       printf("#<Object %p ", o);
       printf("{");
-      Hashmap_traverse(VAL2HASH(o), Hashmap_print_cb);
+      Map_each(o, ^ void (bstring key, VALUE val) {
+        printf("%s => ", bdata(key));
+        Value_print(val);
+        printf("\n");
+      });
       printf("}>");
       break;
     }

@@ -3,6 +3,7 @@
 #include <terror/stack.h>
 #include <terror/state.h>
 #include <terror/call_frame.h>
+#include <terror/vm.h>
 
 Function*
 Function_new(int *code, DArray *literals)
@@ -45,6 +46,7 @@ Function_call(
   DArray *locals) // the arguments to the function call
 {
   int *ret = state->ret;
+  if(!receiver) receiver = CURR_FRAME->self;
 
   // Native function dispatch
   if(fn->c_fn) {
@@ -65,4 +67,12 @@ Function_call(
   Stack_push(FRAMES, new_frame);
 
   return new_frame->fn->code;
+}
+
+VALUE
+Closure_invoke(STATE, VALUE closure, VALUE receiver, DArray *args)
+{
+  state->ret = NULL; // don't return anywhere
+  Function_call(state, VAL2FN(closure), receiver, args);
+  return VM_run(state);
 }

@@ -1,8 +1,7 @@
-Cn=clang
+CC=clang
 CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
 LIBS=$(OPTLIBS)
 PREFIX?=/usr/local
-VPATH=vendor
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -32,7 +31,7 @@ examples: rubinius
 	rm -rf `find examples -name "*.tvm" -print`
 	cd compiler && rake examples
 
-$(TARGET): CFLAGS += -fPIC $(LIBS)
+$(TARGET): CFLAGS += -fPIC -fblocks $(LIBS)
 $(TARGET): build $(OBJECTS)
 				ar rcs $@ $(OBJECTS)
 				ranlib $@

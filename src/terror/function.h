@@ -22,5 +22,6 @@ Function* Function_native_new(native_fn);
 struct val_s* Function_native_call(struct state_s*, Function*, struct val_s*, DArray*);
 int* Function_call(struct state_s*, Function*, struct val_s*, DArray*);
 
+struct val_s* Closure_invoke(struct state_s*, struct val_s* closure, struct val_s* receiver, DArray *args);
 #endif
 

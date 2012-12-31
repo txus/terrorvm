@@ -1,2 +1,7 @@
-a = ['hello world',2,3]
-puts a
+symbol = '* '
+greetings = ['hello', 'world', 'to', 'everyone!']
+cls = -> greeting {
+  puts symbol + greeting
+}
+greetings.each(cls)
+puts 'done!'

@@ -283,6 +283,7 @@ VALUE VM_run(STATE)
         CallFrame *old_frame = Stack_pop(FRAMES);
 
         ip = old_frame->ret;
+        if(ip) debug("Returning to %i", *ip);
         if (ip == NULL) return Stack_pop(STACK); // if there's nowhere to return, exit
 
         break;

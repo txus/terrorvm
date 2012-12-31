@@ -33,8 +33,11 @@ void Runtime_init() {
 
   // Init extern constants
   TrueObject  = Value_new(TrueType);
+  TrueObject->data.as_num = 1;
   FalseObject = Value_new(FalseType);
+  FalseObject->data.as_num = 0;
   NilObject   = Value_new(NilType);
+  NilObject->data.as_num = 0;
 }
 
 void Runtime_destroy() {

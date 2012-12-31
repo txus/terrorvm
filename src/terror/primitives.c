@@ -4,12 +4,73 @@
 #include <terror/state.h>
 #include <terror/call_frame.h>
 #include <terror/input_reader.h>
+#include <terror/vector.h>
 #include <terror/vm.h>
 #include <assert.h>
 
 /*
  * Generic primitives
  */
+
+VALUE
+Primitive_equals(STATE, void *a, void *b, void *__)
+{
+  VALUE self  = (VALUE)a;
+  VALUE other = (VALUE)b;
+
+  if(self->type != other->type) return FalseObject;
+  if(Primitive_is(state, self, other, NULL) == TrueObject) return TrueObject;
+
+  switch(self->type) {
+  case NumberType:
+    return INT2BOOL(VAL2NUM(self) == VAL2NUM(other));
+  case ObjectType:
+    // TODO: Deep-analyze objects.
+    return FalseObject;
+  case StringType:
+    return INT2BOOL(strcmp(VAL2STR(self), VAL2STR(other)) == 0);
+  case VectorType: {
+    __block VALUE _other  = other;
+    __block State* _state = state;
+    __block int _result   = 1;
+
+    Vector_each_with_index(self, ^ void (VALUE vector, int idx) {
+      VALUE equals = Primitive_equals(
+        _state,
+        Vector_at(vector, idx),
+        Vector_at(_other, idx),
+        NULL
+      );
+      if(!VAL2BOOL(equals)) _result = 0;
+    });
+
+    return INT2BOOL(_result);
+  }
+  case MapType:
+    // TODO: Deep-analyze maps.
+    return FalseObject;
+  case ClosureType:
+    // TODO: Deep-analyze closures.
+    return FalseObject;
+  case TrueType:
+    return INT2BOOL(other == TrueObject);
+  case FalseType:
+    return INT2BOOL(other == FalseObject);
+  case NilType:
+    return INT2BOOL(other == NilObject);
+  default:
+    break;
+  }
+  return FalseObject;
+}
+
+VALUE
+Primitive_is(STATE, void *a, void *b, void *__)
+{
+  VALUE self  = (VALUE)a;
+  VALUE other = (VALUE)b;
+  return self == other ? TrueObject : FalseObject;
+}
 
 VALUE
 Primitive_clone(STATE, void *a, void *_, void *__)
@@ -118,6 +179,25 @@ Primitive_Number_div(STATE, void *a, void *b, void *_)
 }
 
 /*
+ * String primitives
+ */
+
+VALUE
+Primitive_String_concat(STATE, void *a, void *b, void *_)
+{
+  VALUE str_a = (VALUE)a;
+  VALUE str_b = (VALUE)b;
+
+  CHECK_TYPE(str_a, StringType);
+  CHECK_TYPE(str_b, StringType);
+
+  bstring s = bfromcstr(VAL2STR(str_a));
+  bconcat(s, bfromcstr(VAL2STR(str_b)));
+
+  return String_new(bdata(s));
+}
+
+/*
  * Vector primitives
  */
 
@@ -130,11 +210,50 @@ Primitive_Vector_at(STATE, void *a, void *b, void *_)
   CHECK_TYPE(vector, VectorType);
   CHECK_TYPE(index, NumberType);
 
-  VALUE result = (VALUE)DArray_at(VAL2ARY(vector), VAL2INT(index));
+  VALUE result = Vector_at(vector, VAL2INT(index));
 
   if(!result) result = NilObject;
 
   return result;
+}
+
+VALUE
+Primitive_Vector_each(STATE, void *a, void *b, void *_)
+{
+  VALUE vector  = (VALUE)a;
+  VALUE closure = (VALUE)b;
+
+  CHECK_TYPE(vector, VectorType);
+  CHECK_TYPE(closure, ClosureType);
+
+  Vector_each(vector, ^ void (VALUE element) {
+    DArray *args = DArray_create(sizeof(VALUE), 10);
+    DArray_push(args, element);
+
+    Closure_invoke(state, closure, NULL, args);
+  });
+
+  return vector;
+}
+
+VALUE
+Primitive_Vector_each_with_index(STATE, void *a, void *b, void *_)
+{
+  VALUE vector  = (VALUE)a;
+  VALUE closure = (VALUE)b;
+
+  CHECK_TYPE(vector, VectorType);
+  CHECK_TYPE(closure, ClosureType);
+
+  Vector_each_with_index(vector, ^ void (VALUE element, int idx) {
+    DArray *args = DArray_create(sizeof(VALUE), 10);
+    DArray_push(args, element);
+    DArray_push(args, Number_new(idx));
+
+    Closure_invoke(state, closure, NULL, args);
+  });
+
+  return vector;
 }
 
 VALUE

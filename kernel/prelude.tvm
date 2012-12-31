@@ -1,5 +1,5 @@
 _main
-:21:218
+:27:290
 "VM
 "types
 "object
@@ -17,10 +17,16 @@ _main
 "/
 "number_*
 "*
+"string
+"string_+
 "vector
 "vector_[]
 "vector_to_map
 "to_map
+"vector_each
+"each
+"vector_each_with_index
+"each_with_index
 16 PUSHSELF
 64 GETSLOT
 0
@@ -212,7 +218,7 @@ _main
 3
 1
 65 SETSLOT
-3
+10
 16 PUSHSELF
 64 GETSLOT
 0
@@ -220,7 +226,7 @@ _main
 1
 0
 17 PUSH
-17
+19
 128 SEND
 3
 1
@@ -231,12 +237,84 @@ _main
 4
 0
 17 PUSH
-19
+20
 128 SEND
 3
 1
 65 SETSLOT
-20
+3
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+1
+0
+17 PUSH
+19
+128 SEND
+3
+1
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+4
+0
+17 PUSH
+21
+128 SEND
+3
+1
+65 SETSLOT
+22
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+1
+0
+17 PUSH
+19
+128 SEND
+3
+1
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+4
+0
+17 PUSH
+23
+128 SEND
+3
+1
+65 SETSLOT
+24
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+1
+0
+17 PUSH
+19
+128 SEND
+3
+1
+16 PUSHSELF
+64 GETSLOT
+0
+128 SEND
+4
+0
+17 PUSH
+25
+128 SEND
+3
+1
+65 SETSLOT
+26
 20 PUSHNIL
 144 RET
 

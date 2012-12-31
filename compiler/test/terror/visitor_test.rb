@@ -165,6 +165,24 @@ module Terror
           _send 0, 1
         end
       end
+
+      it 'work with iterators' do
+        code = "[1,2,3].each(-> num { puts num })"
+        compiles(code) do
+          _push 0
+          _push 1
+          _push 2
+          _makevec 3
+          _defn 3
+          _send 4, 1
+        end
+
+        compiles_block(code) do
+          _pushself
+          _pushlocal 0
+          _send 0, 1
+        end
+      end
     end
 
     describe 'vectors' do

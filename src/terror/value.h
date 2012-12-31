@@ -31,6 +31,8 @@ VALUE Lobby_new();
 VALUE Number_new(double);
 #define VAL2NUM(o) (o->data.as_num)
 #define VAL2INT(o) ((int)(o->data.as_num))
+#define VAL2BOOL(o) VAL2INT((o))
+#define INT2BOOL(o) ((o) ? TrueObject : FalseObject)
 
 VALUE String_new(char*);
 #define VAL2STR(o) (o->data.as_str)
