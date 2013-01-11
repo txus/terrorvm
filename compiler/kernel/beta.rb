@@ -6,3 +6,9 @@ VM.types[:vector].map = -> fn {
   })
   new
 }
+
+VM.types[:vector].length = -> fn {
+  len = 0
+  each(-> element { len += 1 })
+  len
+}

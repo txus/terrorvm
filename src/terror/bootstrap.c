@@ -42,6 +42,7 @@ expose_VM(VALUE lobby)
   DArray *primitives = DArray_create(sizeof(VALUE), 10);
 
   // Object
+  DEFPRIM(primitives, "prototype", Primitive_prototype);
   DEFPRIM(primitives, "or", Primitive_or);
   DEFPRIM(primitives, "equals", Primitive_equals);
   DEFPRIM(primitives, "is", Primitive_is);

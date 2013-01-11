@@ -37,7 +37,7 @@ module Terror
     end
 
     describe 'instructions with no operands' do
-      %w(noop pushself pushtrue pushfalse pushnil pop ret dump).each do |instruction|
+      %w(noop pushself pushlobby pushtrue pushfalse pushnil pop ret dump).each do |instruction|
         describe instruction do
           it "#{instruction} is encoded correctly" do
             inst = @g.__send__ :"_#{instruction}"

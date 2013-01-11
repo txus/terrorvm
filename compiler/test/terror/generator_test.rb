@@ -18,7 +18,7 @@ module Terror
         @g.push(3)
         label.set!
 
-        label.offset.must_equal 3
+        label.offset.must_equal 4
       end
     end
 

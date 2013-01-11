@@ -104,6 +104,7 @@ parse_string(bstring buf, BytecodeFile *file)
 
     Function *fn = Function_new(instructions, literals);
     DArray_push(file->function_names, method);
+    debug("Parsed %s...", bdata(method));
     Hashmap_set(file->functions, method, fn);
 
     if(cnt >= lines->qty) break; // EOF

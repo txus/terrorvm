@@ -5,11 +5,11 @@ _main
 "to
 "world
 "hello
-"block_d06d80fd4f6cc4d0a62c4e547b0d82a6
+"block_a0329904e2f682e96effd52e95980a17
 "each
 "done!
 "puts
-"block_49f68350b370269ba275ec8f2590154e
+"block_ca644b6f9b6e500926cd95aa60554dfc
 "map
 17 PUSH
 0
@@ -57,7 +57,7 @@ _main
 1
 20 PUSHNIL
 144 RET
-_block_d06d80fd4f6cc4d0a62c4e547b0d82a6
+_block_a0329904e2f682e96effd52e95980a17
 :2:13
 "+
 "puts
@@ -74,7 +74,7 @@ _block_d06d80fd4f6cc4d0a62c4e547b0d82a6
 1
 1
 144 RET
-_block_49f68350b370269ba275ec8f2590154e
+_block_ca644b6f9b6e500926cd95aa60554dfc
 :2:8
 "!!!!
 "+

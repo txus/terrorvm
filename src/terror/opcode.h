@@ -9,6 +9,7 @@ typedef enum {
   PUSHTRUE,         // 18
   PUSHFALSE,        // 19
   PUSHNIL,          // 20
+  PUSHLOBBY,        // 21
 
   PUSHLOCAL = 0x20, // 32
   SETLOCAL,         // 33

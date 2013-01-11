@@ -138,12 +138,12 @@ module Terror
     end
 
     def constant_assignment(node, parent)
-      receiver_name = :self
+      receiver_name = :lobby
       attribute_name = node.constant.name.to_sym
       @slots[receiver_name] ||= []
       @slots[receiver_name] << attribute_name
 
-      g.pushself
+      g.pushlobby
       node.value.lazy_visit self
       g.setslot attribute_name
     end
@@ -188,7 +188,7 @@ module Terror
     end
 
     def constant_access(node, parent)
-      g.pushself
+      g.pushlobby
       g.getslot node.name
     end
 

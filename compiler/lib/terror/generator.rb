@@ -34,14 +34,14 @@ module Terror
       instrs = instructions.map(&:encode).flatten
 
       output = "_#{name}\n"
-      output << ":%i:%i\n" % [@literals.size, instrs.size]
+      output << ":%i:%i\n" % [@literals.size, @ip]
 
       output << [@literals, instrs].flatten.join("\n")
       output
     end
 
     def push(value)
-      @ip += 1
+      @ip += 2
       _push literal(value)
     end
 
@@ -66,20 +66,20 @@ module Terror
     end
 
     def jmp(label)
+      @ip += 2
       label.start!
-      @ip += 1
       _jmp label
     end
 
     def jif(label)
+      @ip += 2
       label.start!
-      @ip += 1
       _jif label
     end
 
     def jit(label)
+      @ip += 2
       label.start!
-      @ip += 1
       _jit label
     end
 
@@ -88,48 +88,55 @@ module Terror
       _pushself
     end
 
-    def pushlocal(name)
+    def pushlobby
       @ip += 1
+      _pushlobby
+    end
+
+    def pushlocal(name)
       l = local(name)
       if l.depth > 0
+        @ip += 3
         _pushlocaldepth l.depth, l.index
       else
+        @ip += 2
         _pushlocal l.index
       end
     end
 
     def setlocal(name)
-      @ip += 1
       l = local(name)
       if l.depth > 0
+        @ip += 3
         _setlocaldepth l.depth, l.index
       else
+        @ip += 2
         _setlocal l.index
       end
     end
 
     def getslot(name)
-      @ip += 1
+      @ip += 2
       _getslot literal(name)
     end
 
     def setslot(name)
-      @ip += 1
+      @ip += 2
       _setslot literal(name)
     end
 
     def send_message(msg, argc)
-      @ip += 1
+      @ip += 3
       _send literal(msg), argc
     end
 
     def defn(name)
-      @ip += 1
+      @ip += 2
       _defn literal(name)
     end
 
     def makevec(count)
-      @ip += 1
+      @ip += 2
       _makevec count
     end
 

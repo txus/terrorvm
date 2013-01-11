@@ -10,6 +10,7 @@
 
 #define PRIMITIVE_ARGS STATE, void*, void*, void*
 // Generic primitive methods
+VALUE Primitive_prototype(PRIMITIVE_ARGS);
 VALUE Primitive_or(PRIMITIVE_ARGS);
 VALUE Primitive_equals(PRIMITIVE_ARGS);
 VALUE Primitive_is(PRIMITIVE_ARGS);

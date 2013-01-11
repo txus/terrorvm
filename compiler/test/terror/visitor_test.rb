@@ -102,9 +102,9 @@ module Terror
       it 'compiles if' do
         compiles("if 1 then 3; end") do
           _push 0
-          _jif 3
+          _jif 4
           _push 1
-          _jmp 2
+          _jmp 1
           _pushnil
         end
       end
@@ -112,7 +112,7 @@ module Terror
       it 'compiles if-else' do
         compiles("if 1 then 3 else 4 end") do
           _push 0 # condition
-          _jif 3
+          _jif 4
           _push 1 # body
           _jmp 2
           _push 2 # else body
@@ -133,12 +133,20 @@ module Terror
     end
 
     describe 'constants' do
-      it 'are compiled down to normal identifiers' do
+      it 'are compiled down to normal slots on lobby' do
         compiles("Object.clone") do
-          _pushself
+          _pushlobby
           _getslot 0
 
           _send 1, 0
+        end
+      end
+
+      it 'compiles assignments too' do
+        compiles("Object = 3") do
+          _pushlobby
+          _push 0
+          _setslot 1
         end
       end
     end

@@ -205,6 +205,7 @@ That's it! :)
 #### Values
 
 * **PUSHSELF**: pushes the current self to the stack.
+* **PUSHLOBBY**: pushes the Lobby (toplevel object) to the stack.
 * **PUSH A**: pushes the literal at index `A` to the stack.
 * **PUSHTRUE**: pushes the `true` object to the stack.
 * **PUSHFALSE**: pushes the `false` object to the stack.
@@ -220,11 +221,11 @@ That's it! :)
 
 #### Branching
 
-* **JMP A**: Jumps forward as much as `A` instructions.
-* **JIF A**: Jumps forward as much as `A` instructions if the top of the stack
-  is falsy (`false` or `nil`).
-* **JIT A**: Jumps forward as much as `A` instructions if the top of the stack
-  is truthy (any value other than `false` or `nil`).
+* **JMP A**: Skips as much as `A` instructions.
+* **JIF A**: Skips as much as `A` instructions if the top of the stack is falsy
+  (`false` or `nil`).
+* **JIT A**: Skips as much as `A` instructions if the top of the stack is truthy
+  (any value other than `false` or `nil`).
 
 #### Slots (attributes)
 

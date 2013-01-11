@@ -14,6 +14,18 @@
  */
 
 VALUE
+Primitive_prototype(STATE, void *a, void *_, void *__)
+{
+  VALUE self      = (VALUE)a;
+  VALUE prototype = self->prototype;
+
+  if(!prototype) prototype = NilObject;
+
+  return prototype;
+}
+
+
+VALUE
 Primitive_or(STATE, void *a, void *b, void *__)
 {
   VALUE self  = (VALUE)a;

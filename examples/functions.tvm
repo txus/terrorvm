@@ -1,7 +1,7 @@
 _main
 :5:25
 123
-"block_c12f1b0be80decf2727037d66c2617b2
+"block_9f8765f64c42ec0b2c499597d199b177
 "fn
 2
 "puts
@@ -30,7 +30,7 @@ _main
 1
 20 PUSHNIL
 144 RET
-_block_c12f1b0be80decf2727037d66c2617b2
+_block_9f8765f64c42ec0b2c499597d199b177
 :1:9
 "+
 34 PUSHLOCALDEPTH

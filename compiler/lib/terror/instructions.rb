@@ -115,6 +115,7 @@ module Terror
     op :pushtrue,  0x12, 0
     op :pushfalse, 0x13, 0
     op :pushnil,   0x14, 0
+    op :pushlobby, 0x15, 0
 
     op :pushlocal,      0x20, 1
     op :setlocal,       0x21, 1

@@ -65,6 +65,20 @@ char *test_pushself()
   TEARDOWN();
 }
 
+char *test_pushlobby()
+{
+  SETUP();
+
+  RUN(
+    PUSHLOBBY,
+    RET
+  );
+
+  mu_assert(result == lobby, "Pushlobby failed.");
+
+  TEARDOWN();
+}
+
 char *test_push()
 {
   SETUP();
@@ -235,7 +249,7 @@ char *test_jmp()
 
   RUN(
     PUSHTRUE,
-    JMP, 2,
+    JMP, 1,
     PUSHFALSE,
     RET
   );
@@ -251,7 +265,7 @@ char *test_jif()
 
   RUN(
     PUSHFALSE,
-    JIF, 2,
+    JIF, 1,
     PUSHTRUE,
     RET
   );
@@ -267,7 +281,7 @@ char *test_jit()
 
   RUN(
     PUSHTRUE,
-    JIT, 2,
+    JIT, 1,
     PUSHFALSE,
     RET
   );
@@ -465,6 +479,7 @@ char *all_tests() {
 
   // Instructions
   mu_run_test(test_pushself);
+  mu_run_test(test_pushlobby);
   mu_run_test(test_push);
   mu_run_test(test_pushtrue);
   mu_run_test(test_pushfalse);

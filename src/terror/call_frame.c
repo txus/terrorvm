@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <terror/value.h>
 #include <terror/call_frame.h>
+#include <terror/runtime.h>
+
+VALUE NilObject;
 
 CallFrame*
 CallFrame_new(VALUE self, Function *fn, int *ret)
@@ -18,10 +21,8 @@ VALUE
 CallFrame_getlocal(CallFrame *frame, int idx)
 {
   VALUE local = (VALUE)DArray_at(frame->locals, idx);
-  check(local, "Couldn't retrieve local at index %i.", idx);
+  if (!local) local = NilObject;
   return local;
-error:
-  return NULL;
 }
 
 void

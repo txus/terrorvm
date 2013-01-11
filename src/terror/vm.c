@@ -94,9 +94,7 @@ VALUE VM_run(STATE)
         ip++;
         int jump = *ip;
         debug("JMP %i", jump);
-        for(int i=1; i < jump; i++) {
-          ip++;
-        }
+        while(jump--) ip++;
         break;
       }
       case JIF: {
@@ -106,9 +104,7 @@ VALUE VM_run(STATE)
 
         VALUE value = Stack_peek(STACK);
         if (value == FalseObject || value == NilObject) {
-          for(int i=1; i < jump; i++) {
-            ip++;
-          }
+          while(jump--) ip++;
         }
 
         break;
@@ -120,9 +116,7 @@ VALUE VM_run(STATE)
 
         VALUE value = Stack_peek(STACK);
         if (value != FalseObject && value != NilObject) {
-          for(int i=1; i < jump; i++) {
-            ip++;
-          }
+          while(jump--) ip++;
         }
 
         break;
@@ -213,7 +207,7 @@ VALUE VM_run(STATE)
         /* printf("Tried to get slot %s.", VAL2STR(name)); */
         check(closure, "Undefined slot %s on object type %i.", VAL2STR(name), receiver->type);
 
-        if (op2 == 0 && closure->type != ClosureType && closure != NilObject) {
+        if (closure->type != ClosureType && closure != NilObject) {
           // GETSLOT
           Stack_push(STACK, closure);
           break;
@@ -238,6 +232,11 @@ VALUE VM_run(STATE)
         state->ret = ip; // save where we want to return
         ip = Function_call(state, VAL2FN(closure), receiver, locals);
         ip--; // because we increment after each while cycle
+        break;
+      }
+      case PUSHLOBBY: {
+        debug("PUSHLOBBY");
+        Stack_push(STACK, state->lobby);
         break;
       }
       case PUSHSELF: {
