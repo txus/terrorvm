@@ -148,7 +148,7 @@ blocks (functions defined there). This is how a block looks like (if you're
 curious, it's just a hello world):
 
 ```
-_main
+_0_main
 :2:8
 "hello world
 "puts
@@ -181,7 +181,7 @@ After that there might be more functions. Imagine our hello world defined an
 empty closure, then we'd have right after `144 RET`:
 
 ```
-_block_153
+_4_block_153
 :0:2
 20 PUSHNIL
 144 RET
