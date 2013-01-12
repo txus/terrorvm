@@ -11,9 +11,19 @@ Debugger_new()
   Debugger *debugger     = calloc(1, sizeof(Debugger));
   debugger->line_changed = 0;
   debugger->step         = STEP_LINE;
+  debugger->breakpoints  = DArray_create(sizeof(int), 10);
   debugger->current_line = -1;
   debugger->current_file = NULL;
   return debugger;
+}
+
+Breakpoint*
+Breakpoint_new(char *filename, int line)
+{
+  Breakpoint *breakpoint = calloc(1, sizeof(Breakpoint));
+  breakpoint->filename = filename;
+  breakpoint->line     = line;
+  return breakpoint;
 }
 
 void
@@ -68,7 +78,11 @@ Debugger_prompt(STATE)
 
     printf("> ");
 
-    switch(getchar()) {
+    char cmd[100];
+    char arg[100];
+    scanf("%s", cmd);
+
+    switch(cmd[0]) {
       case 'h':
         printf("\nCommands");
         printf("\n--------");
@@ -79,11 +93,29 @@ Debugger_prompt(STATE)
         printf("\nd: show the stack");
         printf("\nl: show locals");
         printf("\nt: show backtrace");
+        printf("\nb: set breakpoint in a line. Example: b 30");
+        printf("\nk: kill breakpoint in a line. Example: d 30");
         printf("\n\n");
         break;
       case 's':
         DEBUGGER->step = STEP_INS;
         cont = 1;
+        break;
+      case 'b': {
+        Debugger_set_breakpoint(state, atoi(arg));
+        break;
+      }
+      case 'k': {
+        Debugger_kill_breakpoint(state, atoi(arg));
+        break;
+      }
+      case 'p':
+        scanf("%s", arg);
+        if(strcmp(arg, "self") == 0) {
+          printf("\n");
+          Value_print(CURR_FRAME->self);
+          printf("\n");
+        }
         break;
       case 't': {
         printf("\nBacktrace");
@@ -126,7 +158,7 @@ Debugger_prompt(STATE)
         printf("I don't understand.\n");
         break;
     }
-    getchar();
+    /* getchar(); */
   }
 }
 
@@ -154,3 +186,30 @@ Debugger_print_context(STATE)
   printf("\n");
 }
 
+
+void
+Debugger_set_breakpoint(STATE, int line)
+{
+  printf("Set breakpoint at line %i.", line);
+  DArray_push(DEBUGGER->breakpoints, Breakpoint_new(CURR_FRAME->fn->filename, line));
+}
+
+void
+Debugger_kill_breakpoint(STATE, int line)
+{
+  printf("Kill breakpoint at line %i.", line);
+  /* DArray_push(DEBUGGER->breakpoints, line); */
+}
+
+void
+Debugger_breakpoint(STATE)
+{
+  for(int i=0; i < DArray_count(DEBUGGER->breakpoints); i++) {
+    Breakpoint *bp = (Breakpoint*)DArray_at(DEBUGGER->breakpoints, i);
+    if(bp->line == DEBUGGER->current_line && 
+       strcmp(bp->filename, CURR_FRAME->fn->filename) == 0) {
+      printf("Breakpoint");
+      Debugger_stop(state);
+    }
+  }
+}
