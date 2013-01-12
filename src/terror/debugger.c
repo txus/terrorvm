@@ -138,17 +138,15 @@ Debugger_print_context(STATE)
   int ctx_end   = DEBUGGER->current_line + ctx;
 
   bstring current_filename = bfromcstr(CURR_FRAME->fn->filename);
-  printf("\n%s\n", bdata(current_filename));
+  printf("\n%s:%i\n", bdata(current_filename), DEBUGGER->current_line);
 
   DArray *lines = getlines(DEBUGGER->current_file, ctx_start, ctx_end);
 
-  int middle_idx = ((DArray_count(lines) - 1) / 2);
-
   for(int i=0; i < DArray_count(lines); i++) {
     bstring curr_line = (bstring)DArray_at(lines, i);
-    if(i+1 == middle_idx) { // current line
-      curr_line = bstrcpy((bstring)DArray_at(lines, i));
 
+    if(DEBUGGER->current_line == atoi(bdata(curr_line))) {
+      curr_line = bstrcpy((bstring)DArray_at(lines, i));
       breplace(curr_line, 5, 1, bfromcstr(">"), ' ');
     }
     printf("%s\n", bdata(curr_line));

@@ -1,152 +1,205 @@
-_main
-:17:57
-"block_9223f16094842928a3438ae6438cc609
+/Users/txus/Code/terrorvm/compiler/stdlib/test_case.rb
+_0_main
+:17:83
+"15_block_2041a3c337e2154807713ecdfa8c5a70
 "run
-"block_78980b9dfe598d3297a62a963c525407
+"14_block_99269180fc8d89b05f19f71f106655be
 "teardown
-"block_f873bb42b76b31a0323cdb044a323439
+"13_block_5aa412e280386506a7a5c1f2c1cc71ac
 "setup
-"block_ef7a10d2fccaafc4d1de97e0377e4da5
+"2_block_226e12f0bca5c74b3340d3102a72e26d
 "assert_equal
 "to_map
 "TestCase
 "clone
-"block_18d0fe30cda5bca6c4305c66bcc8979c
+"48_block_1ff07ce8187d4f914cb11ba1eade8301
 "test_foo
-"block_83130617ca718c1576866338b6259926
+"51_block_f2fce8498407d96f4582d15d3cd3565c
 "test_bar
-"block_79c7ae2a739c04d9ba03668d85d6a08c
+"54_block_b0bb21ffb915b707acd013efb77e9868
 "test_baz
-21 PUSHLOBBY
-67 DEFN
-0
-17 PUSH
+1 SETLINE
 1
+21 PUSHLOBBY
+1 SETLINE
+45
+1 SETLINE
+15
 67 DEFN
+0 "15_block_2041a3c337e2154807713ecdfa8c5a70"
+1 SETLINE
+44
+17 PUSH
+1 "run"
+1 SETLINE
+14
+67 DEFN
+2 "14_block_99269180fc8d89b05f19f71f106655be"
+17 PUSH
+3 "teardown"
+1 SETLINE
+13
+67 DEFN
+4 "13_block_5aa412e280386506a7a5c1f2c1cc71ac"
+17 PUSH
+5 "setup"
+1 SETLINE
 2
-17 PUSH
-3
 67 DEFN
-4
+6 "2_block_226e12f0bca5c74b3340d3102a72e26d"
+1 SETLINE
+12
 17 PUSH
-5
-67 DEFN
-6
-17 PUSH
-7
+7 "assert_equal"
 68 MAKEVEC
 8
 128 SEND
-8
+8 "to_map"
 0
 65 SETSLOT
-9
+9 "TestCase"
+1 SETLINE
+47
 21 PUSHLOBBY
 64 GETSLOT
-9
+9 "TestCase"
 128 SEND
-10
+10 "clone"
 0
 33 SETLOCAL
 2
+1 SETLINE
+48
 32 PUSHLOCAL
 2
 67 DEFN
-11
+11 "48_block_1ff07ce8187d4f914cb11ba1eade8301"
 65 SETSLOT
-12
+12 "test_foo"
+1 SETLINE
+51
 32 PUSHLOCAL
 2
 67 DEFN
-13
+13 "51_block_f2fce8498407d96f4582d15d3cd3565c"
 65 SETSLOT
-14
+14 "test_bar"
+1 SETLINE
+54
 32 PUSHLOCAL
 2
 67 DEFN
-15
+15 "54_block_b0bb21ffb915b707acd013efb77e9868"
 65 SETSLOT
-16
+16 "test_baz"
+1 SETLINE
+57
 32 PUSHLOCAL
 2
 128 SEND
-1
+1 "run"
 0
 20 PUSHNIL
 144 RET
-_block_9223f16094842928a3438ae6438cc609
-:10:59
+_15_block_2041a3c337e2154807713ecdfa8c5a70
+:10:85
 "tests
 "failures
-"block_53dd4cd9518681b3c8c113a84c173391
+"19_block_809c47564fd3fb0930ee945bb9910f8f
 "each
 "
 "puts
 "length
 0
 ">
-"block_fb2058ba5c9c2b16e6b4716e5f3f68c1
+"39_block_f2d8e1f3823805de73dcdfe376679eeb
+1 SETLINE
+16
+1 SETLINE
+57
 16 PUSHSELF
+1 SETLINE
+16
 68 MAKEVEC
 0
 65 SETSLOT
-0
+0 "tests"
+1 SETLINE
+17
+1 SETLINE
+57
 16 PUSHSELF
+1 SETLINE
+17
 68 MAKEVEC
 0
 65 SETSLOT
-1
+1 "failures"
+1 SETLINE
+18
 16 PUSHSELF
 35 SETLOCALDEPTH
 1
 0
+1 SETLINE
+19
 16 PUSHSELF
 67 DEFN
-2
+2 "19_block_809c47564fd3fb0930ee945bb9910f8f"
 128 SEND
-3
+3 "each"
 1
+1 SETLINE
+37
 16 PUSHSELF
 17 PUSH
-4
+4 ""
 128 SEND
-5
+5 "puts"
 1
+1 SETLINE
+38
 16 PUSHSELF
 128 SEND
-1
+1 "failures"
 0
 128 SEND
-6
+6 "length"
 0
 17 PUSH
-7
+7 0
 128 SEND
-8
+8 ">"
 1
 49 JIF
-17
+21
+1 SETLINE
+39
 16 PUSHSELF
 128 SEND
-1
+1 "failures"
 0
 67 DEFN
-9
+9 "39_block_f2d8e1f3823805de73dcdfe376679eeb"
 128 SEND
-3
+3 "each"
 1
+1 SETLINE
+42
 16 PUSHSELF
 17 PUSH
-4
+4 ""
 128 SEND
-5
+5 "puts"
 1
 48 JMP
-1
+3
+1 SETLINE
+38
 20 PUSHNIL
 144 RET
-_block_53dd4cd9518681b3c8c113a84c173391
-:14:80
+_19_block_809c47564fd3fb0930ee945bb9910f8f
+:14:100
 "prototype
 "Closure
 "===
@@ -161,193 +214,237 @@ _block_53dd4cd9518681b3c8c113a84c173391
 "print
 "failures
 "[31mF[0m
+1 SETLINE
+20
 32 PUSHLOCAL
 1
 128 SEND
-0
+0 "prototype"
 0
 21 PUSHLOBBY
 64 GETSLOT
-1
+1 "Closure"
 128 SEND
-2
+2 "==="
 1
 49 JIF
 3
 20 PUSHNIL
 48 JMP
-63
+81
+1 SETLINE
+21
 16 PUSHSELF
 17 PUSH
-3
+3 "executing!"
 128 SEND
-4
+4 "puts"
 1
+1 SETLINE
+22
 16 PUSHSELF
 128 SEND
-5
+5 "tests"
 0
 32 PUSHLOCAL
 0
 128 SEND
-6
+6 "push"
 1
+1 SETLINE
+24
 34 PUSHLOCALDEPTH
 2
 0
 128 SEND
-7
+7 "setup"
 0
+1 SETLINE
+25
 32 PUSHLOCAL
 1
 128 SEND
-8
+8 "apply"
 0
 35 SETLOCALDEPTH
 2
 1
+1 SETLINE
+26
 34 PUSHLOCALDEPTH
 2
 0
 128 SEND
-9
+9 "teardown"
 0
+1 SETLINE
+28
 34 PUSHLOCALDEPTH
 2
 1
 49 JIF
-8
+10
+1 SETLINE
+29
 16 PUSHSELF
 17 PUSH
-10
+10 "\e[32m.\e[0m"
 128 SEND
-11
+11 "print"
 1
 48 JMP
-15
+19
+1 SETLINE
+31
 16 PUSHSELF
 128 SEND
-12
+12 "failures"
 0
 32 PUSHLOCAL
 0
 128 SEND
-6
+6 "push"
 1
+1 SETLINE
+32
 16 PUSHSELF
 17 PUSH
-13
+13 "\e[31mF\e[0m"
 128 SEND
-11
+11 "print"
 1
 144 RET
-_block_fb2058ba5c9c2b16e6b4716e5f3f68c1
-:3:12
+_39_block_f2d8e1f3823805de73dcdfe376679eeb
+:3:14
 "* 
 "+
 "puts
+1 SETLINE
+40
 16 PUSHSELF
 17 PUSH
-0
+0 "* "
 32 PUSHLOCAL
 0
 128 SEND
-1
+1 "+"
 1
 128 SEND
-2
+2 "puts"
 1
 144 RET
-_block_78980b9dfe598d3297a62a963c525407
-:0:2
+_14_block_99269180fc8d89b05f19f71f106655be
+:0:4
+1 SETLINE
+14
 20 PUSHNIL
 144 RET
-_block_f873bb42b76b31a0323cdb044a323439
-:0:2
+_13_block_5aa412e280386506a7a5c1f2c1cc71ac
+:0:4
+1 SETLINE
+13
 20 PUSHNIL
 144 RET
-_block_ef7a10d2fccaafc4d1de97e0377e4da5
-:4:34
+_2_block_226e12f0bca5c74b3340d3102a72e26d
+:4:46
 "Expected actual to equal expected.
 "==
 "failures
 "push
+1 SETLINE
+3
 32 PUSHLOCAL
 2
 49 JIF
 3
 20 PUSHNIL
 48 JMP
+6
+1 SETLINE
 4
 17 PUSH
-0
+0 "Expected actual to equal expected."
 33 SETLOCAL
 2
+1 SETLINE
+6
 32 PUSHLOCAL
 0
 32 PUSHLOCAL
 1
 128 SEND
-1
+1 "=="
 1
 49 JIF
-3
+5
+1 SETLINE
+7
 18 PUSHTRUE
 48 JMP
-10
+14
+1 SETLINE
+9
 16 PUSHSELF
 128 SEND
-2
+2 "failures"
 0
 32 PUSHLOCAL
 2
 128 SEND
-3
+3 "push"
 1
+1 SETLINE
+10
 19 PUSHFALSE
 144 RET
-_block_18d0fe30cda5bca6c4305c66bcc8979c
-:2:9
+_48_block_1ff07ce8187d4f914cb11ba1eade8301
+:2:11
 2
 "assert_equal
+1 SETLINE
+49
 16 PUSHSELF
 17 PUSH
-0
+0 2
 17 PUSH
-0
+0 2
 128 SEND
-1
+1 "assert_equal"
 2
 144 RET
-_block_83130617ca718c1576866338b6259926
-:3:9
+_51_block_f2fce8498407d96f4582d15d3cd3565c
+:3:11
 2
 3
 "assert_equal
+1 SETLINE
+52
 16 PUSHSELF
 17 PUSH
-0
+0 2
 17 PUSH
-1
+1 3
 128 SEND
-2
+2 "assert_equal"
 2
 144 RET
-_block_79c7ae2a739c04d9ba03668d85d6a08c
-:4:11
+_54_block_b0bb21ffb915b707acd013efb77e9868
+:4:13
 2
 3
 "Failed man!!!
 "assert_equal
+1 SETLINE
+55
 16 PUSHSELF
 17 PUSH
-0
+0 2
 17 PUSH
-1
+1 3
 17 PUSH
-2
+2 "Failed man!!!"
 128 SEND
-3
+3 "assert_equal"
 3
 144 RET
 
