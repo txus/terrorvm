@@ -1,66 +1,83 @@
-_main
-:11:46
+/Users/txus/Code/terrorvm/compiler/examples/vectors.rb
+_0_main
+:11:60
 "* 
 "everyone!
 "to
 "world
 "hello
-"block_a0329904e2f682e96effd52e95980a17
+"3_block_68a56f63dd748cfa15d0a25639c38b2d
 "each
 "done!
 "puts
-"block_ca644b6f9b6e500926cd95aa60554dfc
+"9_block_af301809d6ab3b20182bedec552860ca
 "map
-17 PUSH
-0
-33 SETLOCAL
-0
-17 PUSH
+1 SETLINE
 1
 17 PUSH
+0 "* "
+33 SETLOCAL
+0
+1 SETLINE
 2
 17 PUSH
-3
+1 "everyone!"
 17 PUSH
-4
+2 "to"
+17 PUSH
+3 "world"
+17 PUSH
+4 "hello"
 68 MAKEVEC
 4
 33 SETLOCAL
 1
+1 SETLINE
+3
 67 DEFN
-5
+5 "3_block_68a56f63dd748cfa15d0a25639c38b2d"
 33 SETLOCAL
 2
+1 SETLINE
+6
 32 PUSHLOCAL
 1
 32 PUSHLOCAL
 2
 128 SEND
-6
+6 "each"
 1
+1 SETLINE
+7
 16 PUSHSELF
 17 PUSH
-7
+7 "done!"
 128 SEND
-8
+8 "puts"
 1
+1 SETLINE
+11
 16 PUSHSELF
+1 SETLINE
+9
 32 PUSHLOCAL
 1
 67 DEFN
-9
+9 "9_block_af301809d6ab3b20182bedec552860ca"
 128 SEND
-10
+10 "map"
 1
 128 SEND
-8
+8 "puts"
 1
 20 PUSHNIL
 144 RET
-_block_a0329904e2f682e96effd52e95980a17
-:2:13
+_3_block_68a56f63dd748cfa15d0a25639c38b2d
+:2:15
 "+
 "puts
+1 SETLINE
+4
 16 PUSHSELF
 34 PUSHLOCALDEPTH
 1
@@ -68,22 +85,24 @@ _block_a0329904e2f682e96effd52e95980a17
 32 PUSHLOCAL
 0
 128 SEND
-0
+0 "+"
 1
 128 SEND
-1
+1 "puts"
 1
 144 RET
-_block_ca644b6f9b6e500926cd95aa60554dfc
-:2:8
+_9_block_af301809d6ab3b20182bedec552860ca
+:2:10
 "!!!!
 "+
+1 SETLINE
+10
 32 PUSHLOCAL
 0
 17 PUSH
-0
+0 "!!!!"
 128 SEND
-1
+1 "+"
 1
 144 RET
 

@@ -1,51 +1,6 @@
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <terror/dbg.h>
-#include <terror/bstrlib.h>
+#include <terror/file_utils.h>
 #include <terror/input_reader.h>
 #include <terror/value.h>
-
-/*
- * Return the filesize of `filename` or -1.
- */
-
-static inline off_t
-file_size(bstring filename) {
-  struct stat s;
-  int rc = stat(bdata(filename), &s);
-
-  if (rc < 0) return -1;
-  return s.st_size;
-}
-
-/*
- * Read the contents of `filename` or return NULL.
- */
-
-static inline bstring
-file_read(bstring filename) {
-  off_t len = file_size(filename);
-  check(len >= 0, "Invalid file length.");
-
-  char *buf = malloc(len + 1);
-  check_mem(buf);
-
-  int fd = open(bdata(filename), O_RDONLY);
-  check(fd >= 0, "Error opening file.");
-
-  ssize_t size = read(fd, buf, len);
-  check(size == len, "Read length is invalid");
-
-  bstring retval = bfromcstr(buf);
-  free(buf);
-  return retval;
-
-error:
-  return NULL;
-}
 
 static inline void
 parse_string(bstring buf, BytecodeFile *file)
@@ -56,12 +11,23 @@ parse_string(bstring buf, BytecodeFile *file)
 
   bstring *line = lines->entry;
 
+  // Get filename
+  file->filename = bstrcpy(*line);
+  line++; cnt++;
+
   while(1) {
     // eof
     if (bstrcmp(bmidstr(*line, 0, 1), bfromcstr("_")) != 0) break;
 
     // Get method name
-    int num_literals, num_instructions;
+    int num_literals, num_instructions, linenum;
+    {
+      struct bstrList *fn_params = bsplit(*line, '_');
+      bstring *fnptr = fn_params->entry;
+      fnptr++; // linenum
+      linenum = atoi(bdata(*fnptr));
+    }
+
     bstring method = bmidstr(*line, 1, (*line)->mlen);
     line++; cnt++;
 
@@ -102,7 +68,8 @@ parse_string(bstring buf, BytecodeFile *file)
       line++; cnt++;
     }
 
-    Function *fn = Function_new(instructions, literals);
+    Function *fn = Function_new(bdata(file->filename), instructions, literals);
+    fn->line = linenum;
     DArray_push(file->function_names, method);
     debug("Parsed %s...", bdata(method));
     Hashmap_set(file->functions, method, fn);
@@ -113,17 +80,17 @@ parse_string(bstring buf, BytecodeFile *file)
   bstrListDestroy(lines);
 }
 
-BytecodeFile *BytecodeFile_new(bstring filename)
+BytecodeFile *BytecodeFile_new(bstring compiled_filename)
 {
   BytecodeFile *file = calloc(1, sizeof(BytecodeFile));
   check_mem(file);
 
-  file->filename = filename;
+  file->compiled_filename = compiled_filename;
   file->functions = Hashmap_create(NULL, NULL);
   file->function_names = DArray_create(sizeof(bstring), 10);
 
-  bstring buf = file_read(filename);
-  check(buf, "Cannot read file %s", bdata(filename));
+  bstring buf = readfile(compiled_filename);
+  check(buf, "Cannot read file %s", bdata(compiled_filename));
   parse_string(buf, file);
 
   bdestroy(buf);
@@ -138,6 +105,7 @@ void
 BytecodeFile_destroy(BytecodeFile *file)
 {
   if(file->filename) bdestroy(file->filename);
+  if(file->compiled_filename) bdestroy(file->compiled_filename);
   if(file->functions) Hashmap_destroy(file->functions);
 
   free(file);

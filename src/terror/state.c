@@ -7,6 +7,7 @@ State_new(Hashmap *functions)
   state->functions = functions;
   state->frames = Stack_create();
   state->stack = Stack_create();
+  state->dbg = Debugger_new();
   state->heap = NULL;
   return state;
 }

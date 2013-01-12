@@ -11,6 +11,7 @@ CallFrame_new(VALUE self, Function *fn, int *ret)
   CallFrame* cf = calloc(1, sizeof(CallFrame));
   cf->self = self;
   cf->fn = fn;
+  cf->name = NULL;
   cf->ret = ret;
   cf->locals = DArray_create(sizeof(VALUE), 10);
   cf->parent = NULL;
@@ -53,4 +54,14 @@ CallFrame_setlocaldepth(CallFrame *frame, int depth, int idx, VALUE value)
   return CallFrame_setlocal(frame, idx, value);
 error:
   debug("Error.");
+}
+
+void
+CallFrame_print(CallFrame *frame)
+{
+  printf("%s:%i", frame->fn->filename, frame->fn->line);
+  if(frame->name) {
+    printf(" (%s)", frame->name);
+  }
+  printf("\n");
 }

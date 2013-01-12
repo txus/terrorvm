@@ -109,6 +109,7 @@ module Terror
 
     # op :opcode, value, arity
     op :noop,      0x00, 0
+    op :setline,   0x01, 1
 
     op :pushself,  0x10, 0
     op :push,      0x11, 1

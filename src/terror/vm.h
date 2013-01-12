@@ -9,4 +9,6 @@
 VALUE VM_run(STATE);
 void VM_start(bstring filename);
 
+void Stack_print(Stack* stack);
+
 #endif

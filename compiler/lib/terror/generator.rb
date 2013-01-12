@@ -10,6 +10,7 @@ module Terror
     attr_accessor :children
 
     def initialize(parent=nil)
+      @current_line = -1
       @children = []
       @parent    = parent
 
@@ -38,6 +39,14 @@ module Terror
 
       output << [@literals, instrs].flatten.join("\n")
       output
+    end
+
+    def setline(line)
+      if @current_line != line
+        @ip += 2
+        _setline line
+        @current_line = line
+      end
     end
 
     def push(value)
@@ -152,12 +161,15 @@ module Terror
     end
 
     def literal value
+      inspect = value.is_a?(Symbol) ? value.to_s.inspect : value.inspect
       val = value.is_a?(Numeric) ? value : "\"#{value}"
 
-      @literals.index(val) or begin
+      idx = @literals.index(val) || begin
         @literals.push val
         @literals.index(val)
       end
+
+      "#{idx} #{inspect}"
     end
   end
 end

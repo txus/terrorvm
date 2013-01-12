@@ -1,63 +1,74 @@
-_main
-:5:26
+/Users/txus/Code/terrorvm/compiler/examples/hello_world.rb
+_0_main
+:5:34
 "hello
 "to_map
-"block_20915b4a4c9dabb4c467b5361606dfb9
+"3_block_8536122f47329b1115b21d7d42c847e5
 "greet
 "world
+1 SETLINE
+1
 17 PUSH
-0
+0 "hello"
 33 SETLOCAL
 0
+1 SETLINE
+2
 68 MAKEVEC
 0
 128 SEND
-1
+1 "to_map"
 0
 33 SETLOCAL
 1
+1 SETLINE
+3
 32 PUSHLOCAL
 1
 67 DEFN
-2
+2 "3_block_8536122f47329b1115b21d7d42c847e5"
 65 SETSLOT
-3
+3 "greet"
+1 SETLINE
+6
 32 PUSHLOCAL
 1
 17 PUSH
-4
+4 "world"
 128 SEND
-3
+3 "greet"
 1
 20 PUSHNIL
 144 RET
-_block_20915b4a4c9dabb4c467b5361606dfb9
-:4:23
+_3_block_8536122f47329b1115b21d7d42c847e5
+:4:25
 " 
 "+
 "!
 "puts
+1 SETLINE
+4
 16 PUSHSELF
 34 PUSHLOCALDEPTH
 1
 0
 17 PUSH
-0
+0 " "
 128 SEND
-1
+1 "+"
 1
 32 PUSHLOCAL
 0
 128 SEND
-1
+1 "+"
 1
 17 PUSH
-2
+2 "!"
 128 SEND
-1
+1 "+"
 1
 128 SEND
-3
+3 "puts"
 1
 144 RET
 

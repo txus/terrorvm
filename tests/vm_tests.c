@@ -176,10 +176,12 @@ char *test_pushlocaldepth()
   RUN(
     PUSH, 0,
     SETLOCAL, 0,
+    POP,
 
     PUSHSELF,
     DEFN, 1,
     SETSLOT, 2,
+    POP,
 
     PUSHSELF,
     SEND, 2, 0,

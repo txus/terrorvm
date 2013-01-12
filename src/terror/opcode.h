@@ -3,6 +3,7 @@
 
 typedef enum {
   NOOP = 0,
+  SETLINE,
 
   PUSHSELF = 0x10,  // 16
   PUSH,             // 17

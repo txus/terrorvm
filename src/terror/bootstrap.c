@@ -3,6 +3,7 @@
 #include <terror/bstrlib.h>
 #include <terror/runtime.h>
 #include <terror/primitives.h>
+#include <terror/debugger.h>
 #include <dirent.h>
 
 VALUE Number_bp;
@@ -10,6 +11,7 @@ VALUE String_bp;
 VALUE Vector_bp;
 VALUE Map_bp;
 VALUE Closure_bp;
+int Debug;
 
 static inline DArray*
 kernel_files()
@@ -44,6 +46,7 @@ expose_VM(VALUE lobby)
   // Object
   DEFPRIM(primitives, "prototype", Primitive_prototype);
   DEFPRIM(primitives, "or", Primitive_or);
+
   DEFPRIM(primitives, "equals", Primitive_equals);
   DEFPRIM(primitives, "is", Primitive_is);
   DEFPRIM(primitives, "print", Primitive_print);
@@ -94,6 +97,14 @@ State_bootstrap(STATE)
   // Expose toplevel constants
   expose_VM(state->lobby);
 
+  int reenable_debugger = 0;
+
+  // Disable debugger while loading kernel files
+  if(Debug) {
+    reenable_debugger = 1;
+    Debug = 0;
+  }
+
   // Load all files.
   for(int i=0; i < count; i++) {
     bstring filename = (bstring)DArray_at(filenames, i);
@@ -102,5 +113,9 @@ State_bootstrap(STATE)
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
     Primitive_require(state, String_new(bdata(path)), NULL, NULL);
   }
+
+  // Reenable debugger if needed
+  if(reenable_debugger) Debug = 1;
+
   debug("[BOOTSTRAP] Done!");
 }

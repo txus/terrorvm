@@ -24,7 +24,7 @@ char *test_string_new()
 
 char *test_closure_new()
 {
-  Function *fn = Function_new(NULL, NULL);
+  Function *fn = Function_new("myfile", NULL, NULL);
   VALUE closure = Closure_new(fn, NULL);
   mu_assert(closure->type == ClosureType, "failed creating closure");
   mu_assert(VAL2FN(closure) == fn, "failed assigning function to closure");

@@ -1,5 +1,4 @@
-# Vector#map
-VM.types[:vector].map = -> fn {
+Vector.map = -> fn {
   new = []
   each(-> element {
     new.push fn.apply(element)
@@ -7,7 +6,7 @@ VM.types[:vector].map = -> fn {
   new
 }
 
-VM.types[:vector].length = -> fn {
+Vector.length = -> fn {
   len = 0
   each(-> element { len += 1 })
   len

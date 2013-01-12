@@ -136,7 +136,7 @@ Primitive_require(STATE, void *a, void *_, void *__)
     bstring fn_name = (bstring)DArray_at(file->function_names, j);
     Function *fn = (Function*)Hashmap_get(file->functions, fn_name);
 
-    if(bstrcmp(fn_name, bfromcstr("main")) == 0) {
+    if(bstrcmp(fn_name, bfromcstr("0_main")) == 0) {
       main = fn;
     } else {
       Hashmap_set(fns, fn_name, fn);
@@ -269,7 +269,7 @@ Primitive_Vector_each(STATE, void *a, void *b, void *_)
     DArray *args = DArray_create(sizeof(VALUE), 10);
     DArray_push(args, element);
 
-    Closure_invoke(state, closure, NULL, args);
+    Closure_invoke(state, closure, NULL, args, "anonymous");
   });
 
   return vector;
@@ -289,7 +289,7 @@ Primitive_Vector_each_with_index(STATE, void *a, void *b, void *_)
     DArray_push(args, element);
     DArray_push(args, Number_new(idx));
 
-    Closure_invoke(state, closure, NULL, args);
+    Closure_invoke(state, closure, NULL, args, "anonymous");
   });
 
   return vector;
@@ -354,7 +354,7 @@ Primitive_Map_each(STATE, void *a, void *b, void *_)
     DArray_push(args, String_new(bdata(key)));
     DArray_push(args, value);
 
-    Closure_invoke(state, closure, NULL, args);
+    Closure_invoke(state, closure, NULL, args, "anonymous");
   });
 
   return map;

@@ -14,20 +14,20 @@
 VALUE TrueObject;
 VALUE FalseObject;
 VALUE NilObject;
+int Debug;
 
-static inline void dump(Stack* stack)
+void Stack_print(Stack* stack)
 {
-#ifndef NDEBUG
-  printf("---STACK---\n");
+  printf("---STACK (%i)---\n", Stack_count(stack));
   int i = 0;
   STACK_FOREACH(stack, node) {
     if(node) {
-      printf("%i. ", i);
+      printf("\n%i. ", i);
       Value_print((VALUE)node->value);
     }
     i++;
   }
-#endif
+  printf("\n");
 }
 
 #define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
@@ -47,7 +47,8 @@ void VM_start(bstring filename)
 
   VALUE lobby = Lobby_new(); // toplevel object
   state->lobby = lobby;
-  CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("main"), NULL);
+  CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("0_main"), NULL);
+  top_frame->name = "main";
 
   Stack_push(FRAMES, top_frame);
 
@@ -62,13 +63,21 @@ void VM_start(bstring filename)
 
 VALUE VM_run(STATE)
 {
+  Debugger_load_current_file(state);
+
   int *ip = CURR_FRAME->fn->code;
 
   while(1) {
     switch(*ip) {
       case NOOP:
         break;
+      case SETLINE: { // debugging
+        ip++;
+        Debugger_setline(state, *ip);
+        break;
+      }
       case PUSH: {
+        Debugger_evaluate(state);
         ip++;
         debug("PUSH %i", *ip);
         VALUE value = LITERAL(*ip);
@@ -76,21 +85,25 @@ VALUE VM_run(STATE)
         break;
       }
       case PUSHTRUE: {
+        Debugger_evaluate(state);
         debug("PUSHTRUE");
         Stack_push(STACK, TrueObject);
         break;
       }
       case PUSHFALSE: {
+        Debugger_evaluate(state);
         debug("PUSHFALSE");
         Stack_push(STACK, FalseObject);
         break;
       }
       case PUSHNIL: {
+        Debugger_evaluate(state);
         debug("PUSHNIL");
         Stack_push(STACK, NilObject);
         break;
       }
       case JMP: {
+        Debugger_evaluate(state);
         ip++;
         int jump = *ip;
         debug("JMP %i", jump);
@@ -98,6 +111,7 @@ VALUE VM_run(STATE)
         break;
       }
       case JIF: {
+        Debugger_evaluate(state);
         ip++;
         int jump = *ip;
         debug("JIF %i", jump);
@@ -110,6 +124,7 @@ VALUE VM_run(STATE)
         break;
       }
       case JIT: {
+        Debugger_evaluate(state);
         ip++;
         int jump = *ip;
         debug("JIT %i", jump);
@@ -122,6 +137,7 @@ VALUE VM_run(STATE)
         break;
       }
       case GETSLOT: {
+        Debugger_evaluate(state);
         ip++;
         debug("GETSLOT %i", *ip);
         VALUE receiver = Stack_pop(STACK);
@@ -137,6 +153,7 @@ VALUE VM_run(STATE)
         break;
       }
       case SETSLOT: {
+        Debugger_evaluate(state);
         ip++;
         debug("SETSLOT %i", *ip);
         VALUE value    = Stack_pop(STACK);
@@ -151,6 +168,7 @@ VALUE VM_run(STATE)
         break;
       }
       case DEFN: {
+        Debugger_evaluate(state);
         ip++;
         debug("DEFN %i", *ip);
         VALUE fn_name = LITERAL(*ip);
@@ -159,6 +177,7 @@ VALUE VM_run(STATE)
         break;
       }
       case MAKEVEC: {
+        Debugger_evaluate(state);
         ip++;
         debug("MAKEVEC %i", *ip);
         int count = *ip;
@@ -174,6 +193,7 @@ VALUE VM_run(STATE)
         break;
       }
       case SEND: {
+        Debugger_evaluate(state);
         ip++;
         int op1 = *ip;
         ip++;
@@ -197,14 +217,11 @@ VALUE VM_run(STATE)
            strcmp(VAL2STR(name), "apply") == 0) {
 
           state->ret = ip; // save where we want to return
-          ip = Function_call(state, VAL2FN(receiver), CURR_FRAME->self, locals);
-          ip--;
+          ip = Function_call(state, VAL2FN(receiver), CURR_FRAME->self, locals, VAL2STR(name));
           break;
         }
 
-        /* printf("Trying to get slot %s.", VAL2STR(name)); */
         VALUE closure = Value_get(receiver, VAL2STR(name));
-        /* printf("Tried to get slot %s.", VAL2STR(name)); */
         check(closure, "Undefined slot %s on object type %i.", VAL2STR(name), receiver->type);
 
         if (closure->type != ClosureType && closure != NilObject) {
@@ -230,27 +247,30 @@ VALUE VM_run(STATE)
 #endif
 
         state->ret = ip; // save where we want to return
-        ip = Function_call(state, VAL2FN(closure), receiver, locals);
-        ip--; // because we increment after each while cycle
+        ip = Function_call(state, VAL2FN(closure), receiver, locals, VAL2STR(name));
         break;
       }
       case PUSHLOBBY: {
+        Debugger_evaluate(state);
         debug("PUSHLOBBY");
         Stack_push(STACK, state->lobby);
         break;
       }
       case PUSHSELF: {
+        Debugger_evaluate(state);
         debug("PUSHSELF");
         Stack_push(STACK, CURR_FRAME->self);
         break;
       }
       case PUSHLOCAL: {
+        Debugger_evaluate(state);
         ip++;
         Stack_push(STACK, LOCAL(*ip));
         debug("PUSHLOCAL %i", *ip);
         break;
       }
       case PUSHLOCALDEPTH: {
+        Debugger_evaluate(state);
         ip++;
         int depth = *ip;
         ip++;
@@ -259,12 +279,14 @@ VALUE VM_run(STATE)
         break;
       }
       case SETLOCAL: {
+        Debugger_evaluate(state);
         ip++;
         debug("SETLOCAL %i", *ip);
         LOCALSET(*ip, Stack_peek(STACK));
         break;
       }
       case SETLOCALDEPTH: {
+        Debugger_evaluate(state);
         ip++;
         int depth = *ip;
         ip++;
@@ -273,22 +295,28 @@ VALUE VM_run(STATE)
         break;
       }
       case POP: {
+        Debugger_evaluate(state);
         debug("POP");
+        check(Stack_count(STACK) > 0, "Stack underflow.");
         Stack_pop(STACK);
         break;
       }
       case RET: {
+        Debugger_evaluate(state);
         debug("RET");
         CallFrame *old_frame = Stack_pop(FRAMES);
 
         ip = old_frame->ret;
+        check(Stack_count(STACK) > 0, "Stack underflow.");
+
         if (ip == NULL) return Stack_pop(STACK); // if there's nowhere to return, exit
 
         break;
       }
       case DUMP: {
+        Debugger_evaluate(state);
         debug("DUMP");
-        dump(STACK);
+        Stack_print(STACK);
         break;
       }
     }

@@ -8,6 +8,7 @@
 
 typedef struct {
   bstring filename;
+  bstring compiled_filename;
   int *code;
   DArray *function_names;
   Hashmap *functions;

@@ -22,6 +22,12 @@ module Terror
       end
     end
 
+    describe '#setline' do
+      it 'sets the current file line' do
+        @g.setline(3)
+      end
+    end
+
     describe '#push' do
       it 'pushes an integer literal to the stack' do
         @g.push(3)

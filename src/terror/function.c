@@ -6,10 +6,12 @@
 #include <terror/vm.h>
 
 Function*
-Function_new(int *code, DArray *literals)
+Function_new(char *filename, int *code, DArray *literals)
 {
   Function *fn = calloc(1, sizeof(Function));
+  fn->filename = filename;
   fn->code = code;
+  fn->line = 0;
   fn->literals = literals;
   fn->scope = NULL;
   fn->c_fn = NULL;
@@ -20,6 +22,7 @@ Function*
 Function_native_new(native_fn c_fn)
 {
   Function *fn = calloc(1, sizeof(Function));
+  fn->filename = "(native)";
   fn->code     = NULL;
   fn->literals = NULL;
   fn->scope = NULL;
@@ -43,7 +46,8 @@ Function_call(
   STATE,          // the State
   Function *fn,   // the Function we're calling
   VALUE receiver, // the Receiver value
-  DArray *locals) // the arguments to the function call
+  DArray *locals, // the arguments to the function call
+  char *name)     // optional name for the backtrace
 {
   int *ret = state->ret;
   if(!receiver) receiver = CURR_FRAME->self;
@@ -58,6 +62,7 @@ Function_call(
   // Normal dispatch
   CallFrame *new_frame = CallFrame_new(receiver, fn, ret);
   new_frame->locals = locals;
+  new_frame->name = name;
 
   // If it is a closure, we nest the call frames.
   if(fn->scope) {
@@ -66,13 +71,16 @@ Function_call(
 
   Stack_push(FRAMES, new_frame);
 
-  return new_frame->fn->code;
+  ret = new_frame->fn->code;
+  ret--;
+
+  return ret;
 }
 
 VALUE
-Closure_invoke(STATE, VALUE closure, VALUE receiver, DArray *args)
+Closure_invoke(STATE, VALUE closure, VALUE receiver, DArray *args, char *name)
 {
   state->ret = NULL; // don't return anywhere
-  Function_call(state, VAL2FN(closure), receiver, args);
+  Function_call(state, VAL2FN(closure), receiver, args, name);
   return VM_run(state);
 }

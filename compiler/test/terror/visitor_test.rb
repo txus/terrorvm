@@ -15,12 +15,14 @@ module Terror
 
     def compiles(code, &block)
       g = Generator.new
+      g.setline 1
       g.instance_eval(&block)
       visit(code).instructions.must_equal g.instructions
     end
 
     def compiles_block(code, &block)
       g = Generator.new
+      g.setline 1
       g.instance_eval(&block)
       visit(code).children.first.instructions.must_equal g.instructions
     end

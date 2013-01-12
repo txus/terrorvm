@@ -78,8 +78,7 @@ __Value_print(VALUE o)
     }
     case ClosureType: {
       Function *fn = VAL2FN(o);
-      int lits = DArray_count(fn->literals);
-      printf("#<Closure %p (%i literals) ", o, lits);
+      printf("#<Closure %p ", o);
       if(fn->c_fn) {
         printf("(C code)");
       } else {

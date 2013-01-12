@@ -1,5 +1,6 @@
-_main
-:9:28
+/Users/txus/Code/terrorvm/compiler/examples/numbers.rb
+_0_main
+:9:30
 3
 1
 "-
@@ -9,31 +10,33 @@ _main
 "*
 "+
 "puts
+1 SETLINE
+1
 16 PUSHSELF
 17 PUSH
-0
+0 3
 17 PUSH
-1
+1 1
 128 SEND
-2
+2 "-"
 1
 17 PUSH
-0
+0 3
 17 PUSH
-3
+3 9.0
 17 PUSH
-4
+4 3.2
 128 SEND
-5
+5 "/"
 1
 128 SEND
-6
+6 "*"
 1
 128 SEND
-7
+7 "+"
 1
 128 SEND
-8
+8 "puts"
 1
 20 PUSHNIL
 144 RET

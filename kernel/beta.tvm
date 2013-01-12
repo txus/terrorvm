@@ -1,68 +1,64 @@
-_main
-:8:32
-"VM
-"types
-"vector
-"[]
-"block_732d1c0d0ac63cf57ee71487df62b266
+/Users/txus/Code/terrorvm/compiler/kernel/beta.rb
+_0_main
+:5:20
+"Vector
+"1_block_24f06bd53e4344e3176be470e94f0ad1
 "map
-"block_3668c081fb5429e52577c04a918fd681
+"9_block_19cbfb1f488176aa34bdaba622a347c3
 "length
+1 SETLINE
+1
 21 PUSHLOBBY
 64 GETSLOT
-0
-128 SEND
-1
-0
-17 PUSH
-2
-128 SEND
-3
-1
+0 "Vector"
 67 DEFN
-4
+1 "1_block_24f06bd53e4344e3176be470e94f0ad1"
 65 SETSLOT
-5
+2 "map"
+1 SETLINE
+9
 21 PUSHLOBBY
 64 GETSLOT
-0
-128 SEND
-1
-0
-17 PUSH
-2
-128 SEND
-3
-1
+0 "Vector"
 67 DEFN
-6
+3 "9_block_19cbfb1f488176aa34bdaba622a347c3"
 65 SETSLOT
-7
+4 "length"
 20 PUSHNIL
 144 RET
-_block_732d1c0d0ac63cf57ee71487df62b266
-:2:15
-"block_5f0562b981cc7414703389cd5b533b1e
+_1_block_24f06bd53e4344e3176be470e94f0ad1
+:2:23
+"3_block_93e17b3867bbd34ee955f2f04d1c20e8
 "each
+1 SETLINE
+2
 68 MAKEVEC
 0
 35 SETLOCALDEPTH
 1
 0
+1 SETLINE
+5
 16 PUSHSELF
+1 SETLINE
+3
 67 DEFN
-0
+0 "3_block_93e17b3867bbd34ee955f2f04d1c20e8"
 128 SEND
+1 "each"
 1
-1
+1 SETLINE
+6
 34 PUSHLOCALDEPTH
 1
 0
 144 RET
-_block_5f0562b981cc7414703389cd5b533b1e
-:2:15
+_3_block_93e17b3867bbd34ee955f2f04d1c20e8
+:2:17
 "apply
 "push
+1 SETLINE
+4
 34 PUSHLOCALDEPTH
 2
 0
@@ -72,43 +68,51 @@ _block_5f0562b981cc7414703389cd5b533b1e
 32 PUSHLOCAL
 0
 128 SEND
-0
+0 "apply"
 1
 128 SEND
-1
+1 "push"
 1
 144 RET
-_block_3668c081fb5429e52577c04a918fd681
-:3:15
+_9_block_19cbfb1f488176aa34bdaba622a347c3
+:3:21
 0
-"block_6b594ab5d15beab416cf57ef5369c2d4
+"11_block_42099631ba6b6e0c915a00b2b36aefca
 "each
+1 SETLINE
+10
 17 PUSH
-0
+0 0
 35 SETLOCALDEPTH
 1
 1
+1 SETLINE
+11
 16 PUSHSELF
 67 DEFN
-1
+1 "11_block_42099631ba6b6e0c915a00b2b36aefca"
 128 SEND
-2
+2 "each"
 1
+1 SETLINE
+12
 34 PUSHLOCALDEPTH
 1
 1
 144 RET
-_block_6b594ab5d15beab416cf57ef5369c2d4
-:2:12
+_11_block_42099631ba6b6e0c915a00b2b36aefca
+:2:14
 1
 "+
+1 SETLINE
+11
 34 PUSHLOCALDEPTH
 2
 1
 17 PUSH
-0
+0 1
 128 SEND
-1
+1 "+"
 1
 35 SETLOCALDEPTH
 2

@@ -8,8 +8,8 @@ char *test_load()
 {
   BytecodeFile *file = BytecodeFile_new(bfromcstr("tests/testfile.tvm"));
 
-  Function *main = Hashmap_get(file->functions, bfromcstr("main"));
-  Function *add = Hashmap_get(file->functions, bfromcstr("add"));
+  Function *main = Hashmap_get(file->functions, bfromcstr("0_main"));
+  Function *add = Hashmap_get(file->functions, bfromcstr("4_add"));
 
   mu_assert(*main->code == PUSH, "error parsing main");
 

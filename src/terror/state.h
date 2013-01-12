@@ -5,6 +5,7 @@
 #include <terror/darray.h>
 #include <terror/value.h>
 #include <terror/stack.h>
+#include <terror/debugger.h>
 
 struct state_s {
   Hashmap *functions;
@@ -12,6 +13,7 @@ struct state_s {
   Stack *stack;
   VALUE lobby;
   int *ret;
+  Debugger *dbg;
   DArray *heap;
 };
 typedef struct state_s State;
@@ -22,6 +24,7 @@ State* State_new(Hashmap *functions);
 #define STACK (state->stack)
 #define FRAMES (state->frames)
 #define CURR_FRAME ((CallFrame*)(Stack_peek(FRAMES)))
+#define DEBUGGER (state->dbg)
 
 #endif
 
