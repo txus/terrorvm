@@ -5,7 +5,6 @@
 #include <terror/call_frame.h>
 #include <terror/input_reader.h>
 #include <terror/vector.h>
-#include <terror/map.h>
 #include <terror/vm.h>
 #include <assert.h>
 
@@ -349,9 +348,9 @@ Primitive_Map_each(STATE, void *a, void *b, void *_)
   CHECK_PRESENCE(map);
   CHECK_TYPE(closure, ClosureType);
 
-  Map_each(map, ^ void (bstring key, VALUE value) {
-    DArray *args = DArray_create(sizeof(VALUE), 10);
-    DArray_push(args, String_new(bdata(key)));
+  Value_each(map, ^ void (VALUE key, VALUE value) {
+    DArray *args = DArray_create(sizeof(VALUE), 2);
+    DArray_push(args, key);
     DArray_push(args, value);
 
     Closure_invoke(state, closure, NULL, args, "anonymous");

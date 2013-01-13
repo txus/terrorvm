@@ -15,7 +15,7 @@ TestCase = {
   run: -> {
     self.tests    = []
     self.failures = []
-    that = self;
+    that = self
     self.each(-> k, v {
       unless (v.prototype === Closure)
         puts 'executing!'

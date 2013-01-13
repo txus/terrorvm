@@ -4,7 +4,6 @@
 #include <terror/runtime.h>
 #include <terror/primitives.h>
 #include <terror/call_frame.h>
-#include <terror/map.h>
 #include <terror/vector.h>
 #include <terror/gc.h>
 
@@ -23,6 +22,7 @@ Value_new(ValueType type)
   VALUE val = gc_alloc(sizeof(val_t));
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
+  val->fields = DArray_create(sizeof(VALUE), 10);
   val->prototype = Object_bp;
   return val;
 };
@@ -105,8 +105,8 @@ __Value_print(VALUE o)
     }
     case MapType: {
       printf("{");
-      Map_each(o, ^ void (bstring key, VALUE val) {
-        printf("%s => ", bdata(key));
+      Value_each(o, ^ void (VALUE key, VALUE val) {
+        printf("%s => ", VAL2STR(key));
         Value_print(val);
         printf(", ");
       });
@@ -116,8 +116,8 @@ __Value_print(VALUE o)
     default: {
       printf("#<Object %p ", o);
       printf("{");
-      Map_each(o, ^ void (bstring key, VALUE val) {
-        printf("%s => ", bdata(key));
+      Value_each(o, ^ void (VALUE key, VALUE val) {
+        printf("%s => ", VAL2STR(key));
         Value_print(val);
         printf("\n");
       });
@@ -196,8 +196,14 @@ Map_new(DArray *array)
   // itself.
   Hashmap *hash = val->table;
 
+  // Preserve insertion order
+  DArray *keys = DArray_create(sizeof(VALUE), count / 2);
+  val->fields = keys;
+
   for(int i=0; i < count; i += 2) {
     VALUE key   = (VALUE)DArray_at(array, i);
+    DArray_push(keys, key);
+
     VALUE value = (VALUE)DArray_at(array, i+1);
     assert(key->type == StringType && "All map keys must be strings.");
 
@@ -213,6 +219,7 @@ Value_set(VALUE receiver, char *key, VALUE value)
     bstring _slotname = bfromcstr(key);
     Hashmap_delete(receiver->table, _slotname);
     Hashmap_set(receiver->table, _slotname, value);
+    DArray_push(receiver->fields, String_new(key));
 }
 
 VALUE
@@ -227,3 +234,17 @@ Value_get(VALUE receiver, char *key)
   return result;
 }
 
+void
+Value_each(VALUE obj, Slots_iter iter)
+{
+  Hashmap *hash = VAL2HASH(obj);
+  DArray *keys = (DArray*)(obj->fields);
+
+  for(int i = 0; i < DArray_count(keys); i++) {
+    VALUE k = (VALUE)DArray_at(keys, i);
+    if(k) {
+      VALUE v = (VALUE)Hashmap_get(hash, bfromcstr(VAL2STR(k)));
+      iter(k, v);
+    }
+  }
+}

@@ -6,6 +6,7 @@
 #include <terror/function.h>
 #include <terror/call_frame.h>
 #include <terror/hashmap.h>
+#include <Block.h>
 
 struct val_s {
   GCHeader gc;
@@ -15,6 +16,7 @@ struct val_s {
     char *as_str;
     void *as_data;
   } data;
+  DArray *fields;
   Hashmap *table;
   struct val_s *prototype;
 };
@@ -26,6 +28,9 @@ VALUE Value_new(ValueType);
 VALUE Value_from_prototype(ValueType, VALUE);
 void Value_destroy(VALUE);
 void Value_print(VALUE);
+
+typedef void (^Slots_iter)(VALUE, VALUE);
+void Value_each(VALUE obj, Slots_iter iter);
 
 VALUE Lobby_new();
 VALUE Number_new(double);
