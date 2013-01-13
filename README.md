@@ -125,6 +125,27 @@ To use the debugger, pass `-d` as a second argument to `tvm`:
 
     $ bin/tvm examples/functions.tvm -d
 
+Here's an example session:
+
+    /Users/txus/Code/terrorvm/compiler/examples/functions.rb:1
+    1    > a = 123
+    2      foo = 123
+    3      self.fn = -> foo {
+    4        # foo is shadowed because it's a local argument
+
+    > n
+    DEBUG src/terror/vm.c:82: PUSH 0
+    DEBUG src/terror/vm.c:284: SETLOCAL 0
+
+    /Users/txus/Code/terrorvm/compiler/examples/functions.rb:2
+    1      a = 123
+    2    > foo = 123
+    3      self.fn = -> foo {
+    4        # foo is shadowed because it's a local argument
+    5        a + foo
+
+    >
+
 The debugger will always show you the high-level code (in
 `compiler/examples/functions.rb`) so you know where you are at every point.
 
