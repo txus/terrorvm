@@ -36,7 +36,6 @@ void Debugger_print_context(struct state_s* state);
 
 Breakpoint* Breakpoint_new(char *filename, int line);
 void Debugger_set_breakpoint(struct state_s* state, int line);
-void Debugger_kill_breakpoint(struct state_s* state, int line);
 void Debugger_breakpoint(struct state_s* state);
 
 #define Debugger_setline(S, L) \

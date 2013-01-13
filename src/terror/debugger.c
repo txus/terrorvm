@@ -94,7 +94,6 @@ Debugger_prompt(STATE)
         printf("\nl: show locals");
         printf("\nt: show backtrace");
         printf("\nb: set breakpoint in a line. Example: b 30");
-        printf("\nk: kill breakpoint in a line. Example: d 30");
         printf("\n\n");
         break;
       case 's':
@@ -102,11 +101,8 @@ Debugger_prompt(STATE)
         cont = 1;
         break;
       case 'b': {
+        scanf("%s", arg);
         Debugger_set_breakpoint(state, atoi(arg));
-        break;
-      }
-      case 'k': {
-        Debugger_kill_breakpoint(state, atoi(arg));
         break;
       }
       case 'p':
@@ -158,7 +154,6 @@ Debugger_prompt(STATE)
         printf("I don't understand.\n");
         break;
     }
-    /* getchar(); */
   }
 }
 
@@ -195,13 +190,6 @@ Debugger_set_breakpoint(STATE, int line)
 }
 
 void
-Debugger_kill_breakpoint(STATE, int line)
-{
-  printf("Kill breakpoint at line %i.", line);
-  /* DArray_push(DEBUGGER->breakpoints, line); */
-}
-
-void
 Debugger_breakpoint(STATE)
 {
   for(int i=0; i < DArray_count(DEBUGGER->breakpoints); i++) {
@@ -210,6 +198,7 @@ Debugger_breakpoint(STATE)
        strcmp(bp->filename, CURR_FRAME->fn->filename) == 0) {
       printf("Breakpoint");
       Debugger_stop(state);
+      DEBUGGER->current_line++; // to avoid breaking in the same point after 'c'
     }
   }
 }
