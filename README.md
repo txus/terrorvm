@@ -115,6 +115,30 @@ folder, you must recompile them as well:
 
     $ make examples
 
+## Debugging your TerrorVM programs
+
+TerrorVM ships with a debugger that you can use to debug your programs. The
+debugger can set breakpoint at specific lines and step through either high-level
+lines of code or low-level bytecode instructions.
+
+To use the debugger, pass `-d` as a second argument to `tvm`:
+
+    $ bin/tvm examples/functions.tvm -d
+
+The debugger will always show you the high-level code (in
+`compiler/examples/functions.rb`) so you know where you are at every point.
+
+The commands for the debugger are:
+
+    h: show help
+    s: step to the next bytecode instruction
+    n: step to the next line of code
+    c: continue execution
+    d: show the stack
+    l: show locals
+    t: show backtrace
+    b: set breakpoint in a line. Example: b 30
+
 ## Implementing your own dynamic language running on TerrorVM
 
 TerrorVM is designed to run dynamic languages. You can easily implement a
