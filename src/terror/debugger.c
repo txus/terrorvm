@@ -109,7 +109,7 @@ Debugger_prompt(STATE)
         scanf("%s", arg);
         if(strcmp(arg, "self") == 0) {
           printf("\n");
-          Value_print(CURR_FRAME->self);
+          Value_print(state, CURR_FRAME->self);
           printf("\n");
         }
         break;
@@ -124,13 +124,13 @@ Debugger_prompt(STATE)
         printf("\n------");
         for(int i=0; i < DArray_count(CURR_FRAME->locals); i++) {
           printf("\n%i. ", i);
-          Value_print((VALUE)DArray_at(CURR_FRAME->locals, i));
+          Value_print(state, (VALUE)DArray_at(CURR_FRAME->locals, i));
           printf("\n");
         }
         break;
       }
       case 'd':
-        Stack_print(STACK);
+        Stack_print(state, STACK);
         cont = 1;
         break;
       case 'n':

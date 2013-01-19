@@ -16,14 +16,14 @@ VALUE FalseObject;
 VALUE NilObject;
 int Debug;
 
-void Stack_print(Stack* stack)
+void Stack_print(STATE, Stack* stack)
 {
   printf("---STACK (%i)---\n", Stack_count(stack));
   int i = 0;
   STACK_FOREACH(stack, node) {
     if(node) {
       printf("\n%i. ", i);
-      Value_print((VALUE)node->value);
+      Value_print(state, (VALUE)node->value);
     }
     i++;
   }
@@ -39,14 +39,16 @@ void Stack_print(Stack* stack)
 
 void VM_start(bstring filename)
 {
-  Runtime_init();
+  STATE = State_new();
 
-  BytecodeFile *file = BytecodeFile_new(filename);
+  Runtime_init(state);
 
-  STATE = State_new(file->functions);
-
-  VALUE lobby = Lobby_new(); // toplevel object
+  VALUE lobby  = Lobby_new(state); // toplevel object
   state->lobby = lobby;
+
+  BytecodeFile *file = BytecodeFile_new(state, filename);
+  state->functions = file->functions;
+
   CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("0_main"), NULL);
   top_frame->name = "main";
 
@@ -58,7 +60,7 @@ void VM_start(bstring filename)
   // and run the codes!
   VM_run(state);
 
-  Runtime_destroy();
+  Runtime_destroy(state);
 }
 
 VALUE VM_run(STATE)
@@ -163,7 +165,7 @@ VALUE VM_run(STATE)
         check(receiver->type != NilType, "Tried to set a slot on nil.");
         check(slot->type == StringType, "Slot name must be a String.");
 
-        Value_set(receiver, VAL2STR(slot), value);
+        Value_set(state, receiver, VAL2STR(slot), value);
         Stack_push(STACK, value); // push the rhs back to the stack
         break;
       }
@@ -172,7 +174,7 @@ VALUE VM_run(STATE)
         ip++;
         debugi("DEFN %i", *ip);
         VALUE fn_name = LITERAL(*ip);
-        VALUE closure = Closure_new(STATE_FN(VAL2STR(fn_name)), CURR_FRAME);
+        VALUE closure = Closure_new(state, STATE_FN(VAL2STR(fn_name)), CURR_FRAME);
         Stack_push(STACK, closure);
         break;
       }
@@ -188,7 +190,7 @@ VALUE VM_run(STATE)
           DArray_push(array, elem);
         }
 
-        VALUE vector = Vector_new(array);
+        VALUE vector = Vector_new(state, array);
         Stack_push(STACK, vector);
         break;
       }
@@ -316,7 +318,7 @@ VALUE VM_run(STATE)
       case DUMP: {
         Debugger_evaluate(state);
         debugi("DUMP");
-        Stack_print(STACK);
+        Stack_print(state, STACK);
         break;
       }
     }

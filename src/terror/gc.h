@@ -3,9 +3,20 @@
 
 #include <stdlib.h>
 #include <terror/value.h>
+#include <terror/list.h>
+#include <terror/gc_header.h>
 
-VALUE gc_alloc(size_t size);
-void gc_dealloc(VALUE obj);
+struct state_s;
+
+typedef struct {
+  GCHeader *bottom;
+  GCHeader *top;
+  GCHeader *free;
+  GCHeader *scan;
+} Heap;
+
+VALUE gc_alloc(struct state_s*);
+Heap* Heap_new();
 
 #endif
 

@@ -7,6 +7,7 @@
 #include <terror/state.h>
 #include <terror/bootstrap.h>
 #include <terror/vm.h>
+#include <terror/state.h>
 #include <assert.h>
 
 // Extern global objects declared in runtime.h
@@ -22,10 +23,12 @@ VALUE NilObject;
   DArray *literals = DArray_create(sizeof(VALUE), 10);  \
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   DArray *locals = DArray_create(sizeof(VALUE), 10);    \
-  Runtime_init();                                       \
+  STATE = State_new();                                  \
+  state->functions = fns;                               \
+  Runtime_init(state);                                  \
 
 #define TEARDOWN()                                      \
-  Runtime_destroy();                                    \
+  Runtime_destroy(state);                               \
   return NULL;                                          \
 
 #define DEFN(N, ...)                                    \
@@ -39,11 +42,10 @@ VALUE NilObject;
   int code[] = (int[]){__VA_ARGS__};                    \
                                                         \
   Function *fn = calloc(1, sizeof(Function));           \
-  fn->code = code;                                      \
+  fn->code     = code;                                  \
   fn->literals = literals;                              \
                                                         \
-  STATE = State_new(fns);                               \
-  VALUE lobby = Lobby_new();                            \
+  VALUE lobby = Lobby_new(state);                       \
   state->lobby = lobby;                                 \
   CallFrame *top_frame = CallFrame_new(lobby, fn, NULL);\
   top_frame->locals = locals;                           \
@@ -83,8 +85,8 @@ char *test_push()
 {
   SETUP();
 
-  PUSH_LITERAL(Number_new(123), integer);
-  PUSH_LITERAL(String_new("foo"), string);
+  PUSH_LITERAL(Number_new(state, 123), integer);
+  PUSH_LITERAL(String_new(state, "foo"), string);
 
   RUN(
     PUSH, 0,
@@ -144,7 +146,7 @@ char *test_pushlocal()
 {
   SETUP();
 
-  PUSH_LOCAL(Number_new(123), integer);
+  PUSH_LOCAL(Number_new(state, 123), integer);
 
   RUN(
     PUSHLOCAL, 0,
@@ -166,9 +168,9 @@ char *test_pushlocaldepth()
     RET
   );
 
-  PUSH_LITERAL(Number_new(123), integer);
-  PUSH_LITERAL(String_new("foo"), method);
-  PUSH_LITERAL(String_new("fn"), function);
+  PUSH_LITERAL(Number_new(state, 123), integer);
+  PUSH_LITERAL(String_new(state, "foo"), method);
+  PUSH_LITERAL(String_new(state, "fn"), function);
 
   // a = 123
   // self.fn = -> { a }
@@ -204,9 +206,9 @@ char *test_setlocaldepth()
     RET
   );
 
-  PUSH_LITERAL(Number_new(123), integer);
-  PUSH_LITERAL(String_new("foo"), method);
-  PUSH_LITERAL(String_new("fn"), function);
+  PUSH_LITERAL(Number_new(state, 123), integer);
+  PUSH_LITERAL(String_new(state, "foo"), method);
+  PUSH_LITERAL(String_new(state, "fn"), function);
 
   // a = 123
   // self.fn = -> { a }
@@ -297,11 +299,11 @@ char *test_getslot()
 {
   SETUP();
 
-  VALUE receiver = String_new("foo");
-  Value_set(receiver, "tainted", TrueObject);
+  VALUE receiver = String_new(state, "foo");
+  Value_set(state, receiver, "tainted", TrueObject);
   DArray_push(literals, receiver);
 
-  PUSH_LITERAL(String_new("tainted"), slot);
+  PUSH_LITERAL(String_new(state, "tainted"), slot);
 
   RUN(
     PUSH, 0, // receiver, the "foo" string
@@ -318,11 +320,11 @@ char *test_setslot()
 {
   SETUP();
 
-  VALUE receiver = String_new("foo");
-  Value_set(receiver, "tainted", TrueObject);
+  VALUE receiver = String_new(state, "foo");
+  Value_set(state, receiver, "tainted", TrueObject);
   DArray_push(literals, receiver);
 
-  PUSH_LITERAL(String_new("tainted"), slot);
+  PUSH_LITERAL(String_new(state, "tainted"), slot);
 
   RUN(
     PUSH, 0, // receiver, the "foo" string
@@ -363,8 +365,8 @@ char *test_send()
     RET
   );
 
-  PUSH_LITERAL(Number_new(1), a);
-  PUSH_LITERAL(String_new("echo"), method);
+  PUSH_LITERAL(Number_new(state, 1), a);
+  PUSH_LITERAL(String_new(state, "echo"), method);
 
   RUN(
     PUSHSELF,
@@ -386,8 +388,8 @@ char *test_send_getslot()
 {
   SETUP();
 
-  PUSH_LITERAL(Number_new(1), a);
-  PUSH_LITERAL(String_new("value"), slot);
+  PUSH_LITERAL(Number_new(state, 1), a);
+  PUSH_LITERAL(String_new(state, "value"), slot);
 
   RUN(
     PUSHSELF,
@@ -415,9 +417,9 @@ char *test_send_apply()
     RET
   );
 
-  PUSH_LITERAL(Number_new(1), a);
-  PUSH_LITERAL(String_new("echo"), method);
-  PUSH_LITERAL(String_new("apply"), apply);
+  PUSH_LITERAL(Number_new(state, 1), a);
+  PUSH_LITERAL(String_new(state, "echo"), method);
+  PUSH_LITERAL(String_new(state, "apply"), apply);
 
   RUN(
     DEFN, 1,
@@ -444,7 +446,7 @@ char *test_defn()
     RET
   );
 
-  PUSH_LITERAL(String_new("add"), method);
+  PUSH_LITERAL(String_new(state, "add"), method);
 
   RUN(
     DEFN, 0,

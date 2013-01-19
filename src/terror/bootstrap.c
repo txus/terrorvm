@@ -31,14 +31,14 @@ kernel_files()
   return entries;
 }
 
-#define DEFPRIM(M, N, F) DArray_push((M), String_new((N))); DArray_push((M), Closure_new(Function_native_new((F)), NULL))
-#define DEFVALUE(M, N, V) DArray_push((M), String_new((N))); DArray_push((M), (V));
+#define DEFPRIM(M, N, F) DArray_push((M), String_new(state, (N))); DArray_push((M), Closure_new(state, Function_native_new((F)), NULL))
+#define DEFVALUE(M, N, V) DArray_push((M), String_new(state, (N))); DArray_push((M), (V));
 
 static inline void
-expose_VM(VALUE lobby)
+expose_VM(STATE, VALUE lobby)
 {
-  VALUE vm = Value_new(ObjectType);
-  Value_set(lobby, "VM", vm);
+  VALUE vm = Value_new(state, ObjectType);
+  Value_set(state, lobby, "VM", vm);
 
   // VM.primitives map
   DArray *primitives = DArray_create(sizeof(VALUE), 10);
@@ -76,7 +76,7 @@ expose_VM(VALUE lobby)
   // Map
   DEFPRIM(primitives, "map_each", Primitive_Map_each);
 
-  Value_set(vm, "primitives", Map_new(primitives));
+  Value_set(state, vm, "primitives", Map_new(state, primitives));
 
   // VM.types map
   DArray *types = DArray_create(sizeof(VALUE), 10);
@@ -88,7 +88,7 @@ expose_VM(VALUE lobby)
   DEFVALUE(types, "map", Map_bp);
   DEFVALUE(types, "closure", Closure_bp);
 
-  Value_set(vm, "types", Map_new(types));
+  Value_set(state, vm, "types", Map_new(state, types));
 }
 
 void
@@ -98,7 +98,7 @@ State_bootstrap(STATE)
   int count = DArray_count(filenames);
 
   // Expose toplevel constants
-  expose_VM(state->lobby);
+  expose_VM(state, state->lobby);
 
   int reenable_debugger = 0;
 
@@ -114,7 +114,7 @@ State_bootstrap(STATE)
     bstring path = bfromcstr("kernel/");
     bconcat(path, filename);
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
-    Primitive_require(state, String_new(bdata(path)), NULL, NULL);
+    Primitive_require(state, String_new(state, bdata(path)), NULL, NULL);
   }
 
   // Reenable debugger if needed

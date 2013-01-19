@@ -6,19 +6,20 @@
 #include <terror/value.h>
 #include <terror/stack.h>
 #include <terror/debugger.h>
+#include <terror/gc.h>
 
 struct state_s {
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
+  Heap *heap;
   VALUE lobby;
   int *ret;
   Debugger *dbg;
-  DArray *heap;
 };
 typedef struct state_s State;
 
-State* State_new(Hashmap *functions);
+State* State_new();
 
 #define STATE State* state
 #define STACK (state->stack)

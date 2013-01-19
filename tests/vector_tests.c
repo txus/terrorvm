@@ -1,19 +1,22 @@
 #include "minunit.h"
 #include <terror/value.h>
 #include <terror/vector.h>
+#include <terror/state.h>
 #include <assert.h>
+
+STATE = NULL;
 
 char *test_each()
 {
   DArray *ary = DArray_create(sizeof(VALUE), 10);
-  VALUE one   = Number_new(1);
-  VALUE two   = Number_new(2);
-  VALUE three = Number_new(3);
+  VALUE one   = Number_new(state, 1);
+  VALUE two   = Number_new(state, 2);
+  VALUE three = Number_new(state, 3);
   DArray_push(ary, one);
   DArray_push(ary, two);
   DArray_push(ary, three);
 
-  VALUE vector = Vector_new(ary);
+  VALUE vector = Vector_new(state, ary);
 
   __block int counter = 0;
 
@@ -28,6 +31,8 @@ char *test_each()
 
 char *all_tests() {
   mu_suite_start();
+
+  state = State_new();
 
   mu_run_test(test_each);
 

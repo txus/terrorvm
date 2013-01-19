@@ -6,6 +6,8 @@
 #include <terror/darray.h>
 #include <terror/hashmap.h>
 
+struct state_s;
+
 typedef struct {
   bstring filename;
   bstring compiled_filename;
@@ -14,7 +16,7 @@ typedef struct {
   Hashmap *functions;
 } BytecodeFile;
 
-BytecodeFile *BytecodeFile_new(bstring filename);
+BytecodeFile *BytecodeFile_new(struct state_s*, bstring filename);
 void BytecodeFile_destroy(BytecodeFile *file);
 
 #endif

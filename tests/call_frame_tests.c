@@ -1,7 +1,10 @@
 #include "minunit.h"
 #include <terror/value.h>
 #include <terror/call_frame.h>
+#include <terror/state.h>
 #include <assert.h>
+
+STATE = NULL;
 
 static inline CallFrame*
 fixture()
@@ -13,8 +16,8 @@ fixture()
 
 char *test_getlocal()
 {
-  VALUE one = Number_new(1);
-  VALUE two = Number_new(2);
+  VALUE one = Number_new(state, 1);
+  VALUE two = Number_new(state, 2);
 
   CallFrame *frame = fixture();
 
@@ -28,8 +31,8 @@ char *test_getlocal()
 
 char *test_setlocal()
 {
-  VALUE one = Number_new(1);
-  VALUE two = Number_new(2);
+  VALUE one = Number_new(state, 1);
+  VALUE two = Number_new(state, 2);
 
   CallFrame *frame = fixture();
 
@@ -44,8 +47,8 @@ char *test_setlocal()
 
 char *test_getlocaldepth()
 {
-  VALUE one = Number_new(1);
-  VALUE two = Number_new(2);
+  VALUE one = Number_new(state, 1);
+  VALUE two = Number_new(state, 2);
 
   CallFrame *parent = fixture();
   PUSH(parent, one);
@@ -61,8 +64,8 @@ char *test_getlocaldepth()
 
 char *test_setlocaldepth()
 {
-  VALUE one = Number_new(1);
-  VALUE two = Number_new(2);
+  VALUE one = Number_new(state, 1);
+  VALUE two = Number_new(state, 2);
 
   CallFrame *parent = fixture();
   PUSH(parent, one);
@@ -79,6 +82,8 @@ char *test_setlocaldepth()
 
 char *all_tests() {
   mu_suite_start();
+
+  state = State_new();
 
   mu_run_test(test_getlocal);
   mu_run_test(test_setlocal);

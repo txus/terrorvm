@@ -9,7 +9,7 @@
 VALUE VM_run(STATE);
 void VM_start(bstring filename);
 
-void Stack_print(Stack* stack);
+void Stack_print(STATE, Stack* stack);
 #define ABORT() \
   CallFrame_print_backtrace(CURR_FRAME); \
   exit(EXIT_FAILURE)

@@ -1,10 +1,13 @@
 #include "minunit.h"
 #include <terror/runtime.h>
+#include <terror/state.h>
 #include <assert.h>
+
+STATE = NULL;
 
 char *test_init()
 {
-  Runtime_init();
+  Runtime_init(state);
 
   mu_assert(TrueObject->type == TrueType, "TrueObject didn't initialize");
   mu_assert(FalseObject->type == FalseType, "FalseObject didn't initialize");
@@ -15,7 +18,7 @@ char *test_init()
 
 char *test_destroy()
 {
-  Runtime_destroy();
+  Runtime_destroy(state);
 
   mu_assert(TrueObject == NULL, "TrueObject wasn't destroyed with the runtime");
   mu_assert(FalseObject == NULL, "FalseObject wasn't destroyed with the runtime");
@@ -26,6 +29,8 @@ char *test_destroy()
 
 char *all_tests() {
   mu_suite_start();
+
+  state = State_new();
 
   mu_run_test(test_init);
   mu_run_test(test_destroy);

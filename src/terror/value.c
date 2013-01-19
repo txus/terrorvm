@@ -17,9 +17,9 @@ VALUE Closure_bp;
 VALUE NilObject;
 
 VALUE
-Value_new(ValueType type)
+Value_new(STATE, ValueType type)
 {
-  VALUE val = gc_alloc(sizeof(val_t));
+  VALUE val = gc_alloc(state);
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
   val->fields = DArray_create(sizeof(VALUE), 10);
@@ -28,24 +28,23 @@ Value_new(ValueType type)
 };
 
 VALUE
-Value_from_prototype(ValueType type, VALUE prototype)
-{
-  VALUE val = Value_new(type);
+Value_from_prototype(STATE, ValueType type, VALUE prototype) {
+  VALUE val = Value_new(state, type);
   val->prototype = prototype;
   return val;
 }
 
 void
-Value_destroy(VALUE o)
+Value_destroy(STATE, VALUE o)
 {
-  gc_dealloc(o);
+  /* free(o); */
 }
 
 #define append(B, S) bconcat((B), bfromcstr(S))
 #define appendf(B, S, ...) bconcat((B), bformat(S, ##__VA_ARGS__))
 
 VALUE
-Value_to_s(VALUE o)
+Value_to_s(STATE, VALUE o)
 {
   bstring str = bfromcstr("");
 
@@ -99,7 +98,7 @@ Value_to_s(VALUE o)
         append(str, "[");
         __block int _count = Vector_count(o);
         Vector_each_with_index(o, ^ void (VALUE val, int idx) {
-          append(str, VAL2STR(Value_to_s(val)));
+          append(str, VAL2STR(Value_to_s(state, val)));
           if(idx+1 < _count) append(str, ", ");
         });
         append(str, "]");
@@ -109,7 +108,7 @@ Value_to_s(VALUE o)
         append(str, "{");
         Value_each(o, ^ void (VALUE key, VALUE val) {
           appendf(str, "%s => ", VAL2STR(key));
-          append(str, VAL2STR(Value_to_s(val)));
+          append(str, VAL2STR(Value_to_s(state, val)));
           append(str, ", ");
         });
         append(str, "}");
@@ -120,7 +119,7 @@ Value_to_s(VALUE o)
         append(str, "{");
         Value_each(o, ^ void (VALUE key, VALUE val) {
           appendf(str, "%s => ", VAL2STR(key));
-          append(str, VAL2STR(Value_to_s(val)));
+          append(str, VAL2STR(Value_to_s(state, val)));
           append(str,"\n");
         });
         append(str, "}>");
@@ -129,61 +128,61 @@ Value_to_s(VALUE o)
     }
   }
 
-  return String_new(bdata(str));
+  return String_new(state, bdata(str));
 }
 
 void
-Value_print(VALUE o)
+Value_print(STATE, VALUE o)
 {
-  printf("%s", VAL2STR(Value_to_s(o)));
+  printf("%s", VAL2STR(Value_to_s(state, o)));
 }
 
 VALUE
-Lobby_new()
+Lobby_new(STATE)
 {
-  VALUE val = Value_new(ObjectType);
+  VALUE val = Value_new(state, ObjectType);
   return val;
 }
 
 VALUE
-Number_new(double num)
+Number_new(STATE, double num)
 {
-  VALUE val = Value_from_prototype(NumberType, Number_bp);
+  VALUE val = Value_from_prototype(state, NumberType, Number_bp);
   val->data.as_num = num;
 
   return val;
 }
 
 VALUE
-String_new(char* value)
+String_new(STATE, char* value)
 {
-  VALUE val = Value_from_prototype(StringType, String_bp);
+  VALUE val = Value_from_prototype(state, StringType, String_bp);
   val->data.as_str = value;
   return val;
 }
 
 VALUE
-Closure_new(Function *fn, CallFrame *scope)
+Closure_new(STATE, Function *fn, CallFrame *scope)
 {
-  VALUE val = Value_from_prototype(ClosureType, Closure_bp);
+  VALUE val = Value_from_prototype(state, ClosureType, Closure_bp);
   fn->scope = scope;
   val->data.as_data = fn;
   return val;
 }
 
 VALUE
-Vector_new(DArray *array)
+Vector_new(STATE, DArray *array)
 {
-  VALUE val = Value_from_prototype(VectorType, Vector_bp);
+  VALUE val = Value_from_prototype(state, VectorType, Vector_bp);
   val->data.as_data = array;
 
   return val;
 }
 
 VALUE
-Map_new(DArray *array)
+Map_new(STATE, DArray *array)
 {
-  VALUE val = Value_from_prototype(MapType, Map_bp);
+  VALUE val = Value_from_prototype(state, MapType, Map_bp);
 
   int count = DArray_count(array);
   assert(count % 2 == 0 && "Map element count must be even.");
@@ -210,12 +209,12 @@ Map_new(DArray *array)
 };
 
 void
-Value_set(VALUE receiver, char *key, VALUE value)
+Value_set(STATE, VALUE receiver, char *key, VALUE value)
 {
     bstring _slotname = bfromcstr(key);
     Hashmap_delete(receiver->table, _slotname);
     Hashmap_set(receiver->table, _slotname, value);
-    DArray_push(receiver->fields, String_new(key));
+    DArray_push(receiver->fields, String_new(state, key));
 }
 
 VALUE

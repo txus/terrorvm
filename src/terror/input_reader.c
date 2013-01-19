@@ -1,9 +1,10 @@
 #include <terror/file_utils.h>
 #include <terror/input_reader.h>
 #include <terror/value.h>
+#include <terror/state.h>
 
 static inline void
-parse_string(bstring buf, BytecodeFile *file)
+parse_string(STATE, bstring buf, BytecodeFile *file)
 {
   struct bstrList *lines = bsplit(buf, '\n');
   int i = 0;
@@ -47,10 +48,10 @@ parse_string(bstring buf, BytecodeFile *file)
           bstring strData = bmidstr(*line, 1, (*line)->mlen);
           // TODO: This causes a leak in the string literals because they are
           // never freed on destruction.
-          DArray_push(literals, String_new(bdata(bstrcpy(strData))));
+          DArray_push(literals, String_new(state, bdata(bstrcpy(strData))));
           bdestroy(strData);
         } else {
-          DArray_push(literals, Number_new(atof(bdata(*line))));
+          DArray_push(literals, Number_new(state, atof(bdata(*line))));
         }
         line++; cnt++;
       }
@@ -80,7 +81,7 @@ parse_string(bstring buf, BytecodeFile *file)
   bstrListDestroy(lines);
 }
 
-BytecodeFile *BytecodeFile_new(bstring compiled_filename)
+BytecodeFile *BytecodeFile_new(STATE, bstring compiled_filename)
 {
   BytecodeFile *file = calloc(1, sizeof(BytecodeFile));
   check_mem(file);
@@ -91,7 +92,7 @@ BytecodeFile *BytecodeFile_new(bstring compiled_filename)
 
   bstring buf = readfile(compiled_filename);
   check(buf, "Cannot read file %s", bdata(compiled_filename));
-  parse_string(buf, file);
+  parse_string(state, buf, file);
 
   bdestroy(buf);
 

@@ -15,7 +15,7 @@
 VALUE
 Primitive_to_s(STATE, void *a, void *_, void *__)
 {
-  return Value_to_s((VALUE)a);
+  return Value_to_s(state, (VALUE)a);
 }
 
 VALUE
@@ -106,13 +106,13 @@ VALUE
 Primitive_clone(STATE, void *a, void *_, void *__)
 {
   VALUE obj = (VALUE)a;
-  return Value_from_prototype(obj->type, obj);
+  return Value_from_prototype(state, obj->type, obj);
 }
 
 VALUE
 Primitive_print(STATE, void *_, void *b, void *__)
 {
-  Value_print((VALUE)b);
+  Value_print(state, (VALUE)b);
   return NilObject;
 }
 
@@ -135,7 +135,7 @@ Primitive_require(STATE, void *a, void *_, void *__)
 
   Function *main = NULL; // entry point
 
-  BytecodeFile *file = BytecodeFile_new(filename_str);
+  BytecodeFile *file = BytecodeFile_new(state, filename_str);
   int fn_count = DArray_count(file->function_names);
   for(int j=0; j < fn_count; j++) {
     bstring fn_name = (bstring)DArray_at(file->function_names, j);
@@ -171,7 +171,7 @@ Primitive_Number_add(STATE, void *a, void *b, void *_)
   CHECK_TYPE(left, NumberType);
   CHECK_TYPE(right, NumberType);
 
-  return Number_new(VAL2NUM(left) + VAL2NUM(right));
+  return Number_new(state, VAL2NUM(left) + VAL2NUM(right));
 
 error:
   ABORT();
@@ -187,7 +187,7 @@ Primitive_Number_sub(STATE, void *a, void *b, void *_)
   CHECK_TYPE(left, NumberType);
   CHECK_TYPE(right, NumberType);
 
-  return Number_new(VAL2NUM(left) - VAL2NUM(right));
+  return Number_new(state, VAL2NUM(left) - VAL2NUM(right));
 
 error:
   ABORT();
@@ -203,7 +203,7 @@ Primitive_Number_mul(STATE, void *a, void *b, void *_)
   CHECK_TYPE(left, NumberType);
   CHECK_TYPE(right, NumberType);
 
-  return Number_new(VAL2NUM(left) * VAL2NUM(right));
+  return Number_new(state, VAL2NUM(left) * VAL2NUM(right));
 
 error:
   ABORT();
@@ -221,7 +221,7 @@ Primitive_Number_div(STATE, void *a, void *b, void *_)
 
   check(VAL2NUM(right) != 0, "Cannot divide by zero");
 
-  return Number_new(VAL2NUM(left) / VAL2NUM(right));
+  return Number_new(state, VAL2NUM(left) / VAL2NUM(right));
 
 error:
   ABORT();
@@ -276,7 +276,7 @@ Primitive_String_concat(STATE, void *a, void *b, void *_)
   bstring s = bfromcstr(VAL2STR(str_a));
   bconcat(s, bfromcstr(VAL2STR(str_b)));
 
-  return String_new(bdata(s));
+  return String_new(state, bdata(s));
 
 error:
   ABORT();
@@ -360,7 +360,7 @@ Primitive_Vector_each_with_index(STATE, void *a, void *b, void *_)
   Vector_each_with_index(vector, ^ void (VALUE element, int idx) {
     DArray *args = DArray_create(sizeof(VALUE), 10);
     DArray_push(args, element);
-    DArray_push(args, Number_new(idx));
+    DArray_push(args, Number_new(state, idx));
 
     Closure_invoke(state, closure, NULL, args, "anonymous");
   });
@@ -378,7 +378,7 @@ Primitive_Vector_to_map(STATE, void *a, void *_, void *__)
   VALUE vector = (VALUE)a;
   CHECK_TYPE(vector, VectorType);
 
-  return Map_new(VAL2ARY(vector));
+  return Map_new(state, VAL2ARY(vector));
 
 error:
   ABORT();
@@ -417,7 +417,7 @@ Primitive_Map_set(STATE, void *a, void *b, void *c)
   CHECK_TYPE(key, StringType);
   CHECK_PRESENCE(value);
 
-  Value_set(map, VAL2STR(key), value);
+  Value_set(state, map, VAL2STR(key), value);
 
   return value;
 
