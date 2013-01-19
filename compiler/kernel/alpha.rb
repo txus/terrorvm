@@ -1,5 +1,6 @@
 # The alpha prelude wires up all the primitives to the types.
 
+VM.types[:object].to_s = VM.primitives[:to_s]
 VM.types[:object].prototype = VM.primitives[:prototype]
 VM.types[:object][:or]  = VM.primitives[:or]
 VM.types[:object][:==]  = VM.primitives[:equals]
@@ -12,6 +13,14 @@ VM.types[:number][:+] = VM.primitives[:'number_+']
 VM.types[:number][:-] = VM.primitives[:'number_-']
 VM.types[:number][:/] = VM.primitives[:'number_/']
 VM.types[:number][:*] = VM.primitives[:'number_*']
+VM.types[:number][:<] = VM.primitives[:'number_<']
+VM.types[:number][:>] = VM.primitives[:'number_>']
+VM.types[:number][:<=] = -> other {
+  self < other || self == other
+}
+VM.types[:number][:>=] = -> other {
+  self > other || self == other
+}
 
 VM.types[:string][:+] = VM.primitives[:'string_+']
 

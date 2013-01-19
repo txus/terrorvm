@@ -41,105 +41,101 @@ Value_destroy(VALUE o)
   gc_dealloc(o);
 }
 
-static inline void
-__Value_print(VALUE o)
+#define append(B, S) bconcat((B), bfromcstr(S))
+#define appendf(B, S, ...) bconcat((B), bformat(S, ##__VA_ARGS__))
+
+VALUE
+Value_to_s(VALUE o)
 {
-  check(o, "Cannot print NULL value");
+  bstring str = bfromcstr("");
 
   // Blueprints
-  if(o == Object_bp) { printf("Object"); return;
-    } else if (o == Number_bp) { printf("Number"); return;
-    } else if (o == String_bp) { printf("String"); return;
-    } else if (o == Closure_bp) { printf("Closure"); return;
-    } else if (o == Vector_bp) { printf("Vector"); return;
-    } else if (o == Map_bp) { printf("Map"); return;
+  if(o == Object_bp)          { append(str, "Object"); }
+    else if (o == Number_bp)  { append(str, "Number"); }
+    else if (o == String_bp)  { append(str, "String"); }
+    else if (o == Closure_bp) { append(str, "Closure"); }
+    else if (o == Vector_bp)  { append(str, "Vector"); }
+    else if (o == Map_bp)     { append(str, "Map"); }
+    else {
+    switch(o->type) {
+      case NumberType: {
+        appendf(str, "%f", VAL2NUM(o));
+        break;
+      }
+      case StringType: {
+        return o;
+        break;
+      }
+      case TrueType: {
+        append(str, "true");
+        break;
+      }
+      case FalseType: {
+        append(str, "false");
+        break;
+      }
+      case NilType: {
+        append(str, "nil");
+        break;
+      }
+      case ClosureType: {
+        Function *fn = VAL2FN(o);
+        appendf(str, "#<Closure %p ", o);
+        if(fn->c_fn) {
+          append(str, "(C code)");
+        } else {
+          append(str, "[");
+          int *ptr = fn->code;
+          while(*ptr != 144) {
+            appendf(str, "%i, ", *ptr);
+            ptr++;
+          }
+          append(str, "144]"); // RET
+        }
+        append(str, ">");
+        break;
+      }
+      case VectorType: {
+        append(str, "[");
+        __block int _count = Vector_count(o);
+        Vector_each_with_index(o, ^ void (VALUE val, int idx) {
+          append(str, VAL2STR(Value_to_s(val)));
+          if(idx+1 < _count) append(str, ", ");
+        });
+        append(str, "]");
+        break;
+      }
+      case MapType: {
+        append(str, "{");
+        Value_each(o, ^ void (VALUE key, VALUE val) {
+          appendf(str, "%s => ", VAL2STR(key));
+          append(str, VAL2STR(Value_to_s(val)));
+          append(str, ", ");
+        });
+        append(str, "}");
+        break;
+      }
+      default: {
+        appendf(str, "#<Object %p ", o);
+        append(str, "{");
+        Value_each(o, ^ void (VALUE key, VALUE val) {
+          appendf(str, "%s => ", VAL2STR(key));
+          append(str, VAL2STR(Value_to_s(val)));
+          append(str,"\n");
+        });
+        append(str, "}>");
+        break;
+      }
+    }
   }
 
-  switch(o->type) {
-    case NumberType: {
-      printf("%f", VAL2NUM(o));
-      break;
-    }
-    case StringType: {
-      printf("%s", VAL2STR(o));
-      break;
-    }
-    case TrueType: {
-      printf("true");
-      break;
-    }
-    case FalseType: {
-      printf("false");
-      break;
-    }
-    case NilType: {
-      printf("nil");
-      break;
-    }
-    case ClosureType: {
-      Function *fn = VAL2FN(o);
-      printf("#<Closure %p ", o);
-      if(fn->c_fn) {
-        printf("(C code)");
-      } else {
-        printf("[");
-        int *ptr = fn->code;
-        while(*ptr != 144) {
-          printf("%i, ", *ptr);
-          ptr++;
-        }
-        printf("144]"); // RET
-      }
-      printf(">");
-      break;
-    }
-    case VectorType: {
-      printf("[");
-      __block int _count = Vector_count(o);
-      Vector_each_with_index(o, ^ void (VALUE val, int idx) {
-        Value_print(val);
-        if(idx+1 < _count) printf(", ");
-      });
-      printf("]");
-      break;
-    }
-    case MapType: {
-      printf("{");
-      Value_each(o, ^ void (VALUE key, VALUE val) {
-        printf("%s => ", VAL2STR(key));
-        Value_print(val);
-        printf(", ");
-      });
-      printf("}");
-      break;
-    }
-    default: {
-      printf("#<Object %p ", o);
-      printf("{");
-      Value_each(o, ^ void (VALUE key, VALUE val) {
-        printf("%s => ", VAL2STR(key));
-        Value_print(val);
-        printf("\n");
-      });
-      printf("}>");
-      break;
-    }
-  }
-error:
-  return;
+  return String_new(bdata(str));
 }
 
 void
 Value_print(VALUE o)
 {
-  __Value_print(o);
-
-  return; // for now
-  if(o->prototype) {
-    printf(" (");
-    __Value_print(o->prototype);
-    printf(")");
-  }
+  printf("%s", VAL2STR(Value_to_s(o)));
 }
 
 VALUE
@@ -197,7 +193,7 @@ Map_new(DArray *array)
   Hashmap *hash = val->table;
 
   // Preserve insertion order
-  DArray *keys = DArray_create(sizeof(VALUE), count / 2);
+  DArray *keys = DArray_create(sizeof(VALUE), 10);
   val->fields = keys;
 
   for(int i=0; i < count; i += 2) {

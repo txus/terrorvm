@@ -65,3 +65,14 @@ CallFrame_print(CallFrame *frame)
   }
   printf("\n");
 }
+
+void
+CallFrame_print_backtrace(CallFrame *frame)
+{
+  CallFrame *p = frame;
+  while(p) {
+    CallFrame_print(p);
+    p = p->parent;
+  }
+  printf("\n");
+}

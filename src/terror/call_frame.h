@@ -24,5 +24,6 @@ void CallFrame_setlocal(CallFrame *frame, int idx, struct val_s* value);
 struct val_s* CallFrame_getlocaldepth(CallFrame *frame, int depth, int idx);
 void CallFrame_setlocaldepth(CallFrame *frame, int depth, int idx, struct val_s* value);
 void CallFrame_print(CallFrame *frame);
+void CallFrame_print_backtrace(CallFrame *frame);
 
 #endif

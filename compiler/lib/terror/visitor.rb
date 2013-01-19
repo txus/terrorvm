@@ -177,7 +177,8 @@ module Terror
                       else
                         node.receiver.name
                       end
-      attribute_name = node.arguments.array.first.value
+      attr = node.arguments.array.first
+      attribute_name = attr.respond_to?(:value) ? attr.value : attr.variable
       @slots[receiver_name] ||= []
       @slots[receiver_name] << attribute_name
 

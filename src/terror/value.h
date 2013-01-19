@@ -28,6 +28,7 @@ VALUE Value_new(ValueType);
 VALUE Value_from_prototype(ValueType, VALUE);
 void Value_destroy(VALUE);
 void Value_print(VALUE);
+VALUE Value_to_s(VALUE);
 
 typedef void (^Slots_iter)(VALUE, VALUE);
 void Value_each(VALUE obj, Slots_iter iter);

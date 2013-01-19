@@ -1,13 +1,13 @@
 TestCase = {
   assert_equal: -> exp, act, msg {
-    unless msg
-      msg = "Expected actual to equal expected."
+    m = msg
+    unless m
+      m = "Expected actual to equal expected."
     end
     if exp == act
       true
     else
-      self.failures.push msg
-      false
+      m
     end
   },
   setup: -> {},
@@ -17,30 +17,27 @@ TestCase = {
     self.failures = []
     that = self
     self.each(-> k, v {
-      unless (v.prototype === Closure)
-        puts 'executing!'
+      if v.prototype === Closure
         tests.push k
 
         that.setup()
         result = v.apply()
         that.teardown()
 
-        if result
+        if result == true
           print "\e[32m.\e[0m"
         else
-          failures.push k
+          str = k + ": " + result
+          failures.push str
           print "\e[31mF\e[0m"
         end
       end
     })
 
     puts ""
-    if failures.length > 0
-      failures.each(-> failure {
-        puts "* " + failure
-      })
-      puts ""
-    end
+    self.failures.each(-> failure {
+      puts "\t* " + failure
+    })
   }
 }
 

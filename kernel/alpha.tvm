@@ -1,6 +1,6 @@
 /Users/txus/Code/terrorvm/compiler/kernel/alpha.rb
 _0_main
-:44:566
+:52:652
 "VM
 "types
 "object
@@ -24,6 +24,14 @@ _0_main
 "/
 "number_*
 "*
+"number_<
+"<
+"number_>
+">
+"17_block_d48ae1c5594a6fb12cedcd7176cba760
+"<=
+"20_block_6140b6ef79488bcf11bcc6a5cf763d4e
+">=
 "string
 "string_+
 "vector
@@ -332,6 +340,32 @@ _0_main
 65 SETSLOT
 22 "*"
 1 SETLINE
+15
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+14 "number"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+23 "number_<"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+24 "<"
+1 SETLINE
 16
 21 PUSHLOBBY
 64 GETSLOT
@@ -340,7 +374,7 @@ _0_main
 1 "types"
 0
 17 PUSH
-23 "string"
+14 "number"
 128 SEND
 3 "[]"
 1
@@ -351,14 +385,14 @@ _0_main
 4 "primitives"
 0
 17 PUSH
-24 "string_+"
+25 "number_>"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-16 "+"
+26 ">"
 1 SETLINE
-18
+17
 21 PUSHLOBBY
 64 GETSLOT
 0 "VM"
@@ -366,49 +400,14 @@ _0_main
 1 "types"
 0
 17 PUSH
-25 "vector"
+14 "number"
 128 SEND
 3 "[]"
 1
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-4 "primitives"
-0
-17 PUSH
-26 "vector_[]"
-128 SEND
-3 "[]"
-1
+67 DEFN
+27 "17_block_d48ae1c5594a6fb12cedcd7176cba760"
 65 SETSLOT
-3 "[]"
-1 SETLINE
-19
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-1 "types"
-0
-17 PUSH
-25 "vector"
-128 SEND
-3 "[]"
-1
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-4 "primitives"
-0
-17 PUSH
-27 "vector_push"
-128 SEND
-3 "[]"
-1
-65 SETSLOT
-28 "push"
+28 "<="
 1 SETLINE
 20
 21 PUSHLOBBY
@@ -418,75 +417,14 @@ _0_main
 1 "types"
 0
 17 PUSH
-25 "vector"
+14 "number"
 128 SEND
 3 "[]"
 1
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-4 "primitives"
-0
-17 PUSH
-29 "vector_to_map"
-128 SEND
-3 "[]"
-1
+67 DEFN
+29 "20_block_6140b6ef79488bcf11bcc6a5cf763d4e"
 65 SETSLOT
-30 "to_map"
-1 SETLINE
-21
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-1 "types"
-0
-17 PUSH
-25 "vector"
-128 SEND
-3 "[]"
-1
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-4 "primitives"
-0
-17 PUSH
-31 "vector_each"
-128 SEND
-3 "[]"
-1
-65 SETSLOT
-32 "each"
-1 SETLINE
-22
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-1 "types"
-0
-17 PUSH
-25 "vector"
-128 SEND
-3 "[]"
-1
-21 PUSHLOBBY
-64 GETSLOT
-0 "VM"
-128 SEND
-4 "primitives"
-0
-17 PUSH
-33 "vector_each_with_index"
-128 SEND
-3 "[]"
-1
-65 SETSLOT
-34 "each_with_index"
+30 ">="
 1 SETLINE
 24
 21 PUSHLOBBY
@@ -496,7 +434,7 @@ _0_main
 1 "types"
 0
 17 PUSH
-35 "map"
+31 "string"
 128 SEND
 3 "[]"
 1
@@ -507,14 +445,170 @@ _0_main
 4 "primitives"
 0
 17 PUSH
-36 "map_each"
+32 "string_+"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-32 "each"
+16 "+"
 1 SETLINE
 26
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+33 "vector"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+34 "vector_[]"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+3 "[]"
+1 SETLINE
+27
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+33 "vector"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+35 "vector_push"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+36 "push"
+1 SETLINE
+28
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+33 "vector"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+37 "vector_to_map"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+38 "to_map"
+1 SETLINE
+29
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+33 "vector"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+39 "vector_each"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+40 "each"
+1 SETLINE
+30
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+33 "vector"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+41 "vector_each_with_index"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+42 "each_with_index"
+1 SETLINE
+32
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+1 "types"
+0
+17 PUSH
+43 "map"
+128 SEND
+3 "[]"
+1
+21 PUSHLOBBY
+64 GETSLOT
+0 "VM"
+128 SEND
+4 "primitives"
+0
+17 PUSH
+44 "map_each"
+128 SEND
+3 "[]"
+1
+65 SETSLOT
+40 "each"
+1 SETLINE
+34
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -528,9 +622,9 @@ _0_main
 3 "[]"
 1
 65 SETSLOT
-37 "Object"
+45 "Object"
 1 SETLINE
-27
+35
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -544,9 +638,9 @@ _0_main
 3 "[]"
 1
 65 SETSLOT
-38 "Number"
+46 "Number"
 1 SETLINE
-28
+36
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -555,14 +649,14 @@ _0_main
 1 "types"
 0
 17 PUSH
-23 "string"
+31 "string"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-39 "String"
+47 "String"
 1 SETLINE
-29
+37
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -571,14 +665,14 @@ _0_main
 1 "types"
 0
 17 PUSH
-25 "vector"
+33 "vector"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-40 "Vector"
+48 "Vector"
 1 SETLINE
-30
+38
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -587,14 +681,14 @@ _0_main
 1 "types"
 0
 17 PUSH
-41 "closure"
+49 "closure"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-42 "Closure"
+50 "Closure"
 1 SETLINE
-31
+39
 21 PUSHLOBBY
 21 PUSHLOBBY
 64 GETSLOT
@@ -603,12 +697,58 @@ _0_main
 1 "types"
 0
 17 PUSH
-35 "map"
+43 "map"
 128 SEND
 3 "[]"
 1
 65 SETSLOT
-43 "Map"
+51 "Map"
 20 PUSHNIL
+144 RET
+_17_block_d48ae1c5594a6fb12cedcd7176cba760
+:3:18
+"<
+"==
+"or
+1 SETLINE
+18
+16 PUSHSELF
+32 PUSHLOCAL
+0
+128 SEND
+0 "<"
+1
+16 PUSHSELF
+32 PUSHLOCAL
+0
+128 SEND
+1 "=="
+1
+128 SEND
+2 "or"
+1
+144 RET
+_20_block_6140b6ef79488bcf11bcc6a5cf763d4e
+:3:18
+">
+"==
+"or
+1 SETLINE
+21
+16 PUSHSELF
+32 PUSHLOCAL
+0
+128 SEND
+0 ">"
+1
+16 PUSHSELF
+32 PUSHLOCAL
+0
+128 SEND
+1 "=="
+1
+128 SEND
+2 "or"
+1
 144 RET
 

@@ -4,13 +4,19 @@
 #include <terror/state.h>
 #include <terror/call_frame.h>
 #include <terror/input_reader.h>
+#include <terror/dbg.h>
 #include <terror/vector.h>
 #include <terror/vm.h>
-#include <assert.h>
 
 /*
  * Generic primitives
  */
+
+VALUE
+Primitive_to_s(STATE, void *a, void *_, void *__)
+{
+  return Value_to_s((VALUE)a);
+}
 
 VALUE
 Primitive_prototype(STATE, void *a, void *_, void *__)
@@ -146,6 +152,10 @@ Primitive_require(STATE, void *a, void *_, void *__)
   Stack_push(FRAMES, frame);
 
   return VM_run(state);
+
+error:
+  ABORT();
+  return NULL;
 }
 
 /*
@@ -162,6 +172,10 @@ Primitive_Number_add(STATE, void *a, void *b, void *_)
   CHECK_TYPE(right, NumberType);
 
   return Number_new(VAL2NUM(left) + VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -174,6 +188,10 @@ Primitive_Number_sub(STATE, void *a, void *b, void *_)
   CHECK_TYPE(right, NumberType);
 
   return Number_new(VAL2NUM(left) - VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -186,6 +204,10 @@ Primitive_Number_mul(STATE, void *a, void *b, void *_)
   CHECK_TYPE(right, NumberType);
 
   return Number_new(VAL2NUM(left) * VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -197,9 +219,45 @@ Primitive_Number_div(STATE, void *a, void *b, void *_)
   CHECK_TYPE(left, NumberType);
   CHECK_TYPE(right, NumberType);
 
-  assert(VAL2NUM(right) != 0 && "Cannot divide by zero");
+  check(VAL2NUM(right) != 0, "Cannot divide by zero");
 
   return Number_new(VAL2NUM(left) / VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
+}
+
+VALUE
+Primitive_Number_gt(STATE, void *a, void *b, void *_)
+{
+  VALUE left  = (VALUE)a;
+  VALUE right = (VALUE)b;
+
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
+
+  return INT2BOOL(VAL2NUM(left) > VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
+}
+
+VALUE
+Primitive_Number_lt(STATE, void *a, void *b, void *_)
+{
+  VALUE left  = (VALUE)a;
+  VALUE right = (VALUE)b;
+
+  CHECK_TYPE(left, NumberType);
+  CHECK_TYPE(right, NumberType);
+
+  return INT2BOOL(VAL2NUM(left) < VAL2NUM(right));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 /*
@@ -219,6 +277,10 @@ Primitive_String_concat(STATE, void *a, void *b, void *_)
   bconcat(s, bfromcstr(VAL2STR(str_b)));
 
   return String_new(bdata(s));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 /*
@@ -239,6 +301,10 @@ Primitive_Vector_at(STATE, void *a, void *b, void *_)
   if(!result) result = NilObject;
 
   return result;
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -253,6 +319,10 @@ Primitive_Vector_push(STATE, void *a, void *b, void *_)
   Vector_push(vector, element);
 
   return vector;
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -272,6 +342,10 @@ Primitive_Vector_each(STATE, void *a, void *b, void *_)
   });
 
   return vector;
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -292,6 +366,10 @@ Primitive_Vector_each_with_index(STATE, void *a, void *b, void *_)
   });
 
   return vector;
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -301,6 +379,10 @@ Primitive_Vector_to_map(STATE, void *a, void *_, void *__)
   CHECK_TYPE(vector, VectorType);
 
   return Map_new(VAL2ARY(vector));
+
+error:
+  ABORT();
+  return NULL;
 }
 
 /*
@@ -321,6 +403,7 @@ Primitive_Map_get(STATE, void *a, void *b, void *_)
   return result;
 
 error:
+  ABORT();
   return NULL;
 }
 
@@ -337,6 +420,10 @@ Primitive_Map_set(STATE, void *a, void *b, void *c)
   Value_set(map, VAL2STR(key), value);
 
   return value;
+
+error:
+  ABORT();
+  return NULL;
 }
 
 VALUE
@@ -357,5 +444,9 @@ Primitive_Map_each(STATE, void *a, void *b, void *_)
   });
 
   return map;
+
+error:
+  ABORT();
+  return NULL;
 }
 

@@ -98,6 +98,8 @@ BytecodeFile *BytecodeFile_new(bstring compiled_filename)
   return file;
 
 error:
+  debug("Aborted.");
+  exit(EXIT_FAILURE);
   return NULL;
 }
 

@@ -44,6 +44,7 @@ expose_VM(VALUE lobby)
   DArray *primitives = DArray_create(sizeof(VALUE), 10);
 
   // Object
+  DEFPRIM(primitives, "to_s", Primitive_to_s);
   DEFPRIM(primitives, "prototype", Primitive_prototype);
   DEFPRIM(primitives, "or", Primitive_or);
 
@@ -66,6 +67,8 @@ expose_VM(VALUE lobby)
   DEFPRIM(primitives, "number_-", Primitive_Number_sub);
   DEFPRIM(primitives, "number_*", Primitive_Number_mul);
   DEFPRIM(primitives, "number_/", Primitive_Number_div);
+  DEFPRIM(primitives, "number_<", Primitive_Number_lt);
+  DEFPRIM(primitives, "number_>", Primitive_Number_gt);
 
   // String
   DEFPRIM(primitives, "string_+", Primitive_String_concat);

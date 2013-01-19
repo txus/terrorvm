@@ -116,12 +116,7 @@ Debugger_prompt(STATE)
       case 't': {
         printf("\nBacktrace");
         printf("\n---------\n");
-        CallFrame *p = CURR_FRAME;
-        while(p) {
-          CallFrame_print(p);
-          p = p->parent;
-        }
-        printf("\n");
+        CallFrame_print_backtrace(CURR_FRAME);
         break;
       }
       case 'l': {

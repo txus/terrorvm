@@ -79,26 +79,26 @@ VALUE VM_run(STATE)
       case PUSH: {
         Debugger_evaluate(state);
         ip++;
-        debug("PUSH %i", *ip);
+        debugi("PUSH %i", *ip);
         VALUE value = LITERAL(*ip);
         Stack_push(STACK, value);
         break;
       }
       case PUSHTRUE: {
         Debugger_evaluate(state);
-        debug("PUSHTRUE");
+        debugi("PUSHTRUE");
         Stack_push(STACK, TrueObject);
         break;
       }
       case PUSHFALSE: {
         Debugger_evaluate(state);
-        debug("PUSHFALSE");
+        debugi("PUSHFALSE");
         Stack_push(STACK, FalseObject);
         break;
       }
       case PUSHNIL: {
         Debugger_evaluate(state);
-        debug("PUSHNIL");
+        debugi("PUSHNIL");
         Stack_push(STACK, NilObject);
         break;
       }
@@ -106,7 +106,7 @@ VALUE VM_run(STATE)
         Debugger_evaluate(state);
         ip++;
         int jump = *ip;
-        debug("JMP %i", jump);
+        debugi("JMP %i", jump);
         while(jump--) ip++;
         break;
       }
@@ -114,7 +114,7 @@ VALUE VM_run(STATE)
         Debugger_evaluate(state);
         ip++;
         int jump = *ip;
-        debug("JIF %i", jump);
+        debugi("JIF %i", jump);
 
         VALUE value = Stack_peek(STACK);
         if (value == FalseObject || value == NilObject) {
@@ -127,7 +127,7 @@ VALUE VM_run(STATE)
         Debugger_evaluate(state);
         ip++;
         int jump = *ip;
-        debug("JIT %i", jump);
+        debugi("JIT %i", jump);
 
         VALUE value = Stack_peek(STACK);
         if (value != FalseObject && value != NilObject) {
@@ -139,7 +139,7 @@ VALUE VM_run(STATE)
       case GETSLOT: {
         Debugger_evaluate(state);
         ip++;
-        debug("GETSLOT %i", *ip);
+        debugi("GETSLOT %i", *ip);
         VALUE receiver = Stack_pop(STACK);
         VALUE slot     = LITERAL(*ip);
 
@@ -155,7 +155,7 @@ VALUE VM_run(STATE)
       case SETSLOT: {
         Debugger_evaluate(state);
         ip++;
-        debug("SETSLOT %i", *ip);
+        debugi("SETSLOT %i", *ip);
         VALUE value    = Stack_pop(STACK);
         VALUE receiver = Stack_pop(STACK);
         VALUE slot     = LITERAL(*ip);
@@ -170,7 +170,7 @@ VALUE VM_run(STATE)
       case DEFN: {
         Debugger_evaluate(state);
         ip++;
-        debug("DEFN %i", *ip);
+        debugi("DEFN %i", *ip);
         VALUE fn_name = LITERAL(*ip);
         VALUE closure = Closure_new(STATE_FN(VAL2STR(fn_name)), CURR_FRAME);
         Stack_push(STACK, closure);
@@ -179,7 +179,7 @@ VALUE VM_run(STATE)
       case MAKEVEC: {
         Debugger_evaluate(state);
         ip++;
-        debug("MAKEVEC %i", *ip);
+        debugi("MAKEVEC %i", *ip);
         int count = *ip;
         DArray *array = DArray_create(sizeof(VALUE), 5);
         while(count--) {
@@ -199,7 +199,7 @@ VALUE VM_run(STATE)
         ip++;
         int op2 = *ip;
 
-        debug("SEND %i %i", op1, op2);
+        debugi("SEND %i %i", op1, op2);
 
         VALUE name = LITERAL(op1);
         int argcount = op2;
@@ -252,13 +252,13 @@ VALUE VM_run(STATE)
       }
       case PUSHLOBBY: {
         Debugger_evaluate(state);
-        debug("PUSHLOBBY");
+        debugi("PUSHLOBBY");
         Stack_push(STACK, state->lobby);
         break;
       }
       case PUSHSELF: {
         Debugger_evaluate(state);
-        debug("PUSHSELF");
+        debugi("PUSHSELF");
         Stack_push(STACK, CURR_FRAME->self);
         break;
       }
@@ -266,7 +266,7 @@ VALUE VM_run(STATE)
         Debugger_evaluate(state);
         ip++;
         Stack_push(STACK, LOCAL(*ip));
-        debug("PUSHLOCAL %i", *ip);
+        debugi("PUSHLOCAL %i", *ip);
         break;
       }
       case PUSHLOCALDEPTH: {
@@ -275,13 +275,13 @@ VALUE VM_run(STATE)
         int depth = *ip;
         ip++;
         Stack_push(STACK, DEEPLOCAL(depth, *ip));
-        debug("PUSHLOCALDEPTH %i %i", depth, *ip);
+        debugi("PUSHLOCALDEPTH %i %i", depth, *ip);
         break;
       }
       case SETLOCAL: {
         Debugger_evaluate(state);
         ip++;
-        debug("SETLOCAL %i", *ip);
+        debugi("SETLOCAL %i", *ip);
         LOCALSET(*ip, Stack_peek(STACK));
         break;
       }
@@ -290,20 +290,20 @@ VALUE VM_run(STATE)
         ip++;
         int depth = *ip;
         ip++;
-        debug("SETLOCAL %i %i", depth, *ip);
+        debugi("SETLOCAL %i %i", depth, *ip);
         DEEPLOCALSET(depth, *ip, Stack_peek(STACK));
         break;
       }
       case POP: {
         Debugger_evaluate(state);
-        debug("POP");
+        debugi("POP");
         check(Stack_count(STACK) > 0, "Stack underflow.");
         Stack_pop(STACK);
         break;
       }
       case RET: {
         Debugger_evaluate(state);
-        debug("RET");
+        debugi("RET");
         CallFrame *old_frame = Stack_pop(FRAMES);
 
         ip = old_frame->ret;
@@ -315,7 +315,7 @@ VALUE VM_run(STATE)
       }
       case DUMP: {
         Debugger_evaluate(state);
-        debug("DUMP");
+        debugi("DUMP");
         Stack_print(STACK);
         break;
       }
@@ -324,5 +324,7 @@ VALUE VM_run(STATE)
   }
 error:
   debug("Aborted.");
+  CallFrame_print_backtrace(CURR_FRAME);
+  exit(EXIT_FAILURE);
   return NULL;
 }
