@@ -229,6 +229,7 @@ module Terror
     end
 
     def finalize(name)
+      g.clear_stack
       out = g.encode(name)
       fns = @fns.map { |fn| fn.finalize(fn.name) }
       [out, fns].flatten.join("\n")

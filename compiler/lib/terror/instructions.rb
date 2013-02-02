@@ -130,9 +130,10 @@ module Terror
     op :getslot,   0x40, 1
     op :setslot,   0x41, 1
 
-    op :pop,       0x42, 0
+    op :pop,       0x42, 1
     op :defn,      0x43, 1
     op :makevec,   0x44, 1
+    op :clear,     0x45, 1
 
     op :send,      0x80, 2
     op :ret,       0x90, 0

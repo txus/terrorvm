@@ -136,6 +136,18 @@ module Terror
       end
     end
 
+    describe '#pop' do
+      it 'pops n elements off the stack' do
+        @g.pop 3
+      end
+    end
+
+    describe '#clear' do
+      it 'clears n elements right below the top of the stack' do
+        @g.clear 3
+      end
+    end
+
     describe '#ret' do
       it 'returns from the active call frame' do
         @g.ret

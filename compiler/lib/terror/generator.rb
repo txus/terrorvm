@@ -6,7 +6,7 @@ module Terror
   class Generator
     include Instructions
     include Branching
-    attr_reader :literals, :scope, :ip, :parent
+    attr_reader :literals, :scope, :ip, :parent, :stack_size
     attr_accessor :children
 
     def initialize(parent=nil)
@@ -21,8 +21,9 @@ module Terror
         @scope = Scope.new
       end
 
-      @literals  = []
-      @ip        = 0
+      @stack_size = 0
+      @literals   = []
+      @ip         = 0
     end
 
     def disassemble
@@ -50,13 +51,19 @@ module Terror
     end
 
     def push(value)
+      inc
       @ip += 2
       _push literal(value)
     end
 
-    def pop
-      @ip += 1
-      _pop
+    def pop(count)
+      @ip += 2
+      _pop count
+    end
+
+    def clear(count)
+      @ip += 2
+      _clear count
     end
 
     def pushtrue
@@ -81,28 +88,33 @@ module Terror
     end
 
     def jif(label)
+      dec
       @ip += 2
       label.start!
       _jif label
     end
 
     def jit(label)
+      dec
       @ip += 2
       label.start!
       _jit label
     end
 
     def pushself
+      inc
       @ip += 1
       _pushself
     end
 
     def pushlobby
+      inc
       @ip += 1
       _pushlobby
     end
 
     def pushlocal(name)
+      inc
       l = local(name)
       if l.depth > 0
         @ip += 3
@@ -130,21 +142,25 @@ module Terror
     end
 
     def setslot(name)
+      dec
       @ip += 2
       _setslot literal(name)
     end
 
     def send_message(msg, argc)
+      argc.times { dec }
       @ip += 3
       _send literal(msg), argc
     end
 
     def defn(name)
+      inc
       @ip += 2
       _defn literal(name)
     end
 
     def makevec(count)
+      (count-1).times { dec }
       @ip += 2
       _makevec count
     end
@@ -154,7 +170,21 @@ module Terror
       _ret
     end
 
+    def clear_stack
+      extra = @stack_size - 1
+      @stack_size = 1
+      clear extra
+    end
+
     private
+
+    def inc
+      @stack_size += 1
+    end
+
+    def dec
+      @stack_size -= 1
+    end
 
     def local name
       @scope.search_local(name)

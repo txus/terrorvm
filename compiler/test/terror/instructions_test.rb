@@ -23,7 +23,7 @@ module Terror
     end
 
     describe 'instructions with 1 operand' do
-      %w(setline push pushlocal setlocal jmp jif jit getslot setslot makevec).each do |instruction|
+      %w(setline push pushlocal setlocal jmp jif jit getslot pop setslot makevec).each do |instruction|
         describe instruction do
           it "#{instruction} is encoded correctly" do
             inst = @g.__send__ "_#{instruction}", 2
@@ -37,7 +37,7 @@ module Terror
     end
 
     describe 'instructions with no operands' do
-      %w(noop pushself pushlobby pushtrue pushfalse pushnil pop ret dump).each do |instruction|
+      %w(noop pushself pushlobby pushtrue pushfalse pushnil ret dump).each do |instruction|
         describe instruction do
           it "#{instruction} is encoded correctly" do
             inst = @g.__send__ :"_#{instruction}"
