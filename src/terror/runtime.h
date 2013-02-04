@@ -17,6 +17,5 @@ extern VALUE FalseObject;
 extern VALUE NilObject;
 
 void Runtime_init(struct state_s*);
-void Runtime_destroy(struct state_s*);
 
 #endif

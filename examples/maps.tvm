@@ -1,6 +1,6 @@
 /Users/txus/Code/terrorvm/compiler/examples/maps.rb
 _0_main
-:5:28
+:5:30
 "hello world
 "foo
 "to_map
@@ -33,5 +33,7 @@ _0_main
 4 "puts"
 1
 20 PUSHNIL
+69 CLEAR
+1
 144 RET
 

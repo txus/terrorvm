@@ -1,6 +1,8 @@
 module Terror
   module Branching
     class Label
+      attr_reader :then
+
       def initialize(generator)
         @g    = generator
         @now  = 0

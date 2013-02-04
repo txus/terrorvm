@@ -267,9 +267,9 @@ That's it! :)
 #### Branching
 
 * **JMP A**: Skips as much as `A` instructions.
-* **JIF A**: Skips as much as `A` instructions if the top of the stack is falsy
+* **JIF A**: Pops the top of the stack and skips as much as `A` instructions if it is falsy
   (`false` or `nil`).
-* **JIT A**: Skips as much as `A` instructions if the top of the stack is truthy
+* **JIT A**: Pops the top of the stack and skips as much as `A` instructions if it is truthy
   (any value other than `false` or `nil`).
 
 #### Slots (attributes)

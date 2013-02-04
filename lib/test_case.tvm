@@ -1,22 +1,22 @@
 /Users/txus/Code/terrorvm/compiler/stdlib/test_case.rb
 _0_main
-:17:83
-"15_block_536d060e19a60460a7d8891451e77343
+:17:85
+"15_block_ece0b6b85a002a8976ca97323b2bf46f
 "run
-"14_block_1eeb3f986232c1adbb52ab9c59f42929
+"14_block_2044bca6422224b4514ea83c7e0775e8
 "teardown
-"13_block_2e962899c03594eb96a07c74269cf97a
+"13_block_b7643b1f497af184bc671f2952db7819
 "setup
-"2_block_875167ced9826b786eca829c047dc5a5
+"2_block_1835335847d3c437a260271cc685ddb9
 "assert_equal
 "to_map
 "TestCase
 "clone
-"45_block_2ae41a01941986bb5c0b2e85bb982b44
+"45_block_2c384aec5baa7a92bf89198f4e84d23e
 "test_foo
-"48_block_6e146451f05c03c891806d92ced3a13c
+"48_block_1115d6c563bd8d8d6445e166f81b5a5b
 "test_bar
-"51_block_d2db03f03d15feadd28c13fed21689cc
+"51_block_892c6ba7e5416c4bad933139e7bd6cdc
 "test_baz
 1 SETLINE
 1
@@ -26,7 +26,7 @@ _0_main
 1 SETLINE
 15
 67 DEFN
-0 "15_block_536d060e19a60460a7d8891451e77343"
+0 "15_block_ece0b6b85a002a8976ca97323b2bf46f"
 1 SETLINE
 41
 17 PUSH
@@ -34,19 +34,19 @@ _0_main
 1 SETLINE
 14
 67 DEFN
-2 "14_block_1eeb3f986232c1adbb52ab9c59f42929"
+2 "14_block_2044bca6422224b4514ea83c7e0775e8"
 17 PUSH
 3 "teardown"
 1 SETLINE
 13
 67 DEFN
-4 "13_block_2e962899c03594eb96a07c74269cf97a"
+4 "13_block_b7643b1f497af184bc671f2952db7819"
 17 PUSH
 5 "setup"
 1 SETLINE
 2
 67 DEFN
-6 "2_block_875167ced9826b786eca829c047dc5a5"
+6 "2_block_1835335847d3c437a260271cc685ddb9"
 1 SETLINE
 12
 17 PUSH
@@ -73,7 +73,7 @@ _0_main
 32 PUSHLOCAL
 4
 67 DEFN
-11 "45_block_2ae41a01941986bb5c0b2e85bb982b44"
+11 "45_block_2c384aec5baa7a92bf89198f4e84d23e"
 65 SETSLOT
 12 "test_foo"
 1 SETLINE
@@ -81,7 +81,7 @@ _0_main
 32 PUSHLOCAL
 4
 67 DEFN
-13 "48_block_6e146451f05c03c891806d92ced3a13c"
+13 "48_block_1115d6c563bd8d8d6445e166f81b5a5b"
 65 SETSLOT
 14 "test_bar"
 1 SETLINE
@@ -89,7 +89,7 @@ _0_main
 32 PUSHLOCAL
 4
 67 DEFN
-15 "51_block_d2db03f03d15feadd28c13fed21689cc"
+15 "51_block_892c6ba7e5416c4bad933139e7bd6cdc"
 65 SETSLOT
 16 "test_baz"
 1 SETLINE
@@ -100,16 +100,18 @@ _0_main
 1 "run"
 0
 20 PUSHNIL
+69 CLEAR
+5
 144 RET
-_15_block_536d060e19a60460a7d8891451e77343
-:7:56
+_15_block_ece0b6b85a002a8976ca97323b2bf46f
+:7:58
 "tests
 "failures
-"19_block_d074ba9cdba5d3ecccc549aea452653d
+"19_block_4eebce0b89215e106fd5543ff34684f9
 "each
 "
 "puts
-"38_block_aeec712c4d4472de3167f42e4fc37f3a
+"38_block_e2c92bc484f6fe36c08c0e65f107b564
 1 SETLINE
 16
 1 SETLINE
@@ -142,7 +144,7 @@ _15_block_536d060e19a60460a7d8891451e77343
 19
 16 PUSHSELF
 67 DEFN
-2 "19_block_d074ba9cdba5d3ecccc549aea452653d"
+2 "19_block_4eebce0b89215e106fd5543ff34684f9"
 128 SEND
 3 "each"
 1
@@ -161,13 +163,15 @@ _15_block_536d060e19a60460a7d8891451e77343
 1 "failures"
 0
 67 DEFN
-6 "38_block_aeec712c4d4472de3167f42e4fc37f3a"
+6 "38_block_e2c92bc484f6fe36c08c0e65f107b564"
 128 SEND
 3 "each"
 1
+69 CLEAR
+3
 144 RET
-_19_block_d074ba9cdba5d3ecccc549aea452653d
-:15:117
+_19_block_4eebce0b89215e106fd5543ff34684f9
+:15:119
 "prototype
 "Closure
 "===
@@ -299,9 +303,11 @@ _19_block_d074ba9cdba5d3ecccc549aea452653d
 1 SETLINE
 20
 20 PUSHNIL
+69 CLEAR
+6
 144 RET
-_38_block_aeec712c4d4472de3167f42e4fc37f3a
-:3:14
+_38_block_e2c92bc484f6fe36c08c0e65f107b564
+:3:16
 "	* 
 "+
 "puts
@@ -318,21 +324,27 @@ _38_block_aeec712c4d4472de3167f42e4fc37f3a
 128 SEND
 2 "puts"
 1
+69 CLEAR
+0
 144 RET
-_14_block_1eeb3f986232c1adbb52ab9c59f42929
-:0:4
+_14_block_2044bca6422224b4514ea83c7e0775e8
+:0:6
 1 SETLINE
 14
 20 PUSHNIL
+69 CLEAR
+-1
 144 RET
-_13_block_2e962899c03594eb96a07c74269cf97a
-:0:4
+_13_block_b7643b1f497af184bc671f2952db7819
+:0:6
 1 SETLINE
 13
 20 PUSHNIL
+69 CLEAR
+-1
 144 RET
-_2_block_875167ced9826b786eca829c047dc5a5
-:2:46
+_2_block_1835335847d3c437a260271cc685ddb9
+:2:48
 "Expected actual to equal expected.
 "==
 1 SETLINE
@@ -380,9 +392,11 @@ _2_block_875167ced9826b786eca829c047dc5a5
 34 PUSHLOCALDEPTH
 1
 3
+69 CLEAR
+2
 144 RET
-_45_block_2ae41a01941986bb5c0b2e85bb982b44
-:2:11
+_45_block_2c384aec5baa7a92bf89198f4e84d23e
+:2:13
 2
 "assert_equal
 1 SETLINE
@@ -395,9 +409,11 @@ _45_block_2ae41a01941986bb5c0b2e85bb982b44
 128 SEND
 1 "assert_equal"
 2
+69 CLEAR
+0
 144 RET
-_48_block_6e146451f05c03c891806d92ced3a13c
-:3:11
+_48_block_1115d6c563bd8d8d6445e166f81b5a5b
+:3:13
 2
 3
 "assert_equal
@@ -411,9 +427,11 @@ _48_block_6e146451f05c03c891806d92ced3a13c
 128 SEND
 2 "assert_equal"
 2
+69 CLEAR
+0
 144 RET
-_51_block_d2db03f03d15feadd28c13fed21689cc
-:4:13
+_51_block_892c6ba7e5416c4bad933139e7bd6cdc
+:4:15
 2
 3
 "Failed man!!!
@@ -430,5 +448,7 @@ _51_block_d2db03f03d15feadd28c13fed21689cc
 128 SEND
 3 "assert_equal"
 3
+69 CLEAR
+0
 144 RET
 

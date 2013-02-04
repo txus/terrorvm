@@ -2,6 +2,7 @@
 #include <terror/value.h>
 #include <terror/bstrlib.h>
 #include <terror/state.h>
+#include <terror/runtime.h>
 #include <assert.h>
 
 STATE = NULL;
@@ -64,20 +65,12 @@ char *test_lobby_new()
   return NULL;
 }
 
-char *test_destroy()
-{
-  VALUE obj = Number_new(state, 123);
-  Value_destroy(state, obj);
-  mu_assert(!obj->type, "failed destroying object");
-
-  return NULL;
-}
-
 char *test_get()
 {
   VALUE obj = Number_new(state, 123);
   Value_set(state, obj, "foo", Number_new(state, 99));
   VALUE number = Value_get(obj, "foo");
+
   mu_assert(number->type == NumberType, "failed getting member of integer");
 
   return NULL;
@@ -133,6 +126,7 @@ char *all_tests() {
   mu_suite_start();
 
   state = State_new();
+  Runtime_init(state);
 
   mu_run_test(test_integer_new);
   mu_run_test(test_string_new);
@@ -140,12 +134,13 @@ char *all_tests() {
   mu_run_test(test_vector_new);
   mu_run_test(test_map_new);
   mu_run_test(test_lobby_new);
-  /* mu_run_test(test_destroy); */
 
   mu_run_test(test_get);
   mu_run_test(test_get_undefined);
   mu_run_test(test_set);
   mu_run_test(test_each);
+
+  State_destroy(state);
 
   return NULL;
 }

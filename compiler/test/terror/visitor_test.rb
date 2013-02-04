@@ -120,6 +120,15 @@ module Terror
           _push literal(4) # else body
         end
       end
+
+      it 'compiles while' do
+        compiles("while 1; 3; end") do
+          _push literal(1) # condition
+          _jif 4
+          _push literal(3) # body
+          _goto 5
+        end
+      end
     end
 
     describe 'slots' do

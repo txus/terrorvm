@@ -1,6 +1,6 @@
 /Users/txus/Code/terrorvm/compiler/examples/objects.rb
 _0_main
-:13:117
+:13:119
 "to_map
 50
 "age
@@ -130,5 +130,7 @@ _0_main
 9 "puts"
 1
 20 PUSHNIL
+69 CLEAR
+11
 144 RET
 

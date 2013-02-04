@@ -17,6 +17,13 @@ Debugger_new()
   return debugger;
 }
 
+void
+Debugger_destroy(Debugger* debugger)
+{
+  DArray_clear_destroy(debugger->breakpoints);
+  free(debugger);
+}
+
 Breakpoint*
 Breakpoint_new(char *filename, int line)
 {

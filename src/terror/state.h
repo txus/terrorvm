@@ -12,14 +12,17 @@ struct state_s {
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
-  Heap *heap;
+  GCHeap *heap;
   VALUE lobby;
   int *ret;
   Debugger *dbg;
+  DArray *rootset;
 };
 typedef struct state_s State;
 
 State* State_new();
+void State_destroy(State* state);
+DArray* State_rootset(State* state);
 
 #define STATE State* state
 #define STACK (state->stack)

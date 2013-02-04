@@ -29,6 +29,7 @@ typedef struct debugger_s Debugger;
 typedef struct breakpoint_s Breakpoint;
 
 Debugger* Debugger_new();
+void Debugger_destroy(Debugger*);
 void Debugger_stop(struct state_s* state);
 void Debugger_prompt(struct state_s* state);
 void Debugger_load_current_file(struct state_s* state);

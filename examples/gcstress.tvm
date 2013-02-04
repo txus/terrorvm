@@ -1,0 +1,35 @@
+/Users/txus/Code/terrorvm/compiler/examples/gcstress.rb
+_0_main
+:3:28
+0
+1
+"+
+1 SETLINE
+1
+17 PUSH
+0 0
+33 SETLOCAL
+0
+1 SETLINE
+2
+18 PUSHTRUE
+49 JIF
+13
+1 SETLINE
+3
+32 PUSHLOCAL
+0
+17 PUSH
+1 1
+128 SEND
+2 "+"
+1
+33 SETLOCAL
+0
+51 GOTO
+10
+20 PUSHNIL
+69 CLEAR
+0
+144 RET
+

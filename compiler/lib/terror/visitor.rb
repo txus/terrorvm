@@ -115,6 +115,24 @@ module Terror
       g.pushself
     end
 
+    def while(node, parent)
+      setline(node)
+
+      done = g.new_label
+      body = g.new_label
+
+      node.condition.lazy_visit(self, parent)
+
+      g.jif done
+
+      body.set!
+      node.body.lazy_visit(self, parent)
+
+      g.goto body
+
+      done.set!
+    end
+
     def if(node, parent)
       setline(node)
       node.condition.lazy_visit(self, parent)

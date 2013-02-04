@@ -40,27 +40,3 @@ void Runtime_init(STATE) {
   NilObject   = Value_new(state, NilType);
   NilObject->data.as_num = 0;
 }
-
-void Runtime_destroy(STATE) {
-  Value_destroy(state, Number_bp);
-  Value_destroy(state, String_bp);
-  Value_destroy(state, Vector_bp);
-  Value_destroy(state, Map_bp);
-  Value_destroy(state, Closure_bp);
-  Value_destroy(state, Object_bp);
-  Number_bp = NULL;
-  String_bp = NULL;
-  Vector_bp = NULL;
-  Map_bp = NULL;
-  Closure_bp = NULL;
-  Object_bp = NULL;
-
-  Value_destroy(state, TrueObject);
-  TrueObject = NULL;
-
-  Value_destroy(state, FalseObject);
-  FalseObject = NULL;
-
-  Value_destroy(state, NilObject);
-  NilObject = NULL;
-}

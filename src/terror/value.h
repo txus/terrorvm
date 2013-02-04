@@ -2,10 +2,10 @@
 #define _tvm_value_h_
 
 #include <terror/value_type.h>
-#include <terror/gc_header.h>
 #include <terror/function.h>
 #include <terror/call_frame.h>
 #include <terror/hashmap.h>
+#include <terror/gc.h>
 #include <Block.h>
 
 struct state_s;
@@ -28,7 +28,7 @@ typedef struct val_s val_t;
 
 VALUE Value_new(struct state_s*, ValueType);
 VALUE Value_from_prototype(struct state_s*, ValueType, VALUE);
-void Value_destroy(struct state_s*, VALUE);
+void Value_destroy(VALUE);
 void Value_print(struct state_s*, VALUE);
 VALUE Value_to_s(struct state_s*, VALUE);
 

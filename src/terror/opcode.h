@@ -20,6 +20,7 @@ typedef enum {
   JMP = 0x30,       // 48
   JIF,              // 49
   JIT,              // 50
+  GOTO,             // 51
 
   GETSLOT = 0x40,   // 64
   SETSLOT,          // 65
@@ -27,6 +28,7 @@ typedef enum {
   POP,              // 66
   DEFN,             // 67
   MAKEVEC,          // 68
+  CLEAR,            // 69
 
   SEND = 0x80,      // 128
   RET = 0x90,       // 144

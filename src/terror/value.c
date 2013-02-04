@@ -19,7 +19,7 @@ VALUE NilObject;
 VALUE
 Value_new(STATE, ValueType type)
 {
-  VALUE val = gc_alloc(state);
+  VALUE val = gc_alloc(state, state->heap);
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
   val->fields = DArray_create(sizeof(VALUE), 10);
@@ -35,9 +35,23 @@ Value_from_prototype(STATE, ValueType type, VALUE prototype) {
 }
 
 void
-Value_destroy(STATE, VALUE o)
+Value_destroy(VALUE o)
 {
-  /* free(o); */
+  o->prototype = NULL;
+  switch(o->type) {
+  case StringType:
+    if(o->data.as_str) free(o->data.as_str);
+    break;
+  case VectorType:
+    if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
+    break;
+  default:
+    break;
+  }
+  if(o->fields) DArray_destroy(o->fields);
+  if(o->table) Hashmap_destroy(o->table);
+
+  if(o) free(o);
 }
 
 #define append(B, S) bconcat((B), bfromcstr(S))
@@ -204,6 +218,8 @@ Map_new(STATE, DArray *array)
 
     Hashmap_set(hash, bfromcstr(VAL2STR(key)), value);
   }
+
+  DArray_destroy(array);
 
   return val;
 };

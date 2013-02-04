@@ -60,7 +60,7 @@ void VM_start(bstring filename)
   // and run the codes!
   VM_run(state);
 
-  Runtime_destroy(state);
+  State_destroy(state);
 }
 
 VALUE VM_run(STATE)
@@ -118,7 +118,7 @@ VALUE VM_run(STATE)
         int jump = *ip;
         debugi("JIF %i", jump);
 
-        VALUE value = Stack_peek(STACK);
+        VALUE value = Stack_pop(STACK);
         if (value == FalseObject || value == NilObject) {
           while(jump--) ip++;
         }
@@ -131,10 +131,22 @@ VALUE VM_run(STATE)
         int jump = *ip;
         debugi("JIT %i", jump);
 
-        VALUE value = Stack_peek(STACK);
+        VALUE value = Stack_pop(STACK);
         if (value != FalseObject && value != NilObject) {
           while(jump--) ip++;
         }
+
+        break;
+      }
+      case GOTO: {
+        Debugger_evaluate(state);
+        ip++;
+        int jump = *ip - 2;
+
+        debugi("GOTO %i", jump);
+
+        ip = CURR_FRAME->fn->code;
+        while(jump--) ip++;
 
         break;
       }
@@ -298,9 +310,22 @@ VALUE VM_run(STATE)
       }
       case POP: {
         Debugger_evaluate(state);
-        debugi("POP");
-        check(Stack_count(STACK) > 0, "Stack underflow.");
-        Stack_pop(STACK);
+        ip++;
+        int count = *ip;
+        debugi("POP %i", count);
+        check(Stack_count(STACK) >= count, "Stack underflow.");
+        while(count--) Stack_pop(STACK);
+        break;
+      }
+      case CLEAR: {
+        Debugger_evaluate(state);
+        ip++;
+        int count = *ip;
+        debugi("CLEAR %i", count);
+        check(Stack_count(STACK) > count, "Stack underflow.");
+        VALUE tos = Stack_pop(STACK);
+        while(count--) Stack_pop(STACK);
+        Stack_push(STACK, tos);
         break;
       }
       case RET: {

@@ -16,24 +16,12 @@ char *test_init()
   return NULL;
 }
 
-char *test_destroy()
-{
-  Runtime_destroy(state);
-
-  mu_assert(TrueObject == NULL, "TrueObject wasn't destroyed with the runtime");
-  mu_assert(FalseObject == NULL, "FalseObject wasn't destroyed with the runtime");
-  mu_assert(NilObject == NULL, "NilObject wasn't destroyed with the runtime");
-
-  return NULL;
-}
-
 char *all_tests() {
   mu_suite_start();
 
   state = State_new();
 
   mu_run_test(test_init);
-  mu_run_test(test_destroy);
 
   return NULL;
 }

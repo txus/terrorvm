@@ -1,10 +1,10 @@
 /Users/txus/Code/terrorvm/compiler/kernel/beta.rb
 _0_main
-:5:20
+:5:22
 "Vector
-"1_block_3aab252f9a17b5c8a7e3ef836ab70fb5
+"1_block_2bd56c374de1d07409b63b2dec37514c
 "map
-"9_block_a59d598a3f4b544822a3109bb6398e0e
+"9_block_ea95b5c9027205af843cf4a792a8aa0a
 "length
 1 SETLINE
 1
@@ -12,7 +12,7 @@ _0_main
 64 GETSLOT
 0 "Vector"
 67 DEFN
-1 "1_block_3aab252f9a17b5c8a7e3ef836ab70fb5"
+1 "1_block_2bd56c374de1d07409b63b2dec37514c"
 65 SETSLOT
 2 "map"
 1 SETLINE
@@ -21,14 +21,16 @@ _0_main
 64 GETSLOT
 0 "Vector"
 67 DEFN
-3 "9_block_a59d598a3f4b544822a3109bb6398e0e"
+3 "9_block_ea95b5c9027205af843cf4a792a8aa0a"
 65 SETSLOT
 4 "length"
 20 PUSHNIL
+69 CLEAR
+1
 144 RET
-_1_block_3aab252f9a17b5c8a7e3ef836ab70fb5
-:2:23
-"3_block_cccef253834abe8d31e57fbf53b17914
+_1_block_2bd56c374de1d07409b63b2dec37514c
+:2:25
+"3_block_a1e16c00ec4024bb5e2c2c82e4f3f668
 "each
 1 SETLINE
 2
@@ -43,7 +45,7 @@ _1_block_3aab252f9a17b5c8a7e3ef836ab70fb5
 1 SETLINE
 3
 67 DEFN
-0 "3_block_cccef253834abe8d31e57fbf53b17914"
+0 "3_block_a1e16c00ec4024bb5e2c2c82e4f3f668"
 128 SEND
 1 "each"
 1
@@ -52,9 +54,11 @@ _1_block_3aab252f9a17b5c8a7e3ef836ab70fb5
 34 PUSHLOCALDEPTH
 1
 0
+69 CLEAR
+1
 144 RET
-_3_block_cccef253834abe8d31e57fbf53b17914
-:2:17
+_3_block_a1e16c00ec4024bb5e2c2c82e4f3f668
+:2:19
 "apply
 "push
 1 SETLINE
@@ -73,11 +77,13 @@ _3_block_cccef253834abe8d31e57fbf53b17914
 128 SEND
 1 "push"
 1
-144 RET
-_9_block_a59d598a3f4b544822a3109bb6398e0e
-:3:21
+69 CLEAR
 0
-"11_block_ac047c9d9ab53d7ba36a7fdfaa557c0b
+144 RET
+_9_block_ea95b5c9027205af843cf4a792a8aa0a
+:3:23
+0
+"11_block_976fa6ca3f001a9c8dbae4c1bdd089b5
 "each
 1 SETLINE
 10
@@ -90,7 +96,7 @@ _9_block_a59d598a3f4b544822a3109bb6398e0e
 11
 16 PUSHSELF
 67 DEFN
-1 "11_block_ac047c9d9ab53d7ba36a7fdfaa557c0b"
+1 "11_block_976fa6ca3f001a9c8dbae4c1bdd089b5"
 128 SEND
 2 "each"
 1
@@ -99,9 +105,11 @@ _9_block_a59d598a3f4b544822a3109bb6398e0e
 34 PUSHLOCALDEPTH
 1
 1
+69 CLEAR
+2
 144 RET
-_11_block_ac047c9d9ab53d7ba36a7fdfaa557c0b
-:2:14
+_11_block_976fa6ca3f001a9c8dbae4c1bdd089b5
+:2:16
 1
 "+
 1 SETLINE
@@ -117,5 +125,7 @@ _11_block_ac047c9d9ab53d7ba36a7fdfaa557c0b
 35 SETLOCALDEPTH
 2
 1
+69 CLEAR
+0
 144 RET
 

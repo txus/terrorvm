@@ -28,7 +28,7 @@ VALUE NilObject;
   Runtime_init(state);                                  \
 
 #define TEARDOWN()                                      \
-  Runtime_destroy(state);                               \
+  State_destroy(state);                                 \
   return NULL;                                          \
 
 #define DEFN(N, ...)                                    \
@@ -91,7 +91,7 @@ char *test_push()
   RUN(
     PUSH, 0,
     PUSH, 1,
-    POP,
+    POP, 1,
     RET
   );
 
@@ -178,12 +178,12 @@ char *test_pushlocaldepth()
   RUN(
     PUSH, 0,
     SETLOCAL, 0,
-    POP,
+    POP, 1,
 
     PUSHSELF,
     DEFN, 1,
     SETSLOT, 2,
-    POP,
+    POP, 1,
 
     PUSHSELF,
     SEND, 2, 0,
@@ -268,13 +268,14 @@ char *test_jif()
   SETUP();
 
   RUN(
+    PUSHNIL,
     PUSHFALSE,
     JIF, 1,
     PUSHTRUE,
     RET
   );
 
-  mu_assert(result == FalseObject, "Jif failed.");
+  mu_assert(result == NilObject, "Jif failed.");
 
   TEARDOWN();
 }
@@ -284,13 +285,30 @@ char *test_jit()
   SETUP();
 
   RUN(
+    PUSHNIL,
     PUSHTRUE,
     JIT, 1,
     PUSHFALSE,
     RET
   );
 
-  mu_assert(result == TrueObject, "Jit failed.");
+  mu_assert(result == NilObject, "Jit failed.");
+
+  TEARDOWN();
+}
+
+char *test_goto()
+{
+  SETUP();
+
+  RUN(
+    PUSHFALSE,
+    PUSHTRUE,
+    GOTO, 5,
+    RET
+  );
+
+  mu_assert(result == TrueObject, "Goto failed.");
 
   TEARDOWN();
 }
@@ -344,13 +362,32 @@ char *test_pop()
   SETUP();
 
   RUN(
+    PUSHNIL,
     PUSHTRUE,
     PUSHFALSE,
-    POP,
+    POP, 2,
     RET
   );
 
-  mu_assert(result == TrueObject, "Pop failed.");
+  mu_assert(result == NilObject, "Pop failed.");
+
+  TEARDOWN();
+}
+
+char *test_clear()
+{
+  SETUP();
+
+  RUN(
+    PUSHNIL,
+    PUSHTRUE,
+    PUSHFALSE,
+    CLEAR, 2,
+    RET
+  );
+
+  mu_assert(result == FalseObject, "Clear failed.");
+  mu_assert(Stack_count(STACK) == 0, "Clear failed");
 
   TEARDOWN();
 }
@@ -395,7 +432,7 @@ char *test_send_getslot()
     PUSHSELF,
     PUSH, 0,
     SETSLOT, 1,
-    POP,
+    POP, 1,
 
     PUSHSELF,
     SEND, 1, 0,
@@ -495,9 +532,11 @@ char *all_tests() {
   mu_run_test(test_jmp);
   mu_run_test(test_jif);
   mu_run_test(test_jit);
+  mu_run_test(test_goto);
   mu_run_test(test_getslot);
   mu_run_test(test_setslot);
   mu_run_test(test_pop);
+  mu_run_test(test_clear);
   mu_run_test(test_send);
   mu_run_test(test_send_getslot);
   mu_run_test(test_send_apply);

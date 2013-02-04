@@ -126,6 +126,7 @@ module Terror
     op :jmp,       0x30, 1
     op :jif,       0x31, 1
     op :jit,       0x32, 1
+    op :goto,      0x33, 1
 
     op :getslot,   0x40, 1
     op :setslot,   0x41, 1

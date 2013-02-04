@@ -1,6 +1,6 @@
 /Users/txus/Code/terrorvm/compiler/examples/numbers.rb
 _0_main
-:9:30
+:9:32
 3
 1
 "-
@@ -39,5 +39,7 @@ _0_main
 8 "puts"
 1
 20 PUSHNIL
+69 CLEAR
+0
 144 RET
 

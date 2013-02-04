@@ -101,6 +101,12 @@ module Terror
       _jit label
     end
 
+    def goto(label)
+      @ip += 2
+      label.start!
+      _goto label.then - 1
+    end
+
     def pushself
       inc
       @ip += 1
