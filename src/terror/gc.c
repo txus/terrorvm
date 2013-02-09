@@ -79,7 +79,7 @@ gc_flip(STATE, GCHeap *heap) {
     debug("[GC] Adding rootset (%i) to the scan area...", DArray_count(rootset));
     gc_prepare_to_scan(heap, rootset);
   }
-  GCHeap_print(heap);
+  /* GCHeap_print(heap); */
 }
 
 void
