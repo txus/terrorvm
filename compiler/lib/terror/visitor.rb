@@ -42,9 +42,12 @@ module Terror
 
     def block(node, parent)
       setline(node)
-      node.array.each do |expression|
+      before = g.stack_size
+      node.array.each_with_index do |expression, idx|
         expression.lazy_visit self, node
       end
+      after = g.stack_size
+      g.clear after - before - 1
     end
 
     def nil_literal(node, parent)

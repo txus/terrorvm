@@ -6,11 +6,11 @@ _0_main
 "to
 "world
 "hello
-"3_block_acf98724c25b92f44b060cc7a0af64f9
+"3_block_c8d724b303ae55a1b98d7e5a3df7c0fd
 "each
 "done!
 "puts
-"9_block_64f8fde2f1bd07475d719a6304de3557
+"9_block_47568ad931ae1beb4e9628080a4c6fce
 "map
 1 SETLINE
 1
@@ -35,7 +35,7 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-5 "3_block_acf98724c25b92f44b060cc7a0af64f9"
+5 "3_block_c8d724b303ae55a1b98d7e5a3df7c0fd"
 33 SETLOCAL
 2
 1 SETLINE
@@ -63,19 +63,19 @@ _0_main
 32 PUSHLOCAL
 1
 67 DEFN
-9 "9_block_64f8fde2f1bd07475d719a6304de3557"
+9 "9_block_47568ad931ae1beb4e9628080a4c6fce"
 128 SEND
 10 "map"
 1
 128 SEND
 8 "puts"
 1
-20 PUSHNIL
 69 CLEAR
 5
+20 PUSHNIL
 144 RET
-_3_block_acf98724c25b92f44b060cc7a0af64f9
-:2:17
+_3_block_c8d724b303ae55a1b98d7e5a3df7c0fd
+:2:15
 "+
 "puts
 1 SETLINE
@@ -92,11 +92,9 @@ _3_block_acf98724c25b92f44b060cc7a0af64f9
 128 SEND
 1 "puts"
 1
-69 CLEAR
-0
 144 RET
-_9_block_64f8fde2f1bd07475d719a6304de3557
-:2:12
+_9_block_47568ad931ae1beb4e9628080a4c6fce
+:2:10
 "!!!!
 "+
 1 SETLINE
@@ -108,7 +106,5 @@ _9_block_64f8fde2f1bd07475d719a6304de3557
 128 SEND
 1 "+"
 1
-69 CLEAR
-0
 144 RET
 

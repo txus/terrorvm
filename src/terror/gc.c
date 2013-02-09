@@ -79,6 +79,7 @@ gc_flip(STATE, GCHeap *heap) {
     debug("[GC] Adding rootset (%i) to the scan area...", DArray_count(rootset));
     gc_prepare_to_scan(heap, rootset);
   }
+  GCHeap_print(heap);
 }
 
 void
@@ -95,6 +96,7 @@ VALUE
 gc_alloc(STATE, GCHeap *heap)
 {
   if(heap->allocs >= heap->scan_every) {
+    debug("SCANNING!");
     heap->allocs = 0;
     gc_scan(heap);
   }

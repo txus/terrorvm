@@ -63,6 +63,7 @@ module Terror
 
     def clear(count)
       @ip += 2
+      @stack_size -= count
       _clear count
     end
 
@@ -178,8 +179,10 @@ module Terror
 
     def clear_stack
       extra = @stack_size - 1
-      @stack_size = 1
-      clear extra
+      if extra > 0
+        @stack_size = 1
+        clear extra
+      end
     end
 
     private

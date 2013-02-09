@@ -32,8 +32,8 @@ _0_main
 128 SEND
 4 "puts"
 1
-20 PUSHNIL
 69 CLEAR
 1
+20 PUSHNIL
 144 RET
 
