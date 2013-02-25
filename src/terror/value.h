@@ -5,13 +5,11 @@
 #include <terror/function.h>
 #include <terror/call_frame.h>
 #include <terror/hashmap.h>
-#include <terror/gc.h>
 #include <Block.h>
 
 struct state_s;
 
 struct val_s {
-  GCHeader gc;
   ValueType type;
   union {
     double as_num;

@@ -6,13 +6,11 @@
 #include <terror/value.h>
 #include <terror/stack.h>
 #include <terror/debugger.h>
-#include <terror/gc.h>
 
 struct state_s {
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
-  GCHeap *heap;
   VALUE lobby;
   int *ret;
   Debugger *dbg;

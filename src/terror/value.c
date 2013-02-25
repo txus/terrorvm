@@ -5,7 +5,6 @@
 #include <terror/primitives.h>
 #include <terror/call_frame.h>
 #include <terror/vector.h>
-#include <terror/gc.h>
 
 VALUE Object_bp;
 VALUE Number_bp;
@@ -19,7 +18,7 @@ VALUE NilObject;
 VALUE
 Value_new(STATE, ValueType type)
 {
-  VALUE val = gc_alloc(state, state->heap);
+  VALUE val = calloc(1, sizeof(val_t));
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
   val->fields = DArray_create(sizeof(VALUE), 10);
@@ -171,7 +170,7 @@ VALUE
 String_new(STATE, char* value)
 {
   VALUE val = Value_from_prototype(state, StringType, String_bp);
-  val->data.as_str = value;
+  val->data.as_str = strdup(value);
   return val;
 }
 

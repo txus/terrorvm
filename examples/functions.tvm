@@ -2,7 +2,7 @@
 _0_main
 :5:39
 123
-"3_block_862fc117d97b6c8f0ac380ab7be90d34
+"3_block_725cf0b51db5b88ce4db960b5cc63fa1
 "fn
 2
 "puts
@@ -26,7 +26,7 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-1 "3_block_862fc117d97b6c8f0ac380ab7be90d34"
+1 "3_block_725cf0b51db5b88ce4db960b5cc63fa1"
 65 SETSLOT
 2 "fn"
 1 SETLINE
@@ -45,7 +45,7 @@ _0_main
 3
 20 PUSHNIL
 144 RET
-_3_block_862fc117d97b6c8f0ac380ab7be90d34
+_3_block_725cf0b51db5b88ce4db960b5cc63fa1
 :1:11
 "+
 1 SETLINE

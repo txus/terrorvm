@@ -20,7 +20,6 @@ State_new()
   state->frames    = Stack_create();
   state->stack     = Stack_create();
   state->dbg       = Debugger_new();
-  state->heap      = GCHeap_new(10, 10);
   state->rootset   = DArray_create(sizeof(VALUE), 10);
   return state;
 }
@@ -45,8 +44,6 @@ State_destroy(STATE)
   Vector_bp   = NULL;
   Map_bp      = NULL;
   Closure_bp  = NULL;
-
-  GCHeap_destroy(state->heap);
 
   // TODO destroy functions
 }

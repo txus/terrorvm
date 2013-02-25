@@ -3,6 +3,4 @@ fn = -> {
   2 * 2
 }
 
-fn.apply(1)
-fn.apply(2)
-fn.apply(3)
+fn.apply(1) while true

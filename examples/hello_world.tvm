@@ -3,7 +3,7 @@ _0_main
 :5:36
 "hello
 "to_map
-"3_block_21a6c6f9729b2a9e79f3b26c123cd0b1
+"3_block_ec319f19da1a2d479130e350cbb4e5f4
 "greet
 "world
 1 SETLINE
@@ -26,7 +26,7 @@ _0_main
 32 PUSHLOCAL
 1
 67 DEFN
-2 "3_block_21a6c6f9729b2a9e79f3b26c123cd0b1"
+2 "3_block_ec319f19da1a2d479130e350cbb4e5f4"
 65 SETSLOT
 3 "greet"
 1 SETLINE
@@ -42,7 +42,7 @@ _0_main
 2
 20 PUSHNIL
 144 RET
-_3_block_21a6c6f9729b2a9e79f3b26c123cd0b1
+_3_block_ec319f19da1a2d479130e350cbb4e5f4
 :4:25
 " 
 "+
