@@ -6,21 +6,21 @@
 #include <terror/value.h>
 #include <terror/stack.h>
 #include <terror/debugger.h>
+#include <treadmill/gc.h>
 
 struct state_s {
+  TmStateHeader gc;
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
   VALUE lobby;
   int *ret;
   Debugger *dbg;
-  DArray *rootset;
 };
 typedef struct state_s State;
 
 State* State_new();
 void State_destroy(State* state);
-DArray* State_rootset(State* state);
 
 #define STATE State* state
 #define STACK (state->stack)

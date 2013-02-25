@@ -19,7 +19,7 @@ TARGET=build/libterror.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
 # The Target Build
-all: $(DEPS) $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
+all: $(DEPS) $(TARGET) tests $(PROGRAMS)
 
 dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror -Ideps/libtreadmill/include $(OPTFLAGS)
 dev: all
