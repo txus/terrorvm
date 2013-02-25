@@ -4,7 +4,7 @@ LIBS=$(OPTLIBS)
 LDFLAGS=deps/libtreadmill/build/libtreadmill.a
 PREFIX?=/usr/local
 
-DEPS=gc
+DEPS=gc_debug
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -26,6 +26,9 @@ dev: all
 
 gc:
 	$(MAKE) -C deps/libtreadmill
+
+gc_debug:
+	$(MAKE) dev -C deps/libtreadmill
 
 rubinius:
 	which rbx || (echo '\nYou need rubinius to compile the kernel.\n'; which rbx)
