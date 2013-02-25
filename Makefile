@@ -1,7 +1,10 @@
 CC=clang
-CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG $(OPTFLAGS)
+CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libtreadmill/include $(OPTFLAGS)
 LIBS=$(OPTLIBS)
+LDFLAGS=deps/libtreadmill/build/libtreadmill.a
 PREFIX?=/usr/local
+
+DEPS=gc
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
@@ -15,12 +18,14 @@ PROGRAMS=$(patsubst %.c,%,$(PROGRAMS_SRC))
 TARGET=build/libterror.a
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 
-
 # The Target Build
-all: $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
+all: $(DEPS) $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
 
-dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror $(OPTFLAGS)
+dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror -Ideps/libtreadmill/include $(OPTFLAGS)
 dev: all
+
+gc:
+	$(MAKE) -C deps/libtreadmill
 
 rubinius:
 	which rbx || (echo '\nYou need rubinius to compile the kernel.\n'; which rbx)
@@ -63,6 +68,7 @@ clean:
 				rm -f tests/tests.log
 				find . -name "*.gc*" -exec rm {} \;
 				rm -rf `find . -name "*.dSYM" -print`
+				$(MAKE) clean -C deps/libtreadmill
 
 # The Install
 install: all

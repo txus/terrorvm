@@ -1,0 +1,3 @@
+[submodule "deps/libtreadmill"]
+	path = deps/libtreadmill
+	url = git://github.com/txus/libtreadmill

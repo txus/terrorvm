@@ -3,6 +3,7 @@
 #include <terror/bstrlib.h>
 #include <terror/state.h>
 #include <terror/runtime.h>
+#include <treadmill/gc.h>
 #include <assert.h>
 
 STATE = NULL;
