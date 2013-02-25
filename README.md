@@ -175,9 +175,9 @@ You can write your compiler in whatever language you prefer, of course.
 
 ## Garbage collection
 
-The algorithm of choice for TerrorVM is [Baker's treadmill][gc], a real-time,
-non-moving GC algorithm. Unfortunately it is not implemented yet. It will be as
-soon as I understand how to do it. Remember it's a work in progress :)
+The algorithm of choice for TerrorVM is [Baker's treadmill][gc], an incremental,
+real-time, non-moving GC algorithm, implemented in [libtreadmill][libtreadmill]
+as a separate library and included via Git submodules.
 
 ## Concurrency
 
@@ -300,6 +300,7 @@ be alright.
 
     $ git clone git://github.com/txus/terrorvm.git
     $ cd terrorvm
+    $ git submodule init && git submodule update
     $ make
 
 To run the tests:
@@ -346,6 +347,7 @@ me!).
 [alpha_native]: https://github.com/txus/terrorvm/blob/master/kernel/alpha.tvm
 [beta_native]: https://github.com/txus/terrorvm/blob/master/kernel/beta.tvm
 [gc]: http://www.pipeline.com/~hbaker1/NoMotionGC.html
+[libtreadmill]: https://github.com/txus/libtreadmill
 [jtregunna]: https://twitter.com/jtregunna
 [brixen]: https://twitter.com/brixen
 [dbussink]: https://twitter.com/dbussink
