@@ -5,6 +5,7 @@
 #include <terror/primitives.h>
 #include <terror/call_frame.h>
 #include <terror/vector.h>
+#include <treadmill/gc.h>
 
 VALUE Object_bp;
 VALUE Number_bp;
@@ -18,7 +19,7 @@ VALUE NilObject;
 VALUE
 Value_new(STATE, ValueType type)
 {
-  VALUE val = calloc(1, sizeof(val_t));
+  VALUE val = (VALUE)Tm_allocate(state->heap);
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
   val->fields = DArray_create(sizeof(VALUE), 10);

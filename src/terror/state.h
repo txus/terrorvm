@@ -15,6 +15,7 @@ struct state_s {
   Stack *stack;
   VALUE lobby;
   int *ret;
+  TmHeap *heap;
   Debugger *dbg;
 };
 typedef struct state_s State;
