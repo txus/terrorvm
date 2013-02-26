@@ -96,6 +96,8 @@ BytecodeFile *BytecodeFile_new(STATE, bstring compiled_filename)
 
   bdestroy(buf);
 
+  DArray_push(state->files, file);
+
   return file;
 
 error:
@@ -109,7 +111,20 @@ BytecodeFile_destroy(BytecodeFile *file)
 {
   if(file->filename) bdestroy(file->filename);
   if(file->compiled_filename) bdestroy(file->compiled_filename);
-  if(file->functions) Hashmap_destroy(file->functions);
+
+  for(int i = 0; i < DArray_count(file->function_names); i++) {
+    bdestroy((bstring)DArray_at(file->function_names, i));
+  }
+  Hashmap_traverse(file->functions, Hashmap_Function_destroy);
+  Hashmap_destroy(file->functions);
 
   free(file);
 }
+
+int
+Hashmap_Function_destroy(HashmapNode *node)
+{
+  Function_destroy((Function*)node->data);
+  return 0;
+}
+

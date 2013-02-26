@@ -13,6 +13,8 @@ struct state_s {
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
+  DArray *files;
+  DArray *native_fns;
   VALUE lobby;
   int *ret;
   TmHeap *heap;

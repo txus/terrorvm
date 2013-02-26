@@ -12,12 +12,14 @@ struct call_frame_s {
   DArray *locals;
   Function *fn;
   int *ret;
+  int refcount;
   struct call_frame_s *parent;
 };
 
 typedef struct call_frame_s CallFrame;
 
 CallFrame* CallFrame_new(struct val_s* self, Function *fn, int *ret);
+void CallFrame_destroy(CallFrame *frame);
 
 struct val_s* CallFrame_getlocal(CallFrame *frame, int idx);
 void CallFrame_setlocal(CallFrame *frame, int idx, struct val_s* value);

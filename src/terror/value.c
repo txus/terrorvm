@@ -34,6 +34,13 @@ Value_from_prototype(STATE, ValueType type, VALUE prototype) {
   return val;
 }
 
+static inline int
+Hashmap_destroy_bstring_key(HashmapNode *node)
+{
+  bdestroy(node->key);
+  return 0;
+}
+
 void
 Value_destroy(VALUE o)
 {
@@ -49,7 +56,9 @@ Value_destroy(VALUE o)
     break;
   }
   if(o->fields) DArray_destroy(o->fields);
-  if(o->table) Hashmap_destroy(o->table);
+
+  Hashmap_traverse(o->table, Hashmap_destroy_bstring_key);
+  Hashmap_destroy(o->table);
 
   if(o) free(o);
 }
@@ -180,6 +189,10 @@ Closure_new(STATE, Function *fn, CallFrame *scope)
 {
   VALUE val = Value_from_prototype(state, ClosureType, Closure_bp);
   fn->scope = scope;
+
+  // Keep track of native functions to deallocate them properly
+  if(fn->c_fn) DArray_push(state->native_fns, fn);
+
   val->data.as_data = fn;
   return val;
 }

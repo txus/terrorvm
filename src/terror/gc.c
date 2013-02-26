@@ -20,7 +20,13 @@ GC_release(void *value)
 void
 GC_scan_pointers(TmHeap *heap, TmObjectHeader *object, TmCallbackFn callback)
 {
-  Value_each((VALUE)object, ^ void (VALUE key, VALUE val) {
+  VALUE val = (VALUE)object;
+
+  for(int i = 0; i < DArray_count(val->fields); i++) {
+    callback(heap, (TmObjectHeader*)DArray_at(val->fields, i));
+  }
+
+  Value_each(val, ^ void (VALUE key, VALUE val) {
     callback(heap, (TmObjectHeader*)key);
     callback(heap, (TmObjectHeader*)val);
   });

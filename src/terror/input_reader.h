@@ -18,5 +18,6 @@ typedef struct {
 
 BytecodeFile *BytecodeFile_new(struct state_s*, bstring filename);
 void BytecodeFile_destroy(BytecodeFile *file);
+int Hashmap_Function_destroy(HashmapNode *node);
 
 #endif

@@ -18,14 +18,26 @@ Function_new(char *filename, int *code, DArray *literals)
   return fn;
 }
 
+void
+Function_destroy(Function *fn)
+{
+  if(fn->filename) free(fn->filename);
+  if(fn->code) free(fn->code);
+  DArray_destroy(fn->literals);
+  free(fn);
+}
+
 Function*
 Function_native_new(native_fn c_fn)
 {
   Function *fn = calloc(1, sizeof(Function));
-  fn->filename = "(native)";
+  char *name = malloc(9 * sizeof(char));
+  strcpy(name, "(native)");
+
+  fn->filename = name;
   fn->code     = NULL;
   fn->literals = NULL;
-  fn->scope = NULL;
+  fn->scope    = NULL;
   fn->c_fn     = c_fn;
   return fn;
 }
@@ -67,6 +79,7 @@ Function_call(
   // If it is a closure, we nest the call frames.
   if(fn->scope) {
     new_frame->parent = fn->scope;
+    new_frame->parent->refcount++;
   }
 
   Stack_push(FRAMES, new_frame);

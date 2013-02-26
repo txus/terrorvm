@@ -21,6 +21,8 @@ State_new()
   State *state      = calloc(1, sizeof(State));
   state->functions  = Hashmap_create(NULL, NULL);
   state->frames     = Stack_create();
+  state->files      = DArray_create(sizeof(BytecodeFile*), 10);
+  state->native_fns = DArray_create(sizeof(Function*), 10);
   state->stack      = Stack_create();
   state->dbg        = Debugger_new();
 
@@ -41,9 +43,14 @@ State_new()
 void
 State_destroy(STATE)
 {
+  while(Stack_count(state->frames) > 0) {
+    CallFrame_destroy((CallFrame*)Stack_pop(state->stack));
+  }
+
   Stack_destroy(state->frames);
 
   while(Stack_count(state->stack) > 0) Stack_pop(state->stack);
+
   Stack_destroy(state->stack);
 
   Debugger_destroy(state->dbg);
@@ -60,6 +67,15 @@ State_destroy(STATE)
   Map_bp      = NULL;
   Closure_bp  = NULL;
 
-  // TODO destroy functions
-}
+  for(int i = 0; i < DArray_count(state->files); i++) {
+    BytecodeFile_destroy((BytecodeFile*)DArray_at(state->files, i));
+  }
+  DArray_destroy(state->files);
 
+  for(int i = 0; i < DArray_count(state->native_fns); i++) {
+    Function_destroy((Function*)DArray_at(state->native_fns, i));
+  }
+  DArray_destroy(state->native_fns);
+
+  free(state);
+}

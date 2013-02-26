@@ -2,6 +2,7 @@
 #include <terror/debugger.h>
 #include <terror/file_utils.h>
 #include <terror/vm.h>
+#include <treadmill/gc.h>
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -100,6 +101,7 @@ Debugger_prompt(STATE)
         printf("\nd: show the stack");
         printf("\nl: show locals");
         printf("\nt: show backtrace");
+        printf("\ng: show GC stats");
         printf("\nb: set breakpoint in a line. Example: b 30");
         printf("\n\n");
         break;
@@ -124,6 +126,12 @@ Debugger_prompt(STATE)
         printf("\nBacktrace");
         printf("\n---------\n");
         CallFrame_print_backtrace(CURR_FRAME);
+        break;
+      }
+      case 'g': {
+        printf("\nGC");
+        printf("\n--\n");
+        TmHeap_print(state->heap);
         break;
       }
       case 'l': {

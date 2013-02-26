@@ -24,10 +24,13 @@ VALUE NilObject;
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   DArray *locals = DArray_create(sizeof(VALUE), 10);    \
   STATE = State_new();                                  \
+  Hashmap_destroy(state->functions);                    \
   state->functions = fns;                               \
   Runtime_init(state);                                  \
 
 #define TEARDOWN()                                      \
+  Hashmap_traverse(fns, Hashmap_Function_destroy);      \
+  Hashmap_destroy(fns);                                 \
   State_destroy(state);                                 \
   return NULL;                                          \
 

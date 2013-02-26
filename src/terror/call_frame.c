@@ -15,8 +15,20 @@ CallFrame_new(VALUE self, Function *fn, int *ret)
   cf->ret = ret;
   cf->locals = DArray_create(sizeof(VALUE), 10);
   cf->parent = NULL;
+  cf->refcount = 0;
   return cf;
 }
+
+void
+CallFrame_destroy(CallFrame *frame)
+{
+  if(frame->refcount <= 0) {
+    if(frame->parent) frame->parent->refcount--;
+    DArray_destroy(frame->locals);
+    free(frame);
+  }
+}
+
 
 VALUE
 CallFrame_getlocal(CallFrame *frame, int idx)

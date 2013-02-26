@@ -20,6 +20,7 @@ struct function_s {
 typedef struct function_s Function;
 
 Function* Function_new(char*, int*, DArray*);
+void Function_destroy(Function*);
 Function* Function_native_new(native_fn);
 struct val_s* Function_native_call(struct state_s*, Function*, struct val_s*, DArray*);
 int* Function_call(struct state_s*, Function*, struct val_s*, DArray*, char* name);
