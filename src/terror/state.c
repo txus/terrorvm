@@ -28,9 +28,9 @@ State_new()
 
   state->heap       = TmHeap_new(
     (TmStateHeader*)state,
-    200,                  // initial size of the heap
-    200,                  // growth rate in number of cells
-    50,                   // scan every 200 allocations
+    10,                  // initial size of the heap
+    10,                  // growth rate in number of cells
+    5,                   // scan every 200 allocations
     sizeof(val_t),
     GC_release,
     GC_scan_pointers
