@@ -1,6 +1,7 @@
 #include "minunit.h"
 #include <terror/runtime.h>
 #include <terror/input_reader.h>
+#include <terror/bootstrap.h>
 #include <terror/state.h>
 #include <assert.h>
 
@@ -15,6 +16,9 @@ VALUE NilObject;
   Hashmap_destroy(state->functions);                    \
   state->functions = fns;                               \
   Runtime_init(state);                                  \
+  VALUE lobby = Lobby_new(state);                       \
+  state->lobby = lobby;                                 \
+  State_bootstrap(state);                               \
 
 #define TEARDOWN()                                      \
   Hashmap_traverse(fns, Hashmap_Function_destroy);      \

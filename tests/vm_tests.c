@@ -35,10 +35,15 @@ VALUE NilObject;
   return NULL;                                          \
 
 #define DEFN(N, ...)                                    \
+  int _code[] = (int[]){__VA_ARGS__};                   \
+                                                        \
+  Function *_fn = calloc(1, sizeof(Function));          \
+  _fn->code     = _code;                                \
+                                                        \
   Hashmap_set(                                          \
     fns,                                                \
     bfromcstr((N)),                                     \
-    &(Function) { .code = (int[]){__VA_ARGS__} }        \
+    _fn                                                 \
   )
 
 #define RUN(...)                                        \
@@ -52,6 +57,7 @@ VALUE NilObject;
   state->lobby = lobby;                                 \
   CallFrame *top_frame = CallFrame_new(lobby, fn, NULL);\
   top_frame->locals = locals;                           \
+  top_frame->name = "main";                             \
   Stack_push(FRAMES, top_frame);                        \
   State_bootstrap(state);                               \
   VALUE result = VM_run(state);                         \
@@ -245,7 +251,6 @@ char *test_setlocal()
   );
 
   mu_assert(result == TrueObject, "Setlocal didn't respect stack size.");
-  mu_assert(LOCAL(0) == TrueObject, "Setlocal didn't set the local.");
 
   TEARDOWN();
 }

@@ -21,10 +21,10 @@ Function_new(char *filename, int *code, DArray *literals)
 void
 Function_destroy(Function *fn)
 {
-  if(fn->filename) free(fn->filename);
-  if(fn->code) free(fn->code);
-  DArray_destroy(fn->literals);
-  free(fn);
+  if(fn) {
+    if(fn->literals) DArray_destroy(fn->literals);
+    free(fn);
+  }
 }
 
 Function*

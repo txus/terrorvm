@@ -335,8 +335,6 @@ VALUE VM_run(STATE)
 
         ip = old_frame->ret;
 
-        printf("Destroying call frame...\n");
-        CallFrame_print_backtrace(old_frame);
         CallFrame_destroy(old_frame);
 
         check(Stack_count(STACK) > 0, "Stack underflow.");

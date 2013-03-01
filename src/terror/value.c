@@ -249,7 +249,9 @@ Value_set(STATE, VALUE receiver, char *key, VALUE value)
 VALUE
 Value_get(VALUE receiver, char *key)
 {
-  VALUE result = (VALUE)Hashmap_get(receiver->table, bfromcstr(key));
+  bstring _key = bfromcstr(key);
+  VALUE result = (VALUE)Hashmap_get(receiver->table, _key);
+  bdestroy(_key);
 
   if(!result && receiver->prototype) {
     result = Value_get(receiver->prototype, key);

@@ -21,13 +21,13 @@ file_size(bstring filename) {
 bstring
 readfile(bstring filename) {
   off_t len = file_size(filename);
-  check(len >= 0, "Invalid file length.");
+  check(len >= 0, "Invalid file length (%s).", bdata(filename));
 
   char *buf = malloc(len + 1);
   check_mem(buf);
 
   int fd = open(bdata(filename), O_RDONLY);
-  check(fd >= 0, "Error opening file.");
+  check(fd >= 0, "Error opening file (%s).", bdata(filename));
 
   ssize_t size = read(fd, buf, len);
   check(size == len, "Read length is invalid");
