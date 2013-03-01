@@ -9,7 +9,6 @@ CallFrame*
 CallFrame_new(VALUE self, Function *fn, int *ret)
 {
   CallFrame* cf = calloc(1, sizeof(CallFrame));
-  debug("Created call frame %p with function %p", cf, fn);
   cf->self = self;
   cf->fn = fn;
   cf->name = NULL;
@@ -29,7 +28,6 @@ CallFrame_destroy(CallFrame *frame)
     free(frame);
   }
 }
-
 
 VALUE
 CallFrame_getlocal(CallFrame *frame, int idx)

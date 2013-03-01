@@ -74,6 +74,9 @@ GC_rootset(TmStateHeader *state_header)
         for(int i=0; i < DArray_count(parent->locals); i++) {
           ROOT(DArray_at(parent->locals, i));
         }
+        for(int i=0; i < DArray_count(parent->fn->literals); i++) {
+          ROOT(DArray_at(parent->fn->literals, i));
+        }
       }
 
       if(frame->fn->scope) {
@@ -85,6 +88,9 @@ GC_rootset(TmStateHeader *state_header)
 
       for(int i=0; i < DArray_count(frame->locals); i++) {
         ROOT(DArray_at(frame->locals, i));
+      }
+      for(int i=0; i < DArray_count(frame->fn->literals); i++) {
+        ROOT(DArray_at(frame->fn->literals, i));
       }
     }
   }

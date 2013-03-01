@@ -131,8 +131,6 @@ Primitive_require(STATE, void *a, void *_, void *__)
   CHECK_TYPE(filename, StringType);
   bstring filename_str = bfromcstr(VAL2STR(filename));
 
-  Hashmap *fns = state->functions;
-
   Function *main = NULL; // entry point
 
   BytecodeFile *file = BytecodeFile_new(state, filename_str);
@@ -144,7 +142,7 @@ Primitive_require(STATE, void *a, void *_, void *__)
     if(bstrcmp(fn_name, bfromcstr("0_main")) == 0) {
       main = fn;
     } else {
-      Hashmap_set(fns, fn_name, fn);
+      Hashmap_set(state->functions, fn_name, fn);
     }
   }
 
