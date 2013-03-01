@@ -31,8 +31,8 @@ kernel_files()
   return entries;
 }
 
-#define DEFPRIM(M, N, F) DArray_push((M), String_new(state, (N))); DArray_push((M), Closure_new(state, Function_native_new((F)), NULL))
-#define DEFVALUE(M, N, V) DArray_push((M), String_new(state, (N))); DArray_push((M), (V));
+#define DEFPRIM(N, F) Value_set(state, primitives, (N), Closure_new(state, Function_native_new((F)), NULL))
+#define DEFVALUE(N, V) Value_set(state, types, (N), (V))
 
 static inline void
 expose_VM(STATE, VALUE lobby)
@@ -41,54 +41,54 @@ expose_VM(STATE, VALUE lobby)
   Value_set(state, lobby, "VM", vm);
 
   // VM.primitives map
-  DArray *primitives = DArray_create(sizeof(VALUE), 10);
+  DArray *prims    = DArray_create(sizeof(VALUE), 10);
+  VALUE primitives = Map_new(state, prims);
+  Value_set(state, vm, "primitives", primitives);
 
   // Object
-  DEFPRIM(primitives, "to_s", Primitive_to_s);
-  DEFPRIM(primitives, "prototype", Primitive_prototype);
-  DEFPRIM(primitives, "or", Primitive_or);
+  DEFPRIM("to_s", Primitive_to_s);
+  DEFPRIM("prototype", Primitive_prototype);
+  DEFPRIM("or", Primitive_or);
 
-  DEFPRIM(primitives, "equals", Primitive_equals);
-  DEFPRIM(primitives, "is", Primitive_is);
-  DEFPRIM(primitives, "print", Primitive_print);
-  DEFPRIM(primitives, "puts", Primitive_puts);
-  DEFPRIM(primitives, "require", Primitive_require);
-  DEFPRIM(primitives, "clone", Primitive_clone);
+  DEFPRIM("equals", Primitive_equals);
+  DEFPRIM("is", Primitive_is);
+  DEFPRIM("print", Primitive_print);
+  DEFPRIM("puts", Primitive_puts);
+  DEFPRIM("require", Primitive_require);
+  DEFPRIM("clone", Primitive_clone);
 
   // Vector
-  DEFPRIM(primitives, "vector_[]", Primitive_Vector_at);
-  DEFPRIM(primitives, "vector_push", Primitive_Vector_push);
-  DEFPRIM(primitives, "vector_to_map", Primitive_Vector_to_map);
-  DEFPRIM(primitives, "vector_each", Primitive_Vector_each);
-  DEFPRIM(primitives, "vector_each_with_index", Primitive_Vector_each_with_index);
+  DEFPRIM("vector_[]", Primitive_Vector_at);
+  DEFPRIM("vector_push", Primitive_Vector_push);
+  DEFPRIM("vector_to_map", Primitive_Vector_to_map);
+  DEFPRIM("vector_each", Primitive_Vector_each);
+  DEFPRIM("vector_each_with_index", Primitive_Vector_each_with_index);
 
   // Number
-  DEFPRIM(primitives, "number_+", Primitive_Number_add);
-  DEFPRIM(primitives, "number_-", Primitive_Number_sub);
-  DEFPRIM(primitives, "number_*", Primitive_Number_mul);
-  DEFPRIM(primitives, "number_/", Primitive_Number_div);
-  DEFPRIM(primitives, "number_<", Primitive_Number_lt);
-  DEFPRIM(primitives, "number_>", Primitive_Number_gt);
+  DEFPRIM("number_+", Primitive_Number_add);
+  DEFPRIM("number_-", Primitive_Number_sub);
+  DEFPRIM("number_*", Primitive_Number_mul);
+  DEFPRIM("number_/", Primitive_Number_div);
+  DEFPRIM("number_<", Primitive_Number_lt);
+  DEFPRIM("number_>", Primitive_Number_gt);
 
   // String
-  DEFPRIM(primitives, "string_+", Primitive_String_concat);
+  DEFPRIM("string_+", Primitive_String_concat);
 
   // Map
-  DEFPRIM(primitives, "map_each", Primitive_Map_each);
-
-  Value_set(state, vm, "primitives", Map_new(state, primitives));
+  DEFPRIM("map_each", Primitive_Map_each);
 
   // VM.types map
-  DArray *types = DArray_create(sizeof(VALUE), 10);
+  DArray *ts = DArray_create(sizeof(VALUE), 10);
+  VALUE types = Map_new(state, ts);
+  Value_set(state, vm, "types", types);
 
-  DEFVALUE(types, "object", Object_bp);
-  DEFVALUE(types, "number", Number_bp);
-  DEFVALUE(types, "string", String_bp);
-  DEFVALUE(types, "vector", Vector_bp);
-  DEFVALUE(types, "map", Map_bp);
-  DEFVALUE(types, "closure", Closure_bp);
-
-  Value_set(state, vm, "types", Map_new(state, types));
+  DEFVALUE("object", Object_bp);
+  DEFVALUE("number", Number_bp);
+  DEFVALUE("string", String_bp);
+  DEFVALUE("vector", Vector_bp);
+  DEFVALUE("map", Map_bp);
+  DEFVALUE("closure", Closure_bp);
 }
 
 void
