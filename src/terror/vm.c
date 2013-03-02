@@ -158,10 +158,6 @@ VALUE VM_run(STATE)
         VALUE slot     = LITERAL(*ip);
 
         check(receiver->type != NilType, "Tried to get a slot from nil.");
-        printf("Receiver is ");
-        Value_print(state, receiver);
-        printf("\n");
-        printf("Slot is %p, type %i\n", slot, slot->type);
         check(slot->type == StringType, "Slot name must be a String.");
 
         VALUE value = Value_get(receiver, VAL2STR(slot));

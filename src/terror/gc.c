@@ -1,5 +1,6 @@
 #include <terror/gc.h>
 #include <terror/state.h>
+#include <terror/input_reader.h>
 
 VALUE Object_bp;
 VALUE Number_bp;
@@ -62,6 +63,18 @@ GC_rootset(TmStateHeader *state_header)
     }
   }
 
+  //Literals
+  for(int i=0; i < DArray_count(state->files); i++) {
+    BytecodeFile *file = (BytecodeFile*)DArray_at(state->files, i);
+
+    for(int i=0; i < DArray_count(file->function_names); i++) {
+      Function *fn = (Function*)Hashmap_get(file->functions, DArray_at(file->function_names, i));
+      for(int i=0; i < DArray_count(fn->literals); i++) {
+        ROOT((VALUE)DArray_at(fn->literals, i));
+      }
+    }
+  }
+
   {
     // Frames
     STACK_FOREACH(state->frames, node) {
@@ -74,9 +87,9 @@ GC_rootset(TmStateHeader *state_header)
         for(int i=0; i < DArray_count(parent->locals); i++) {
           ROOT(DArray_at(parent->locals, i));
         }
-        for(int i=0; i < DArray_count(parent->fn->literals); i++) {
-          ROOT(DArray_at(parent->fn->literals, i));
-        }
+        /* for(int i=0; i < DArray_count(parent->fn->literals); i++) { */
+        /*   ROOT(DArray_at(parent->fn->literals, i)); */
+        /* } */
       }
 
       if(frame->fn->scope) {
@@ -88,9 +101,6 @@ GC_rootset(TmStateHeader *state_header)
 
       for(int i=0; i < DArray_count(frame->locals); i++) {
         ROOT(DArray_at(frame->locals, i));
-      }
-      for(int i=0; i < DArray_count(frame->fn->literals); i++) {
-        ROOT(DArray_at(frame->fn->literals, i));
       }
     }
   }

@@ -38,11 +38,20 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
 
     line++; cnt++;
 
+    // We have to create the function here for all the literals to be
+    // automatically included in the rootset, otherwise they will be GC'd as we
+    // create them. And we don't want that now do we.
     DArray *literals = DArray_create(sizeof(VALUE), 10);
+    int *instructions = calloc(num_instructions, sizeof(int));
+    Function *fn = Function_new(bdata(file->filename), instructions, literals);
+
+    fn->line = linenum;
+    DArray_push(file->function_names, method);
+    debug("Parsed %s...", bdata(method));
+    Hashmap_set(file->functions, method, fn);
+
     // Parse the actual literals
     if (num_literals > 0) {
-      literals = DArray_create(sizeof(VALUE), num_literals);
-
       for(i=0; i < num_literals; i++) {
         if (bdata(*line)[0] == '"') {
           bstring strData = bmidstr(*line, 1, (*line)->mlen);
@@ -58,9 +67,6 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
     }
 
     // Parse the instructions
-
-    int *instructions = calloc(num_instructions, sizeof(int));
-
     for(i=0; i < num_instructions; i++) {
       int num;
       sscanf(bdata(*line), "%i", &num);
@@ -68,12 +74,6 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
 
       line++; cnt++;
     }
-
-    Function *fn = Function_new(bdata(file->filename), instructions, literals);
-    fn->line = linenum;
-    DArray_push(file->function_names, method);
-    debug("Parsed %s...", bdata(method));
-    Hashmap_set(file->functions, method, fn);
 
     if(cnt >= lines->qty) break; // EOF
   }
@@ -85,18 +85,17 @@ BytecodeFile *BytecodeFile_new(STATE, bstring compiled_filename)
 {
   BytecodeFile *file = calloc(1, sizeof(BytecodeFile));
   check_mem(file);
-
   file->compiled_filename = compiled_filename;
   file->functions = Hashmap_create(NULL, NULL);
   file->function_names = DArray_create(sizeof(bstring), 10);
+
+  DArray_push(state->files, file);
 
   bstring buf = readfile(compiled_filename);
   check(buf, "Cannot read file %s", bdata(compiled_filename));
   parse_string(state, buf, file);
 
   bdestroy(buf);
-
-  DArray_push(state->files, file);
 
   return file;
 

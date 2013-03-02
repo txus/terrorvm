@@ -17,7 +17,8 @@ void Stack_print(STATE, Stack* stack);
 #ifdef DEBUGI
 #define debugi(M, ...) debug(M, ##__VA_ARGS__)
 #else
-#define debugi(M, ...)
+#define debugi(M, ...) debug(M, ##__VA_ARGS__)
+// #define debugi(M, ...)
 #endif
 
 #endif
