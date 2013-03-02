@@ -7,7 +7,6 @@
 #include <terror/state.h>
 #include <terror/bootstrap.h>
 #include <terror/vm.h>
-#include <terror/state.h>
 #include <assert.h>
 
 // Extern global objects declared in runtime.h
@@ -20,12 +19,15 @@ VALUE NilObject;
 #define PUSH_LOCAL(A, N) VALUE (N) = (A); DArray_push(locals, (N))
 
 #define SETUP() \
+  STATE = State_new();                                  \
   DArray *literals = DArray_create(sizeof(VALUE), 10);  \
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
-  DArray *locals = DArray_create(sizeof(VALUE), 10);    \
-  STATE = State_new();                                  \
+  Function *fn = calloc(1, sizeof(Function));           \
+  fn->literals = literals;                              \
+  Hashmap_set(fns, bfromcstr("0_main"), fn);            \
   Hashmap_destroy(state->functions);                    \
   state->functions = fns;                               \
+  DArray *locals = DArray_create(sizeof(VALUE), 10);    \
   Runtime_init(state);                                  \
 
 #define TEARDOWN()                                      \
@@ -49,7 +51,6 @@ VALUE NilObject;
 #define RUN(...)                                        \
   int code[] = (int[]){__VA_ARGS__};                    \
                                                         \
-  Function *fn = calloc(1, sizeof(Function));           \
   fn->code     = code;                                  \
   fn->literals = literals;                              \
                                                         \
@@ -59,7 +60,7 @@ VALUE NilObject;
   top_frame->locals = locals;                           \
   top_frame->name = "main";                             \
   Stack_push(FRAMES, top_frame);                        \
-  State_bootstrap(state);                               \
+  /* State_bootstrap(state);                               \\ */ \
   VALUE result = VM_run(state);                         \
 
 char *test_pushself()

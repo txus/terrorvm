@@ -4,7 +4,7 @@ LIBS=$(OPTLIBS)
 LDFLAGS=deps/libtreadmill/build/libtreadmill.a
 PREFIX?=/usr/local
 
-DEPS=gc_debug
+DEPS=gc
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c,%.o,$(SOURCES))

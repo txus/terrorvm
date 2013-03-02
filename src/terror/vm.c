@@ -30,7 +30,15 @@ void Stack_print(STATE, Stack* stack)
   printf("\n");
 }
 
-#define STATE_FN(A) (Function*)Hashmap_get(state->functions, bfromcstr((A)))
+void Value_print_all(STATE, DArray* objs)
+{
+  for(int i=0; i < DArray_count(objs); i++) {
+    Value_print(state, (VALUE)DArray_at(objs, i));
+    printf("\n");
+  }
+}
+
+#define STATE_FN(A) (Function*)Hashmap_get(state->functions, (A))
 #define LITERAL(A) (VALUE)DArray_at(CURR_FRAME->fn->literals, (A))
 #define LOCAL(A) CallFrame_getlocal(CURR_FRAME, (A))
 #define LOCALSET(A, B) CallFrame_setlocal(CURR_FRAME, (A), (B))
@@ -49,7 +57,9 @@ void VM_start(bstring filename)
   BytecodeFile *file = BytecodeFile_new(state, filename);
   state->functions = file->functions;
 
-  CallFrame *top_frame = CallFrame_new(lobby, STATE_FN("0_main"), NULL);
+  bstring main_fn = bfromcstr("0_main");
+  CallFrame *top_frame = CallFrame_new(lobby, STATE_FN(main_fn), NULL);
+  bdestroy(main_fn);
   top_frame->name = "main";
 
   Stack_push(FRAMES, top_frame);
@@ -186,7 +196,9 @@ VALUE VM_run(STATE)
         ip++;
         debugi("DEFN %i", *ip);
         VALUE fn_name = LITERAL(*ip);
-        VALUE closure = Closure_new(state, STATE_FN(VAL2STR(fn_name)), CURR_FRAME);
+        bstring state_fn = bfromcstr(VAL2STR(fn_name));
+        VALUE closure = Closure_new(state, STATE_FN(state_fn), CURR_FRAME);
+        bdestroy(state_fn);
         Stack_push(STACK, closure);
         break;
       }
@@ -218,7 +230,7 @@ VALUE VM_run(STATE)
         VALUE name = LITERAL(op1);
         int argcount = op2;
 
-        DArray *locals = DArray_create(sizeof(VALUE), 10);
+        DArray *locals = DArray_create(sizeof(VALUE), argcount);
         while(argcount--) {
           DArray_push(locals, Stack_pop(STACK));
         }
@@ -347,6 +359,13 @@ VALUE VM_run(STATE)
         Debugger_evaluate(state);
         debugi("DUMP");
         Stack_print(state, STACK);
+        DArray *literals = CURR_FRAME->fn->literals;
+        printf("--LITERALS (%i)--\n", DArray_count(literals));
+        Value_print_all(state, literals);
+
+        DArray *locals = CURR_FRAME->locals;
+        printf("--LOCALS (%i)--\n", DArray_count(locals));
+        Value_print_all(state, locals);
         break;
       }
     }

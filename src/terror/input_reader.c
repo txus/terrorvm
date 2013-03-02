@@ -111,12 +111,7 @@ BytecodeFile_destroy(BytecodeFile *file)
   if(file->filename) bdestroy(file->filename);
   if(file->compiled_filename) bdestroy(file->compiled_filename);
 
-  for(int i = 0; i < DArray_count(file->function_names); i++) {
-    bstring name = (bstring)DArray_at(file->function_names, i);
-    /* Function *fn = (Function*)Hashmap_get(file->functions, name); */
-    /* Function_destroy(fn); */
-    bdestroy(name);
-  }
+  Hashmap_traverse(file->functions, Hashmap_Function_destroy);
   Hashmap_destroy(file->functions);
 
   free(file);

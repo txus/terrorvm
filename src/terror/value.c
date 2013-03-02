@@ -269,7 +269,9 @@ Value_each(VALUE obj, Slots_iter iter)
   for(int i = 0; i < DArray_count(keys); i++) {
     VALUE k = (VALUE)DArray_at(keys, i);
     if(k) {
-      VALUE v = (VALUE)Hashmap_get(hash, bfromcstr(VAL2STR(k)));
+      bstring str = bfromcstr(VAL2STR(k));
+      VALUE v = (VALUE)Hashmap_get(hash, str);
+      bdestroy(str);
       iter(k, v);
     }
   }

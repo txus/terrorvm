@@ -67,6 +67,7 @@ Function_call(
   // Native function dispatch
   if(fn->c_fn) {
     VALUE result = Function_native_call(state, fn, receiver, locals);
+    DArray_destroy(locals);
     Stack_push(STACK, result);
     return ret; // return where we were
   }

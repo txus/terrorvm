@@ -139,11 +139,13 @@ Primitive_require(STATE, void *a, void *_, void *__)
     bstring fn_name = (bstring)DArray_at(file->function_names, j);
     Function *fn = (Function*)Hashmap_get(file->functions, fn_name);
 
-    if(bstrcmp(fn_name, bfromcstr("0_main")) == 0) {
+    bstring main_name = bfromcstr("0_main");
+    if(bstrcmp(fn_name, main_name) == 0) {
       main = fn;
     } else {
       Hashmap_set(state->functions, fn_name, fn);
     }
+    bdestroy(main_name);
   }
 
   CallFrame *frame = CallFrame_new(state->lobby, main, NULL);
