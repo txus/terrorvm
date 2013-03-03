@@ -21,8 +21,6 @@ VALUE NilObject;
   State_bootstrap(state);                               \
 
 #define TEARDOWN()                                      \
-  Hashmap_traverse(fns, Hashmap_Function_destroy);      \
-  Hashmap_destroy(fns);                                 \
   State_destroy(state);                                 \
   return NULL;                                          \
 

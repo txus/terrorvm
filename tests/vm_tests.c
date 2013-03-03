@@ -31,8 +31,7 @@ VALUE NilObject;
   Runtime_init(state);                                  \
 
 #define TEARDOWN()                                      \
-  Hashmap_traverse(fns, Hashmap_Function_destroy);      \
-  Hashmap_destroy(fns);                                 \
+  Function_destroy(fn);                                 \
   State_destroy(state);                                 \
   return NULL;                                          \
 

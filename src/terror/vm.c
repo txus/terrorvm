@@ -230,7 +230,7 @@ VALUE VM_run(STATE)
         VALUE name = LITERAL(op1);
         int argcount = op2;
 
-        DArray *locals = DArray_create(sizeof(VALUE), argcount);
+        DArray *locals = DArray_create(sizeof(VALUE), argcount+1);
         while(argcount--) {
           DArray_push(locals, Stack_pop(STACK));
         }

@@ -57,7 +57,7 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
           bstring strData = bmidstr(*line, 1, (*line)->mlen);
           // TODO: This causes a leak in the string literals because they are
           // never freed on destruction.
-          DArray_push(literals, String_new(state, bdata(bstrcpy(strData))));
+          DArray_push(literals, String_new(state, bdata(strData)));
           bdestroy(strData);
         } else {
           DArray_push(literals, Number_new(state, atof(bdata(*line))));
@@ -111,6 +111,22 @@ BytecodeFile_destroy(BytecodeFile *file)
   if(file->filename) bdestroy(file->filename);
   if(file->compiled_filename) bdestroy(file->compiled_filename);
 
+  /* DArray *names = file->function_names; */
+  /* int count = DArray_count(names); */
+  /* void *destroyed[count]; */
+
+  /* for(int i=0; i < DArray_count(names); i++) { */
+  /*   bstring name = (bstring)DArray_at(names, i); */
+  /*   Function *fn = (Function*)Hashmap_get(file->functions, name); */
+  /*   int already_destroyed = 0; */
+  /*   for(int j=0; j < count; j++) { */
+  /*     if (destroyed[i] == (void*)fn) { */
+  /*       already_destroyed = 1; */
+  /*       break; */
+  /*     } */
+  /*   } */
+  /*   if(!already_destroyed) Function_destroy(fn); */
+  /* } */
   Hashmap_traverse(file->functions, Hashmap_Function_destroy);
   Hashmap_destroy(file->functions);
 
