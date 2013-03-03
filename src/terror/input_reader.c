@@ -16,9 +16,16 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
   file->filename = bstrcpy(*line);
   line++; cnt++;
 
+  bstring underscore = bfromcstr("_");
+
   while(1) {
     // eof
-    if (bstrcmp(bmidstr(*line, 0, 1), bfromcstr("_")) != 0) break;
+    bstring prefix = bmidstr(*line, 0, 1);
+    if (bstrcmp(prefix, underscore) != 0) {
+      bdestroy(prefix);
+      break;
+    }
+    bdestroy(prefix);
 
     // Get method name
     int num_literals, num_instructions, linenum;
@@ -27,6 +34,7 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
       bstring *fnptr = fn_params->entry;
       fnptr++; // linenum
       linenum = atoi(bdata(*fnptr));
+      bstrListDestroy(fn_params);
     }
 
     bstring method = bmidstr(*line, 1, (*line)->mlen);
@@ -55,8 +63,6 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
       for(i=0; i < num_literals; i++) {
         if (bdata(*line)[0] == '"') {
           bstring strData = bmidstr(*line, 1, (*line)->mlen);
-          // TODO: This causes a leak in the string literals because they are
-          // never freed on destruction.
           DArray_push(literals, String_new(state, bdata(strData)));
           bdestroy(strData);
         } else {
@@ -78,6 +84,7 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
     if(cnt >= lines->qty) break; // EOF
   }
 
+  bdestroy(underscore);
   bstrListDestroy(lines);
 }
 
@@ -129,6 +136,11 @@ BytecodeFile_destroy(BytecodeFile *file)
   /* } */
   Hashmap_traverse(file->functions, Hashmap_Function_destroy);
   Hashmap_destroy(file->functions);
+
+  for(int i=0; i < DArray_count(file->function_names); i++) {
+    bdestroy((bstring)DArray_at(file->function_names, i));
+  }
+  DArray_destroy(file->function_names);
 
   free(file);
 }

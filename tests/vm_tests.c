@@ -36,10 +36,13 @@ VALUE NilObject;
   return NULL;                                          \
 
 #define DEFN(N, ...)                                    \
-  int _code[] = (int[]){__VA_ARGS__};                   \
+  int *__code = (int[]){__VA_ARGS__};                    \
+  unsigned short __count = sizeof((int[]){__VA_ARGS__})/sizeof(int);    \
+  int *__instructions = calloc(__count, sizeof(int));      \
+  memcpy(__instructions, __code, __count * sizeof(int));    \
                                                         \
   Function *_fn = calloc(1, sizeof(Function));          \
-  _fn->code     = _code;                                \
+  _fn->code     = __instructions;                         \
                                                         \
   Hashmap_set(                                          \
     fns,                                                \
@@ -48,18 +51,22 @@ VALUE NilObject;
   )
 
 #define RUN(...)                                        \
-  int code[] = (int[]){__VA_ARGS__};                    \
+  int *_code = (int[]){__VA_ARGS__};                    \
+  unsigned short _count = sizeof((int[]){__VA_ARGS__})/sizeof(int);    \
+  int *_instructions = calloc(_count, sizeof(int));     \
+  memcpy(_instructions, _code, _count * sizeof(int));   \
                                                         \
-  fn->code     = code;                                  \
+  fn->code     = _instructions;                         \
   fn->literals = literals;                              \
                                                         \
   VALUE lobby = Lobby_new(state);                       \
   state->lobby = lobby;                                 \
   CallFrame *top_frame = CallFrame_new(lobby, fn, NULL);\
+  DArray_destroy(top_frame->locals);                    \
   top_frame->locals = locals;                           \
   top_frame->name = "main";                             \
   Stack_push(FRAMES, top_frame);                        \
-  /* State_bootstrap(state);                               \\ */ \
+  State_bootstrap(state);                               \
   VALUE result = VM_run(state);                         \
 
 char *test_pushself()

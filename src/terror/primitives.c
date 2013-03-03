@@ -153,6 +153,7 @@ Primitive_require(STATE, void *a, void *_, void *__)
   Stack_push(FRAMES, frame);
 
   VM_run(state); // ignore result of the require
+
   Stack_pop(STACK);
   return NilObject;
 

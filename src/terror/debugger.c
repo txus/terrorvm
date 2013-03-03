@@ -22,6 +22,7 @@ void
 Debugger_destroy(Debugger* debugger)
 {
   DArray_clear_destroy(debugger->breakpoints);
+  if (debugger->current_file) bstrListDestroy(debugger->current_file);
   free(debugger);
 }
 
@@ -44,6 +45,8 @@ Debugger_load_current_file(STATE)
   bstring current_filename = bfromcstr(CURR_FRAME->fn->filename);
 
   bstring buf = readfile(current_filename);
+  if(!buf) return;
+  bdestroy(current_filename);
 
   struct bstrList *lines = bsplit(buf, '\n');
 
@@ -54,13 +57,17 @@ Debugger_load_current_file(STATE)
     for(int i=1; i <= lines->qty; i++) {
       char linenum[8];
       sprintf(linenum, "%-7i", i);
+      bstring _linenum = bfromcstr(linenum);
 
-      binsert(*l, 0, bfromcstr(linenum), ' ');
+      binsert(*l, 0, _linenum, ' ');
+      bdestroy(_linenum);
       l++;
     }
 
     DEBUGGER->current_file = lines;
   };
+
+  bdestroy(buf);
 }
 
 void
@@ -176,6 +183,7 @@ Debugger_print_context(STATE)
 
   bstring current_filename = bfromcstr(CURR_FRAME->fn->filename);
   printf("\n%s:%i\n", bdata(current_filename), DEBUGGER->current_line);
+  bdestroy(current_filename);
 
   DArray *lines = getlines(DEBUGGER->current_file, ctx_start, ctx_end);
 

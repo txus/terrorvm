@@ -76,6 +76,7 @@ State_destroy(STATE)
     Function_destroy((Function*)DArray_at(state->native_fns, i));
   }
   DArray_destroy(state->native_fns);
+  Hashmap_destroy(state->functions);
 
   free(state);
 }

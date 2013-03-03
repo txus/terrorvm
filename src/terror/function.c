@@ -22,17 +22,25 @@ void
 Function_destroy(Function *fn)
 {
   if(fn) {
-    if(fn->literals) DArray_destroy(fn->literals);
+    if(fn->c_fn) {
+      free(fn->filename);
+    } else {
+      DArray_destroy(fn->literals);
+      free(fn->code);
+    }
     free(fn);
   }
 }
 
 Function*
-Function_native_new(native_fn c_fn)
+Function_native_new(STATE, native_fn c_fn)
 {
   Function *fn = calloc(1, sizeof(Function));
   char *name = malloc(9 * sizeof(char));
   strcpy(name, "(native)");
+
+  // Keep track of native functions to deallocate them properly
+  DArray_push(state->native_fns, fn);
 
   fn->filename = name;
   fn->code     = NULL;
@@ -74,6 +82,7 @@ Function_call(
 
   // Normal dispatch
   CallFrame *new_frame = CallFrame_new(receiver, fn, ret);
+  DArray_destroy(new_frame->locals);
   new_frame->locals = locals;
   new_frame->name = name;
 

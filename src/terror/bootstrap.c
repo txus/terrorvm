@@ -31,7 +31,7 @@ kernel_files()
   return entries;
 }
 
-#define DEFPRIM(N, F) Value_set(state, primitives, (N), Closure_new(state, Function_native_new((F)), NULL))
+#define DEFPRIM(N, F) Value_set(state, primitives, (N), Closure_new(state, Function_native_new(state, (F)), NULL))
 #define DEFVALUE(N, V) Value_set(state, types, (N), (V))
 
 static inline void
@@ -115,7 +115,12 @@ State_bootstrap(STATE)
     bconcat(path, filename);
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
     Primitive_require(state, String_new(state, bdata(path)), NULL, NULL);
+
+    bdestroy(path);
+    bdestroy(filename);
   }
+
+  DArray_destroy(filenames);
 
   // Reenable debugger if needed
   if(reenable_debugger) Debug = 1;

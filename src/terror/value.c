@@ -44,23 +44,24 @@ Hashmap_destroy_bstring_key(HashmapNode *node)
 void
 Value_destroy(VALUE o)
 {
-  o->prototype = NULL;
-  switch(o->type) {
-  case StringType:
-    if(o->data.as_str) free(o->data.as_str);
-    break;
-  case VectorType:
-    if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
-    break;
-  default:
-    break;
+  if(o) {
+    o->prototype = NULL;
+    switch(o->type) {
+    case StringType:
+      if(o->data.as_str) free(o->data.as_str);
+      break;
+    case VectorType:
+      if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
+      break;
+    default:
+      break;
+    }
+    DArray_destroy(o->fields);
+    Hashmap_traverse(o->table, Hashmap_destroy_bstring_key);
+    Hashmap_destroy(o->table);
+
+    free(o);
   }
-  if(o->fields) DArray_destroy(o->fields);
-
-  Hashmap_traverse(o->table, Hashmap_destroy_bstring_key);
-  Hashmap_destroy(o->table);
-
-  if(o) free(o);
 }
 
 #define append(B, S) bconcat((B), bfromcstr(S))
@@ -188,10 +189,10 @@ VALUE
 Closure_new(STATE, Function *fn, CallFrame *scope)
 {
   VALUE val = Value_from_prototype(state, ClosureType, Closure_bp);
-  fn->scope = scope;
-
-  // Keep track of native functions to deallocate them properly
-  if(fn->c_fn) DArray_push(state->native_fns, fn);
+  if(scope) {
+    scope->refcount += 1;
+    fn->scope = scope;
+  }
 
   val->data.as_data = fn;
   return val;
