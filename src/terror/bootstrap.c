@@ -94,6 +94,8 @@ expose_VM(STATE, VALUE lobby)
 void
 State_bootstrap(STATE)
 {
+  /* GC_disable(state->heap); // disable GC */
+
   DArray *filenames = kernel_files();
   int count = DArray_count(filenames);
 
@@ -126,4 +128,5 @@ State_bootstrap(STATE)
   if(reenable_debugger) Debug = 1;
 
   debug("[BOOTSTRAP] Done!");
+  /* GC_enable(state->heap); // disable GC */
 }

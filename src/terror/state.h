@@ -6,10 +6,9 @@
 #include <terror/value.h>
 #include <terror/stack.h>
 #include <terror/debugger.h>
-#include <treadmill/gc.h>
+#include <terror/gc.h>
 
 struct state_s {
-  TmStateHeader gc;
   Hashmap *functions;
   Stack *frames;
   Stack *stack;
@@ -17,7 +16,7 @@ struct state_s {
   DArray *native_fns;
   VALUE lobby;
   int *ret;
-  TmHeap *heap;
+  SWPHeap *heap;
   Debugger *dbg;
 };
 typedef struct state_s State;

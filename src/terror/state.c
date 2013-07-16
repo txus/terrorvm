@@ -1,8 +1,6 @@
 #include <terror/state.h>
 #include <terror/dbg.h>
 #include <terror/vm.h>
-#include <treadmill/darray.h>
-#include <treadmill/gc.h>
 #include <terror/gc.h>
 
 VALUE Object_bp;
@@ -26,16 +24,16 @@ State_new()
   state->stack      = Stack_create();
   state->dbg        = Debugger_new();
 
-  state->heap       = TmHeap_new(
-    (TmStateHeader*)state,
-    10,                  // initial size of the heap
-    10,                  // growth rate in number of cells
-    5,                   // scan every 200 allocations
+  state->heap       = SWPHeap_new(
+    10,                  // initial size of the heap in n objects
+    10000,                  // max size of the heap in n objects
+    1.8,                 // growth factor
+    state,
     sizeof(val_t),
     GC_release,
-    GC_scan_pointers
+    GC_add_roots,
+    GC_add_children
     );
-  state->gc.rootset = GC_rootset;
 
   return state;
 }
@@ -55,7 +53,7 @@ State_destroy(STATE)
 
   Debugger_destroy(state->dbg);
 
-  TmHeap_destroy(state->heap);
+  SWPHeap_destroy(state->heap);
 
   TrueObject  = NULL;
   FalseObject = NULL;

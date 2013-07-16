@@ -1,7 +1,7 @@
 CC=clang
-CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libtreadmill/include $(OPTFLAGS)
+CFLAGS=-g -std=c11 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libsweeper/include $(OPTFLAGS)
 LIBS=$(OPTLIBS)
-LDFLAGS=deps/libtreadmill/build/libtreadmill.a
+LDFLAGS=deps/libsweeper/build/libsweeper.a
 PREFIX?=/usr/local
 
 DEPS=gc
@@ -21,14 +21,14 @@ SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 # The Target Build
 all: $(DEPS) $(TARGET) tests $(PROGRAMS)
 
-dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror -Ideps/libtreadmill/include $(OPTFLAGS)
+dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror -Ideps/libsweeper/include $(OPTFLAGS)
 dev: all
 
 gc:
-	$(MAKE) -C deps/libtreadmill
+	$(MAKE) -C deps/libsweeper
 
 gc_debug:
-	$(MAKE) dev -C deps/libtreadmill
+	$(MAKE) dev -C deps/libsweeper
 
 rubinius:
 	which rbx || (echo '\nYou need rubinius to compile the kernel.\n'; which rbx)
@@ -63,7 +63,7 @@ tests: $(TESTS)
 				sh ./tests/runtests.sh
 
 valgrind:
-				VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
+				VALGRIND="valgrind" $(MAKE)
 
 # The Cleaner
 clean:
@@ -71,7 +71,7 @@ clean:
 				rm -f tests/tests.log
 				find . -name "*.gc*" -exec rm {} \;
 				rm -rf `find . -name "*.dSYM" -print`
-				$(MAKE) clean -C deps/libtreadmill
+				$(MAKE) clean -C deps/libsweeper
 
 # The Install
 install: all

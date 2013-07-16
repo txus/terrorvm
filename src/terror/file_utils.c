@@ -31,6 +31,7 @@ readfile(bstring filename) {
 
   ssize_t size = read(fd, buf, len);
   check(size == len, "Read length is invalid");
+  check(buf, "Read nothing");
 
   bstring retval = bfromcstr(buf);
   free(buf);

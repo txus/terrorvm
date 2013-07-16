@@ -26,6 +26,7 @@ char *test_getlocal()
 
   mu_assert(CallFrame_getlocal(frame, 1) == two, "Getlocal failed.");
 
+  CallFrame_destroy(frame);
   return NULL;
 }
 
@@ -42,6 +43,7 @@ char *test_setlocal()
 
   mu_assert(CallFrame_getlocal(frame, 1) == two, "Setlocal failed.");
 
+  CallFrame_destroy(frame);
   return NULL;
 }
 
@@ -59,6 +61,8 @@ char *test_getlocaldepth()
 
   mu_assert(CallFrame_getlocaldepth(frame, 1, 0) == one, "Getlocaldepth failed");
 
+  CallFrame_destroy(frame);
+  CallFrame_destroy(parent);
   return NULL;
 }
 
@@ -77,6 +81,8 @@ char *test_setlocaldepth()
 
   mu_assert(CallFrame_getlocal(parent, 1) == two, "Setlocaldepth failed");
 
+  CallFrame_destroy(frame);
+  CallFrame_destroy(parent);
   return NULL;
 }
 
@@ -90,6 +96,7 @@ char *all_tests() {
   mu_run_test(test_getlocaldepth);
   mu_run_test(test_setlocaldepth);
 
+  State_destroy(state);
   return NULL;
 }
 

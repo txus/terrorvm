@@ -143,7 +143,6 @@ Primitive_require(STATE, void *a, void *_, void *__)
     if(bstrcmp(fn_name, main_name) == 0) {
       main = fn;
     } else {
-      debug("Hashmap_set %s", bdata(fn_name));
       Hashmap_set(state->functions, fn_name, fn);
     }
     bdestroy(main_name);

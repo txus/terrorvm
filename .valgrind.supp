@@ -1,0 +1,12 @@
+{
+   <first>
+   Memcheck:Leak
+   ...
+   fun:_ZN*
+}
+{
+   <second>
+   Memcheck:Leak
+   ...
+   fun:libSystem_initializer
+}

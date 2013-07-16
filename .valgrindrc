@@ -1,0 +1,4 @@
+--suppressions=./.valgrind.supp
+--leak-check=full
+--track-origins=yes
+--error-exitcode=1

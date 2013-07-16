@@ -5,7 +5,7 @@
 #include <terror/primitives.h>
 #include <terror/call_frame.h>
 #include <terror/vector.h>
-#include <treadmill/gc.h>
+#include <terror/gc.h>
 
 VALUE Object_bp;
 VALUE Number_bp;
@@ -19,7 +19,7 @@ VALUE NilObject;
 VALUE
 Value_new(STATE, ValueType type)
 {
-  VALUE val = (VALUE)Tm_allocate(state->heap);
+  VALUE val = (VALUE)GC_allocate(state->heap);
   val->type = type;
   val->table = Hashmap_create(NULL, NULL);
   val->fields = DArray_create(sizeof(VALUE), 10);
@@ -241,10 +241,10 @@ Map_new(STATE, DArray *array)
 void
 Value_set(STATE, VALUE receiver, char *key, VALUE value)
 {
-    bstring _slotname = bfromcstr(key);
-    Hashmap_delete(receiver->table, _slotname);
-    Hashmap_set(receiver->table, _slotname, value);
-    DArray_push(receiver->fields, String_new(state, key));
+  bstring _slotname = bfromcstr(key);
+  /* Hashmap_delete(receiver->table, _slotname); */
+  Hashmap_set(receiver->table, _slotname, value);
+  DArray_push(receiver->fields, String_new(state, key));
 }
 
 VALUE

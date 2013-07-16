@@ -2,7 +2,7 @@
 #include <terror/debugger.h>
 #include <terror/file_utils.h>
 #include <terror/vm.h>
-#include <treadmill/gc.h>
+#include <sweeper/sweeper.h>
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -22,7 +22,7 @@ void
 Debugger_destroy(Debugger* debugger)
 {
   DArray_clear_destroy(debugger->breakpoints);
-  if (debugger->current_file) bstrListDestroy(debugger->current_file);
+  /* if (debugger->current_file) bstrListDestroy(debugger->current_file); */
   free(debugger);
 }
 
@@ -41,12 +41,14 @@ Debugger_load_current_file(STATE)
   if(DEBUGGER->current_file) {
     bstrListDestroy(DEBUGGER->current_file);
   }
+  DEBUGGER->current_file = NULL;
 
   bstring current_filename = bfromcstr(CURR_FRAME->fn->filename);
 
   bstring buf = readfile(current_filename);
-  if(!buf) return;
   bdestroy(current_filename);
+
+  if(!buf) return;
 
   struct bstrList *lines = bsplit(buf, '\n');
 
@@ -138,7 +140,7 @@ Debugger_prompt(STATE)
       case 'g': {
         printf("\nGC");
         printf("\n--\n");
-        TmHeap_print(state->heap);
+        SWPHeap_print(state->heap);
         break;
       }
       case 'l': {

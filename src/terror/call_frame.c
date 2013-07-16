@@ -23,7 +23,9 @@ void
 CallFrame_destroy(CallFrame *frame)
 {
   if(frame->refcount <= 0) {
-    if(frame->parent) frame->parent->refcount--;
+    if(frame->parent) {
+       frame->parent->refcount--;
+    }
     DArray_destroy(frame->locals);
     free(frame);
   }

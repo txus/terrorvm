@@ -5,13 +5,13 @@
 #include <terror/function.h>
 #include <terror/call_frame.h>
 #include <terror/hashmap.h>
-#include <treadmill/gc.h>
+#include <sweeper/header.h>
 #include <Block.h>
 
 struct state_s;
 
 struct val_s {
-  TmObjectHeader gc;
+  SWPHeader gc;
   ValueType type;
   union {
     double as_num;

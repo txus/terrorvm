@@ -1,4 +1,5 @@
 #include <terror/gc.h>
+#include <sweeper/header.h>
 #include <terror/state.h>
 #include <terror/input_reader.h>
 
@@ -13,34 +14,32 @@ VALUE FalseObject;
 VALUE NilObject;
 
 void
-GC_release(void *value)
+GC_release(SWPHeader *value)
 {
   Value_destroy((VALUE)value);
 }
 
 void
-GC_scan_pointers(TmHeap *heap, TmObjectHeader *object, TmCallbackFn callback)
+GC_add_children(SWPHeader *object, SWPArray *children)
 {
-  VALUE val = (VALUE)object;
+  VALUE obj = (VALUE)object;
 
-  for(int i = 0; i < DArray_count(val->fields); i++) {
-    callback(heap, (TmObjectHeader*)DArray_at(val->fields, i));
+  for(int i = 0; i < DArray_count(obj->fields); i++) {
+    SWPArray_push(children, (SWPHeader*)DArray_at(obj->fields, i));
   }
 
-  Value_each(val, ^ void (VALUE key, VALUE val) {
-    callback(heap, (TmObjectHeader*)key);
-    callback(heap, (TmObjectHeader*)val);
+  Value_each(obj, ^ void (VALUE key, VALUE val) {
+    SWPArray_push(children, (SWPHeader*)key);
+    SWPArray_push(children, (SWPHeader*)val);
   });
 }
 
-#define ROOT(A) if((A)) Tm_DArray_push(rootset, (A))
+#define ROOT(A) if((A)) SWPArray_push(roots, (A))
 
-Tm_DArray*
-GC_rootset(TmStateHeader *state_header)
+void
+GC_add_roots(void *st, SWPArray *roots)
 {
-  STATE = (State*)state_header;
-
-  Tm_DArray *rootset = Tm_DArray_create(sizeof(VALUE), 20);
+  STATE = (State*)st;
 
   // Runtime values
   ROOT(Object_bp);
@@ -101,6 +100,4 @@ GC_rootset(TmStateHeader *state_header)
       }
     }
   }
-
-  return rootset;
 }

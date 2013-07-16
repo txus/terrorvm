@@ -1,4 +1,9 @@
-echo "Running unit tests:"
+echo
+
+if test -f tests/tests.log
+then
+  rm tests/tests.log
+fi
 
 for i in tests/*_tests
 do
@@ -8,11 +13,11 @@ do
     then
       echo $i PASS
     else
-      echo "ERROR in tests $i: here's tests/tests.log"
-      echo "------"
-      tail tests/tests.log
+      echo "$i FAIL:\n"
+      cat tests/tests.log
       exit 1
     fi
+    echo
   fi
 done
 
