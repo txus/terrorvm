@@ -9,10 +9,21 @@ char *test_getlines()
 
   DArray *lines = getlines(file, 2, 4);
 
+  bstring two = bfromcstr("two");
+  bstring three = bfromcstr("three");
+  bstring four = bfromcstr("four");
+
   mu_assert(DArray_count(lines) == 3, "Wrong number of lines.");
-  mu_assert(bstrcmp((bstring)DArray_at(lines, 0), bfromcstr("two")) == 0, "First line is wrong.");
-  mu_assert(bstrcmp((bstring)DArray_at(lines, 1), bfromcstr("three")) == 0, "Second line is wrong.");
-  mu_assert(bstrcmp((bstring)DArray_at(lines, 2), bfromcstr("four")) == 0, "Third line is wrong.");
+  mu_assert(bstrcmp((bstring)DArray_at(lines, 0), two) == 0, "First line is wrong.");
+  mu_assert(bstrcmp((bstring)DArray_at(lines, 1), three) == 0, "Second line is wrong.");
+  mu_assert(bstrcmp((bstring)DArray_at(lines, 2), four) == 0, "Third line is wrong.");
+
+  bstrListDestroy(file);
+  bdestroy(str);
+  bdestroy(two);
+  bdestroy(three);
+  bdestroy(four);
+  DArray_destroy(lines);
 
   return NULL;
 }
