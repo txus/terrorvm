@@ -175,9 +175,12 @@ You can write your compiler in whatever language you prefer, of course.
 
 ## Garbage collection
 
-The algorithm of choice for TerrorVM is [Baker's treadmill][gc], an incremental,
-real-time, non-moving GC algorithm, implemented in [libtreadmill][libtreadmill]
-as a separate library and included via Git submodules.
+The algorithm of choice for TerrorVM was [Baker's treadmill][treadmill], an incremental,
+real-time, non-moving GC algorithm, implemented in [libtreadmill][libtreadmill].
+
+Unfortunately I couldn't make it work so for now I'm using a simple Mark and
+Sweep implemented in [libsweeper][libsweeper] as a separate library and included
+via Git submodules.
 
 ## Concurrency
 
@@ -346,8 +349,9 @@ me!).
 [beta]: https://github.com/txus/terrorvm/blob/master/compiler/kernel/beta.rb
 [alpha_native]: https://github.com/txus/terrorvm/blob/master/kernel/alpha.tvm
 [beta_native]: https://github.com/txus/terrorvm/blob/master/kernel/beta.tvm
-[gc]: http://www.pipeline.com/~hbaker1/NoMotionGC.html
+[treadmill]: http://www.pipeline.com/~hbaker1/NoMotionGC.html
 [libtreadmill]: https://github.com/txus/libtreadmill
+[libsweeper]: https://github.com/txus/libsweeper
 [jtregunna]: https://twitter.com/jtregunna
 [brixen]: https://twitter.com/brixen
 [dbussink]: https://twitter.com/dbussink
