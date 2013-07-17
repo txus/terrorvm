@@ -22,10 +22,6 @@ VALUE NilObject   = NULL;
 void Runtime_init(STATE) {
   Object_bp = Value_new(state, ObjectType);
 
-  // These primitives cannot go in the prelude because they are used there.
-  DEFNATIVE(Object_bp, "[]", Primitive_Map_get);
-  DEFNATIVE(Object_bp, "[]=", Primitive_Map_set);
-
   Number_bp = Value_from_prototype(state, NumberType, Object_bp);
   String_bp = Value_from_prototype(state, StringType, Object_bp);
   Vector_bp = Value_from_prototype(state, VectorType, Object_bp);
@@ -39,4 +35,11 @@ void Runtime_init(STATE) {
   FalseObject->data.as_num = 0;
   NilObject   = Value_new(state, NilType);
   NilObject->data.as_num = 0;
+
+  VALUE map_get = Closure_new(state, Function_native_new(state, Primitive_Map_get), NULL);
+  printf("[] => %p\n", map_get);
+  Value_set(state, Object_bp, "[]", map_get);
+  // These primitives cannot go in the prelude because they are used there.
+  /* DEFNATIVE(Object_bp, "[]", Primitive_Map_get); */
+  DEFNATIVE(Object_bp, "[]=", Primitive_Map_set);
 }

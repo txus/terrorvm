@@ -22,7 +22,7 @@ void
 Debugger_destroy(Debugger* debugger)
 {
   DArray_clear_destroy(debugger->breakpoints);
-  /* if (debugger->current_file) bstrListDestroy(debugger->current_file); */
+  if (debugger->current_file) bstrListDestroy(debugger->current_file);
   free(debugger);
 }
 

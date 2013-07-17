@@ -253,6 +253,7 @@ VALUE VM_run(STATE)
         if (closure->type != ClosureType && closure != NilObject) {
           // GETSLOT
           Stack_push(STACK, closure);
+          DArray_destroy(locals);
           break;
         }
 
@@ -260,6 +261,7 @@ VALUE VM_run(STATE)
         if(op2 == 1 && strcmp(VAL2STR(name), "[]") == 0) { // getslot
           VALUE key = (VALUE)DArray_at(locals, 0);
           Stack_push(STACK, Value_get(receiver, VAL2STR(key)));
+          DArray_destroy(locals);
           break;
         }
 
@@ -268,6 +270,7 @@ VALUE VM_run(STATE)
           VALUE value = (VALUE)DArray_at(locals, 1);
           Value_set(receiver, VAL2STR(key), value);
           Stack_push(STACK, value);
+          DArray_destroy(locals);
           break;
         }
 #endif

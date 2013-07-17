@@ -221,6 +221,7 @@ Map_new(STATE, DArray *array)
 
   // Preserve insertion order
   DArray *keys = DArray_create(sizeof(VALUE), 10);
+  DArray_destroy(val->fields);
   val->fields = keys;
 
   for(int i=0; i < count; i += 2) {
@@ -242,9 +243,15 @@ void
 Value_set(STATE, VALUE receiver, char *key, VALUE value)
 {
   bstring _slotname = bfromcstr(key);
-  /* Hashmap_delete(receiver->table, _slotname); */
   Hashmap_set(receiver->table, _slotname, value);
-  DArray_push(receiver->fields, String_new(state, key));
+
+  // We need to keep the value safe from collection until it's referenced by
+  // `receiver`.
+  GC_protect(value);
+  VALUE field = String_new(state, key);
+  GC_unprotect(value);
+
+  DArray_push(receiver->fields, field);
 }
 
 VALUE

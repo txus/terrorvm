@@ -45,15 +45,7 @@ State_destroy(STATE)
     CallFrame_destroy((CallFrame*)Stack_pop(state->stack));
   }
 
-  Stack_destroy(state->frames);
-
   while(Stack_count(state->stack) > 0) Stack_pop(state->stack);
-
-  Stack_destroy(state->stack);
-
-  Debugger_destroy(state->dbg);
-
-  SWPHeap_destroy(state->heap);
 
   TrueObject  = NULL;
   FalseObject = NULL;
@@ -64,6 +56,14 @@ State_destroy(STATE)
   Vector_bp   = NULL;
   Map_bp      = NULL;
   Closure_bp  = NULL;
+
+  state->lobby = NULL;
+  swp_collect(state->heap);
+  SWPHeap_destroy(state->heap);
+
+  Stack_destroy(state->frames);
+  Stack_destroy(state->stack);
+  Debugger_destroy(state->dbg);
 
   for(int i = 0; i < DArray_count(state->files); i++) {
     BytecodeFile_destroy((BytecodeFile*)DArray_at(state->files, i));

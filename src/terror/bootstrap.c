@@ -94,8 +94,6 @@ expose_VM(STATE, VALUE lobby)
 void
 State_bootstrap(STATE)
 {
-  /* GC_disable(state->heap); // disable GC */
-
   DArray *filenames = kernel_files();
   int count = DArray_count(filenames);
 
@@ -116,7 +114,7 @@ State_bootstrap(STATE)
     bstring path = bfromcstr("kernel/");
     bconcat(path, filename);
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
-    Primitive_require(state, String_new(state, bdata(path)), NULL, NULL);
+    /* Primitive_require(state, String_new(state, bdata(path)), NULL, NULL); */
 
     bdestroy(path);
     bdestroy(filename);
@@ -128,5 +126,4 @@ State_bootstrap(STATE)
   if(reenable_debugger) Debug = 1;
 
   debug("[BOOTSTRAP] Done!");
-  /* GC_enable(state->heap); // disable GC */
 }
