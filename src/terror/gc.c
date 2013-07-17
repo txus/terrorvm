@@ -16,7 +16,6 @@ VALUE NilObject;
 void
 GC_release(SWPHeader *value)
 {
-  printf("Destroyin %p (%u)\n", value, ((VALUE)value)->type);
   Value_destroy((VALUE)value);
 }
 
@@ -34,7 +33,6 @@ GC_add_children(SWPHeader *object, SWPArray *children)
 
   Value_each(obj, ^ void (VALUE key, VALUE val) {
     SWPArray_push(children, (SWPHeader*)key);
-    printf("Pushing child %p (%s) => %p\n", key, VAL2STR(key), val);
     SWPArray_push(children, (SWPHeader*)val);
   });
 }
@@ -44,7 +42,6 @@ GC_add_children(SWPHeader *object, SWPArray *children)
 void
 GC_add_roots(void *st, SWPArray *roots)
 {
-  printf("Adding roots... ");
   STATE = (State*)st;
 
   // Runtime values
@@ -106,5 +103,4 @@ GC_add_roots(void *st, SWPArray *roots)
       }
     }
   }
-  printf("%i added.\n", SWPArray_count(roots));
 }

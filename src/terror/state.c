@@ -25,7 +25,7 @@ State_new()
   state->dbg        = Debugger_new();
 
   state->heap       = SWPHeap_new(
-    10,                  // initial size of the heap in n objects
+    1000,                  // initial size of the heap in n objects
     10000,                  // max size of the heap in n objects
     1.8,                 // growth factor
     state,
