@@ -153,8 +153,9 @@ Primitive_require(STATE, void *a, void *_, void *__)
 
   VM_run(state); // ignore result of the require
 
-  frame = Stack_pop(STACK);
-  if(!CallFrame_is_captured(frame)) CallFrame_destroy(frame);
+  Stack_pop(STACK);
+
+  CallFrame_destroy(frame);
 
   return NilObject;
 

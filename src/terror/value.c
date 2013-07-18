@@ -53,6 +53,11 @@ Value_destroy(VALUE o)
     case VectorType:
       if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
       break;
+    case ClosureType:
+      if(VAL2FN(o)->scope) {
+        CallFrame_release(VAL2FN(o)->scope);
+      }
+      break;
     default:
       break;
     }
@@ -190,7 +195,7 @@ Closure_new(STATE, Function *fn, CallFrame *scope)
 {
   VALUE val = Value_from_prototype(state, ClosureType, Closure_bp);
   if(scope) {
-    scope->refcount += 1;
+    CallFrame_retain(scope);
     fn->scope = scope;
   }
 

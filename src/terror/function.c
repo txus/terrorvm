@@ -89,7 +89,7 @@ Function_call(
   // If it is a closure, we nest the call frames.
   if(fn->scope) {
     new_frame->parent = fn->scope;
-    new_frame->parent->refcount++;
+    CallFrame_retain(new_frame->parent);
   }
 
   Stack_push(FRAMES, new_frame);

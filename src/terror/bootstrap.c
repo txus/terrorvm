@@ -114,7 +114,7 @@ State_bootstrap(STATE)
     bstring path = bfromcstr("kernel/");
     bconcat(path, filename);
     debug("[BOOTSTRAP] Loading %s...", bdata(path));
-    /* Primitive_require(state, String_new(state, bdata(path)), NULL, NULL); */
+    Primitive_require(state, String_new(state, bdata(path)), NULL, NULL);
 
     bdestroy(path);
     bdestroy(filename);

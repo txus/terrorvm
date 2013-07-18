@@ -23,7 +23,7 @@ readfile(bstring filename) {
   off_t len = file_size(filename);
   check(len >= 0, "Invalid file length (%s).", bdata(filename));
 
-  char *buf = malloc(len + 1);
+  char *buf = calloc(1, len + 1);
   check_mem(buf);
 
   int fd = open(bdata(filename), O_RDONLY);

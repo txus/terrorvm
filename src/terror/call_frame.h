@@ -28,5 +28,7 @@ void CallFrame_setlocaldepth(CallFrame *frame, int depth, int idx, struct val_s*
 void CallFrame_print(CallFrame *frame);
 void CallFrame_print_backtrace(CallFrame *frame);
 #define CallFrame_is_captured(A) (A)->refcount > 0
+#define CallFrame_retain(A) (A)->refcount++
+#define CallFrame_release(A) (A)->refcount--; if(!CallFrame_is_captured(A)) CallFrame_destroy((A))
 
 #endif
