@@ -248,6 +248,7 @@ void
 Value_set(STATE, VALUE receiver, char *key, VALUE value)
 {
   bstring _slotname = bfromcstr(key);
+  Hashmap_delete(receiver->table, _slotname);
   Hashmap_set(receiver->table, _slotname, value);
 
   // We need to keep the value safe from collection until it's referenced by

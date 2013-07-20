@@ -43,6 +43,8 @@ Debugger_load_current_file(STATE)
   }
   DEBUGGER->current_file = NULL;
 
+  if(!CURR_FRAME->fn->filename) return;
+
   bstring current_filename = bfromcstr(CURR_FRAME->fn->filename);
 
   bstring buf = readfile(current_filename);

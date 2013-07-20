@@ -14,6 +14,8 @@ VALUE TrueObject;
 VALUE FalseObject;
 VALUE NilObject;
 
+bstring _fn_name = NULL;
+
 #define LOCAL(A) (VALUE)DArray_at(locals, (A))
 #define PUSH_LITERAL(A, N) VALUE (N) = (A); DArray_push(literals, (N))
 #define PUSH_LOCAL(A, N) VALUE (N) = (A); DArray_push(locals, (N))
@@ -24,29 +26,34 @@ VALUE NilObject;
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   Function *fn = calloc(1, sizeof(Function));           \
   fn->literals = literals;                              \
-  Hashmap_set(fns, bfromcstr("0_main"), fn);            \
+  bstring main_name = bfromcstr("0_main");              \
+  Hashmap_set(fns, main_name, fn);                      \
   Hashmap_destroy(state->functions);                    \
   state->functions = fns;                               \
   DArray *locals = DArray_create(sizeof(VALUE), 10);    \
-  Runtime_init(state);                                  \
+  Runtime_init(state)                                  \
 
 #define TEARDOWN()                                      \
   Function_destroy(fn);                                 \
+  bdestroy(main_name);                                  \
+  if(_fn_name) { bdestroy(_fn_name); _fn_name = NULL; } \
   State_destroy(state);                                 \
-  return NULL;                                          \
+  return NULL                                           \
 
 #define DEFN(N, ...)                                    \
-  int *__code = (int[]){__VA_ARGS__};                    \
+  int *__code = (int[]){__VA_ARGS__};                   \
   unsigned short __count = sizeof((int[]){__VA_ARGS__})/sizeof(int);    \
-  int *__instructions = calloc(__count, sizeof(int));      \
-  memcpy(__instructions, __code, __count * sizeof(int));    \
+  int *__instructions = calloc(__count, sizeof(int));   \
+  memcpy(__instructions, __code, __count * sizeof(int));\
                                                         \
   Function *_fn = calloc(1, sizeof(Function));          \
-  _fn->code     = __instructions;                         \
+  _fn->code     = __instructions;                       \
+  DArray_push(state->native_fns, _fn);                  \
                                                         \
+  _fn_name = bfromcstr((N));                            \
   Hashmap_set(                                          \
     fns,                                                \
-    bfromcstr((N)),                                     \
+    _fn_name,                                           \
     _fn                                                 \
   )
 
@@ -354,7 +361,6 @@ char *test_setslot()
   SETUP();
 
   VALUE receiver = String_new(state, "foo");
-  Value_set(state, receiver, "tainted", TrueObject);
   DArray_push(literals, receiver);
 
   PUSH_LITERAL(String_new(state, "tainted"), slot);
