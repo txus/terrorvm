@@ -103,6 +103,7 @@ char *test_delete()
 
 char *test_reverse()
 {
+  Hashmap_destroy(map);
   map = Hashmap_create(reverse_compare, NULL);
   int rc = Hashmap_traverse(map, traverse_good_cb);
 
