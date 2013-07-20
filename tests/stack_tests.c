@@ -32,10 +32,6 @@ char *test_push_pop()
 
   mu_assert(Stack_count(stack) == NUM_TESTS, "Wrong count on push.");
 
-  STACK_FOREACH(stack, cur) {
-    debug("VAL: %s", (char *)cur->value);
-  }
-
   for(i = NUM_TESTS - 1; i >= 0; i--) {
     char *val = Stack_pop(stack);
     mu_assert(val == tests[i], "Wrong value on pop.");
