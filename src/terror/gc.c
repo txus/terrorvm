@@ -25,10 +25,13 @@ GC_add_children(SWPHeader *object, SWPArray *children)
   VALUE obj = (VALUE)object;
   if (!obj) return;
 
-  if(obj->prototype) SWPArray_push(children, (SWPHeader*)obj->prototype);
+  if(obj->prototype) {
+    SWPArray_push(children, (SWPHeader*)obj->prototype);
+  }
 
   for(int i = 0; i < DArray_count(obj->fields); i++) {
-    SWPArray_push(children, (SWPHeader*)DArray_at(obj->fields, i));
+    VALUE field = (VALUE)DArray_at(obj->fields, i);
+    SWPArray_push(children, (SWPHeader*)field);
   }
 
   Value_each(obj, ^ void (VALUE key, VALUE val) {

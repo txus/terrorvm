@@ -54,7 +54,7 @@ Value_destroy(VALUE o)
       if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
       break;
     case ClosureType:
-      if(VAL2FN(o)->scope) {
+      if(VAL2FN(o) && VAL2FN(o)->scope) {
         CallFrame_release(VAL2FN(o)->scope);
       }
       break;

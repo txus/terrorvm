@@ -57,21 +57,27 @@ State_destroy(STATE)
   Closure_bp  = NULL;
 
   state->lobby = NULL;
+
+  DArray *empty_files = DArray_create(sizeof(BytecodeFile*), DArray_count(state->files) || 1);
+  DArray *old_files = state->files;
+  state->files = empty_files;
+
   swp_collect(state->heap);
   SWPHeap_destroy(state->heap);
+
+  while(DArray_count(old_files) > 0) {
+    BytecodeFile_destroy((BytecodeFile*)DArray_pop(old_files));
+  }
+  DArray_destroy(old_files);
+
+  while(DArray_count(state->native_fns)) {
+    Function_destroy((Function*)DArray_pop(state->native_fns));
+  }
 
   Stack_destroy(state->frames);
   Stack_destroy(state->stack);
   Debugger_destroy(state->dbg);
-
-  for(int i = 0; i < DArray_count(state->files); i++) {
-    BytecodeFile_destroy((BytecodeFile*)DArray_at(state->files, i));
-  }
   DArray_destroy(state->files);
-
-  for(int i = 0; i < DArray_count(state->native_fns); i++) {
-    Function_destroy((Function*)DArray_at(state->native_fns, i));
-  }
   DArray_destroy(state->native_fns);
   Hashmap_destroy(state->functions);
 

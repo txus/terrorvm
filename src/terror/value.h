@@ -43,7 +43,7 @@ VALUE Number_new(struct state_s*, double);
 #define INT2BOOL(o) ((o) ? TrueObject : FalseObject)
 
 VALUE String_new(struct state_s*, char*);
-#define VAL2STR(o) (o->data.as_str)
+#define VAL2STR(o) ((o)->data.as_str)
 
 VALUE Closure_new(struct state_s*, Function*, CallFrame *scope);
 #define VAL2FN(o) ((Function*)(o->data.as_data))
