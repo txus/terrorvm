@@ -2,6 +2,7 @@
 #include <terror/value.h>
 #include <terror/bstrlib.h>
 #include <terror/state.h>
+#include <terror/hashmap.h>
 #include <terror/runtime.h>
 #include <assert.h>
 
@@ -30,6 +31,8 @@ char *test_string_new()
 char *test_closure_new()
 {
   Function *fn = Function_new("myfile", NULL, NULL);
+  DArray_push(state->native_fns, fn);
+
   VALUE closure = Closure_new(state, fn, NULL);
   mu_assert(closure->type == ClosureType, "failed creating closure");
   mu_assert(VAL2FN(closure) == fn, "failed assigning function to closure");
@@ -109,16 +112,14 @@ char *test_each()
 
   VALUE map = Map_new(state, ary);
 
-  __block bstring keys = bfromcstr("");
   __block int counter = 0;
 
   Value_each(map, ^ void (VALUE k, VALUE v) {
-    bconcat(keys, bfromcstr(VAL2STR(k)));
     counter = counter + VAL2NUM(v);
   });
 
   mu_assert(counter == 3, "Value_each failed.");
-  mu_assert(bstrcmp(keys, bfromcstr("foobar")) == 0, "Value_each failed.");
+
   return NULL;
 }
 
