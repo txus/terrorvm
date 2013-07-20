@@ -11,8 +11,10 @@ char *test_load()
 {
   BytecodeFile *file = BytecodeFile_new(state, bfromcstr("tests/testfile.tvm"));
 
-  Function *main = Hashmap_get(file->functions, bfromcstr("0_main"));
-  Function *add = Hashmap_get(file->functions, bfromcstr("4_add"));
+  bstring main_name = bfromcstr("0_main");
+  Function *main = Hashmap_get(file->functions, main_name);
+  bstring add_name = bfromcstr("4_add");
+  Function *add = Hashmap_get(file->functions, add_name);
 
   mu_assert(*main->code == PUSH, "error parsing main");
 
@@ -23,6 +25,9 @@ char *test_load()
   mu_assert(VAL2NUM(first_num) == 1.2, "error parsing float literal in main");
 
   mu_assert(*add->code == PUSHSELF, "error parsing add");
+
+  bdestroy(main_name);
+  bdestroy(add_name);
 
   return NULL;
 }
