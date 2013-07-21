@@ -220,8 +220,7 @@ Map_new(STATE, DArray *array)
 {
   VALUE val = Value_from_prototype(state, MapType, Map_bp);
 
-  int count = DArray_count(array);
-  assert(count % 2 == 0 && "Map element count must be even.");
+  assert(DArray_count(array) % 2 == 0 && "Map element count must be even.");
 
   // Maps are our 'object literals', so the object table will be the hash
   // itself.
