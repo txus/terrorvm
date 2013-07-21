@@ -51,7 +51,7 @@ Value_destroy(VALUE o)
       if(o->data.as_str) free(o->data.as_str);
       break;
     case VectorType:
-      if(o->data.as_data) DArray_destroy((DArray*)(o->data.as_data));
+      DArray_destroy((DArray*)(o->data.as_data));
       break;
     case ClosureType:
       if(VAL2FN(o) && VAL2FN(o)->scope) {
@@ -69,7 +69,7 @@ Value_destroy(VALUE o)
   }
 }
 
-#define append(B, S) bconcat((B), bfromcstr(S))
+#define append(B, S) { bstring x = bfromcstr(S); bconcat((B), x); bdestroy(x); }
 #define appendf(B, S, ...) bconcat((B), bformat(S, ##__VA_ARGS__))
 
 VALUE
@@ -91,6 +91,7 @@ Value_to_s(STATE, VALUE o)
         break;
       }
       case StringType: {
+        bdestroy(str);
         return o;
         break;
       }
@@ -157,7 +158,9 @@ Value_to_s(STATE, VALUE o)
     }
   }
 
-  return String_new(state, bdata(str));
+  VALUE result = String_new(state, bdata(str));
+  bdestroy(str);
+  return result;
 }
 
 void

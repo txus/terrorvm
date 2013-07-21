@@ -53,12 +53,14 @@ Function_native_new(STATE, native_fn c_fn)
 VALUE
 Function_native_call(STATE, Function *fn, VALUE receiver, DArray *locals)
 {
-  return fn->c_fn(
-    state,
-    receiver,
-    DArray_at(locals, 0),
-    DArray_at(locals, 1)
-    );
+  switch(DArray_count(locals)) {
+  case 0:
+    return fn->c_fn(state, receiver, NULL, NULL);
+  case 1:
+    return fn->c_fn(state, receiver, DArray_at(locals, 0), NULL);
+  default:
+    return fn->c_fn(state, receiver, DArray_at(locals, 0), DArray_at(locals, 1));
+  }
 }
 
 int*

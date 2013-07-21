@@ -55,7 +55,13 @@ void VM_start(bstring filename)
   state->lobby = lobby;
 
   BytecodeFile *file = BytecodeFile_new(state, filename);
-  state->functions = file->functions;
+
+  int fn_count = DArray_count(file->function_names);
+  for(int j=0; j < fn_count; j++) {
+    bstring fn_name = (bstring)DArray_at(file->function_names, j);
+    Function *fn = (Function*)Hashmap_get(file->functions, fn_name);
+    Hashmap_set(state->functions, fn_name, fn);
+  }
 
   bstring main_fn = bfromcstr("0_main");
   CallFrame *top_frame = CallFrame_new(lobby, STATE_FN(main_fn), NULL);

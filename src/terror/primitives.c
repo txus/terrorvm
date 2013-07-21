@@ -280,9 +280,15 @@ Primitive_String_concat(STATE, void *a, void *b, void *_)
   CHECK_TYPE(str_b, StringType);
 
   bstring s = bfromcstr(VAL2STR(str_a));
-  bconcat(s, bfromcstr(VAL2STR(str_b)));
+  bstring other = bfromcstr(VAL2STR(str_b));
+  bconcat(s, other);
 
-  return String_new(state, bdata(s));
+  VALUE result = String_new(state, bdata(s));
+
+  bdestroy(s);
+  bdestroy(other);
+
+  return result;
 
 error:
   ABORT();
@@ -384,7 +390,9 @@ Primitive_Vector_to_map(STATE, void *a, void *_, void *__)
   VALUE vector = (VALUE)a;
   CHECK_TYPE(vector, VectorType);
 
-  return Map_new(state, VAL2ARY(vector));
+  DArray *fields = DArray_copy(VAL2ARY(vector));
+
+  return Map_new(state, fields);
 
 error:
   ABORT();
