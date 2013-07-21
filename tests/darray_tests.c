@@ -17,6 +17,26 @@ char *test_create()
   return NULL;
 }
 
+char *test_copy()
+{
+  int *i = 0x0;
+  DArray_push(array, i);
+
+  DArray *copy = DArray_copy(array);
+  mu_assert(copy != array, "DArray copy failed.");
+  mu_assert(copy != NULL, "DArray copy failed.");
+  mu_assert(copy->contents != NULL, "contents are wrong in darray");
+  printf("copy end is %i", copy->end);
+  mu_assert(copy->end == 1, "end isn't at the right spot");
+  mu_assert(copy->element_size == sizeof(int), "element size is wrong.");
+  mu_assert(copy->max == 100, "wrong max length on initial size");
+  mu_assert(DArray_pop(copy) == i, "Element wasn't copied");
+
+  DArray_pop(array);
+  DArray_destroy(copy);
+  return NULL;
+}
+
 char *test_destroy()
 {
   DArray_destroy(array);
@@ -108,6 +128,7 @@ char *all_tests() {
   mu_suite_start();
 
   mu_run_test(test_create);
+  mu_run_test(test_copy);
   mu_run_test(test_new);
   mu_run_test(test_set);
   mu_run_test(test_get);

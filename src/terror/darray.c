@@ -22,6 +22,15 @@ error:
   return NULL;
 }
 
+DArray *DArray_copy(DArray *original)
+{
+  DArray *copy = DArray_create(original->element_size, original->max);
+  for(int i=DArray_count(original); i > 0; i--) {
+    DArray_push(copy, DArray_at(original, i));
+  }
+  return copy;
+}
+
 void DArray_clear(DArray *array)
 {
   int i = 0;
