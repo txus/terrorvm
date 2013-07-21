@@ -70,7 +70,7 @@ Value_destroy(VALUE o)
 }
 
 #define append(B, S) { bstring x = bfromcstr(S); bconcat((B), x); bdestroy(x); }
-#define appendf(B, S, ...) bconcat((B), bformat(S, ##__VA_ARGS__))
+#define appendf(B, S, ...) { bstring x = bformat(S, ##__VA_ARGS__); bconcat((B), x); bdestroy(x); }
 
 VALUE
 Value_to_s(STATE, VALUE o)
@@ -87,7 +87,7 @@ Value_to_s(STATE, VALUE o)
     else {
     switch(o->type) {
       case NumberType: {
-        appendf(str, "%f", VAL2NUM(o));
+        appendf(str, "%i", VAL2NUM(o));
         break;
       }
       case StringType: {
