@@ -105,10 +105,10 @@ char *test_each()
   VALUE v1 = Number_new(state, 1);
   VALUE k2 = String_new(state, "bar");
   VALUE v2 = Number_new(state, 2);
-  DArray_push(ary, k1);
-  DArray_push(ary, v1);
-  DArray_push(ary, k2);
   DArray_push(ary, v2);
+  DArray_push(ary, k2);
+  DArray_push(ary, v1);
+  DArray_push(ary, k1);
 
   VALUE map = Map_new(state, ary);
 

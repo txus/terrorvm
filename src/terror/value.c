@@ -232,14 +232,16 @@ Map_new(STATE, DArray *array)
   DArray_destroy(val->fields);
   val->fields = keys;
 
-  for(int i=0; i < count; i += 2) {
-    VALUE key   = (VALUE)DArray_at(array, i);
-    DArray_push(keys, key);
-
-    VALUE value = (VALUE)DArray_at(array, i+1);
+  while(DArray_count(array) > 0) {
+    VALUE key = (VALUE)DArray_pop(array);
     assert(key->type == StringType && "All map keys must be strings.");
 
+    DArray_push(keys, key);
+
+    VALUE value = (VALUE)DArray_pop(array);
+
     Hashmap_set(hash, bfromcstr(VAL2STR(key)), value);
+
   }
 
   DArray_destroy(array);
