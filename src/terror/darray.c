@@ -25,8 +25,8 @@ error:
 DArray *DArray_copy(DArray *original)
 {
   DArray *copy = DArray_create(original->element_size, original->max);
-  for(int i=DArray_count(original); i > 0; i--) {
-    DArray_push(copy, DArray_at(original, i));
+  for(int i=original->end; i > 0; i--) {
+    DArray_push(copy, DArray_at(original, i-1));
   }
   return copy;
 }

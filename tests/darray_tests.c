@@ -19,14 +19,14 @@ char *test_create()
 
 char *test_copy()
 {
-  int *i = 0x0;
+  int a = 4;
+  int *i = &a;
   DArray_push(array, i);
 
   DArray *copy = DArray_copy(array);
   mu_assert(copy != array, "DArray copy failed.");
   mu_assert(copy != NULL, "DArray copy failed.");
   mu_assert(copy->contents != NULL, "contents are wrong in darray");
-  printf("copy end is %i", copy->end);
   mu_assert(copy->end == 1, "end isn't at the right spot");
   mu_assert(copy->element_size == sizeof(int), "element size is wrong.");
   mu_assert(copy->max == 100, "wrong max length on initial size");
