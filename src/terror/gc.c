@@ -29,6 +29,12 @@ GC_add_children(SWPHeader *object, SWPArray *children)
     SWPArray_push(children, (SWPHeader*)obj->prototype);
   }
 
+  if(obj->type == VectorType && VAL2ARY(obj)) {
+    for(int i = 0; i < DArray_count(VAL2ARY(obj)); i++) {
+      SWPArray_push(children, (SWPHeader*)DArray_at(VAL2ARY(obj), i));
+    }
+  }
+
   for(int i = 0; i < DArray_count(obj->fields); i++) {
     VALUE field = (VALUE)DArray_at(obj->fields, i);
     SWPArray_push(children, (SWPHeader*)field);
