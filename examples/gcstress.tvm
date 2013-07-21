@@ -1,13 +1,13 @@
 /Users/txus/Code/terrorvm/compiler/examples/gcstress.rb
 _0_main
 :3:24
-"1_block_a5e72e5ba0f78df609d03ec7c2ea07f6
+"1_block_de922f6e2ce0f2993e77b647ff0da4e1
 1
 "apply
 1 SETLINE
 1
 67 DEFN
-0 "1_block_a5e72e5ba0f78df609d03ec7c2ea07f6"
+0 "1_block_de922f6e2ce0f2993e77b647ff0da4e1"
 33 SETLOCAL
 1
 1 SETLINE
@@ -28,7 +28,7 @@ _0_main
 0
 20 PUSHNIL
 144 RET
-_1_block_a5e72e5ba0f78df609d03ec7c2ea07f6
+_1_block_de922f6e2ce0f2993e77b647ff0da4e1
 :3:19
 123
 2
