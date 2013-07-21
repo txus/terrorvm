@@ -26,7 +26,7 @@ State_new()
 
   state->heap       = SWPHeap_new(
     10,                  // initial size of the heap in n objects
-    1000,                 // growth factor
+    1000,                // growth factor
     state,
     sizeof(val_t),
     GC_release,
