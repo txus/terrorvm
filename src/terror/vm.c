@@ -5,6 +5,7 @@
 #include <terror/vm.h>
 #include <terror/opcode.h>
 #include <terror/state.h>
+#include <terror/vector.h>
 #include <terror/runtime.h>
 #include <terror/bootstrap.h>
 #include <terror/bstrlib.h>
@@ -213,15 +214,20 @@ VALUE VM_run(STATE)
         ip++;
         debugi("MAKEVEC %i", *ip);
         int count = *ip;
-        DArray *array = DArray_create(sizeof(VALUE), 5);
+        DArray *array = DArray_create(sizeof(VALUE), count || 1);
+
         while(count--) {
           VALUE elem = Stack_pop(STACK);
           check(elem, "Stack underflow.");
+          GC_protect(elem);
           DArray_push(array, elem);
         }
 
         VALUE vector = Vector_new(state, array);
         Stack_push(STACK, vector);
+        Vector_each(vector, ^ void (VALUE element) {
+          GC_unprotect(element);
+        });
         break;
       }
       case SEND: {
