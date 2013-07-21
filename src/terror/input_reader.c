@@ -55,7 +55,6 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
 
     fn->line = linenum;
     DArray_push(file->function_names, method);
-    debug("Parsed %s...", bdata(method));
     Hashmap_set(file->functions, method, fn);
 
     // Parse the actual literals

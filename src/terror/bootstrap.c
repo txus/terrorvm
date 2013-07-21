@@ -113,7 +113,6 @@ State_bootstrap(STATE)
     bstring filename = (bstring)DArray_at(filenames, i);
     bstring path = bfromcstr("kernel/");
     bconcat(path, filename);
-    debug("[BOOTSTRAP] Loading %s...", bdata(path));
     Primitive_require(state, String_new(state, bdata(path)), NULL, NULL);
 
     bdestroy(path);
@@ -124,6 +123,4 @@ State_bootstrap(STATE)
 
   // Reenable debugger if needed
   if(reenable_debugger) Debug = 1;
-
-  debug("[BOOTSTRAP] Done!");
 }
