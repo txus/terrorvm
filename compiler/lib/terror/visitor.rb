@@ -210,7 +210,7 @@ module Terror
 
     def array_literal(node, parent)
       setline(node)
-      node.body.reverse.each do |element|
+      node.body.each do |element|
         element.lazy_visit self
       end
       g.makevec node.body.count

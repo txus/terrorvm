@@ -35,6 +35,7 @@ module Terror
         _setlocal local(:b).index
         _push literal(4)
         _setlocal local(:c).index
+        _clear 2
       end
     end
 
@@ -44,6 +45,7 @@ module Terror
         _setlocal local(:a).index
         _push literal(4.3)
         _setlocal local(:a).index
+        _clear 1
       end
     end
 
@@ -60,6 +62,7 @@ module Terror
         _push literal(3)
         _setlocal local(:a).index
         _pushlocal local(:a).index
+        _clear 1
       end
     end
 
@@ -139,6 +142,7 @@ module Terror
           _pushlocal local(:a).index
           _push literal(9)
           _setslot literal(:foo)
+          _clear 1
         end
       end
     end
@@ -208,8 +212,8 @@ module Terror
     describe 'vectors' do
       it 'are compiled' do
         compiles("a = [false,true]") do
-          _pushtrue
           _pushfalse
+          _pushtrue
           _makevec 2
           _setlocal local(:a).index
         end
@@ -249,6 +253,7 @@ module Terror
           _pushlocal local(:a).index
           _push literal(:foo)
           _send literal(:[]), 1
+          _clear 2
         end
       end
     end
