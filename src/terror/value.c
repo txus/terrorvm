@@ -87,7 +87,7 @@ Value_to_s(STATE, VALUE o)
     else {
     switch(o->type) {
       case NumberType: {
-        appendf(str, "%i", VAL2NUM(o));
+        appendf(str, "%f", VAL2NUM(o));
         break;
       }
       case StringType: {
