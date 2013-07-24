@@ -24,10 +24,13 @@ all: $(DEPS) $(TARGET) tests $(PROGRAMS)
 dev: CFLAGS=-g -std=c11 -Wall -Isrc -Wall -Werror -Ideps/libsweeper/include $(OPTFLAGS)
 dev: all
 
-gc:
+deps/libsweeper/Makefile:
+	git submodule init && git submodule update
+
+gc: deps/libsweeper/Makefile
 	$(MAKE) -C deps/libsweeper
 
-gc_debug:
+gc_debug: deps/libsweeper/Makefile
 	$(MAKE) dev -C deps/libsweeper
 
 rubinius:
