@@ -86,3 +86,4 @@ BADFUNCS='[^_.>a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?
 check:
 				@echo Files with potentially dangerous functions.
 				@egrep $(BADFUNCS) $(SOURCES) || true
+
