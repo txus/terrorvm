@@ -19,7 +19,7 @@ drop me [an email][email], or if you are in Berlin, just grab some beers
 together :) After all,
 
 ![I have no idea what I'm
-doing](http://static2.fjcdn.com/comments/I+have+no+idea+what+I+m+doing+thread+_06af9676f192d84f17cf5a5816dc7523.jpg)
+doing](http://www.funelf.net/photos/I-have-no-idea-what-i`m-doing.jpg)
 
 ## Object model
 
