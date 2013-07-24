@@ -2,6 +2,10 @@ CC=clang
 CFLAGS=-g -std=c99 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libsweeper/include $(OPTFLAGS)
 LIBS=$(OPTLIBS)
 LDFLAGS=deps/libsweeper/build/libsweeper.a
+ifeq ($(shell uname), Linux)
+LDFLAGS+=lBlocksRuntime
+endif
+
 PREFIX?=/usr/local
 
 DEPS=gc

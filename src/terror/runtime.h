@@ -1,5 +1,5 @@
 #ifndef _tvm_runtime_h_
-#define _tvm_runtime_h
+#define _tvm_runtime_h_
 
 #include <terror/value.h>
 

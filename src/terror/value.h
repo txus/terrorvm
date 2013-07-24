@@ -6,7 +6,6 @@
 #include <terror/call_frame.h>
 #include <terror/hashmap.h>
 #include <sweeper/header.h>
-#include <Block.h>
 
 struct state_s;
 

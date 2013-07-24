@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <terror/value.h>
 #include <terror/bstrlib.h>
 #include <terror/runtime.h>
