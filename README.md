@@ -298,12 +298,11 @@ That's it! :)
 
 ## Building the VM
 
-It uses the latest C standard (C11). It is supported by GCC and Clang, so you'll
-be alright.
+Since TerrorVM makes use of Apple's block extension, **you'll need clang to
+compile it**.
 
     $ git clone git://github.com/txus/terrorvm.git
     $ cd terrorvm
-    $ git submodule init && git submodule update
     $ make
 
 To run the tests:
@@ -313,6 +312,11 @@ To run the tests:
 And to clean the mess:
 
     $ make clean
+
+If you want to run the tests under Valgrind to ensure there are no memory
+leaks:
+
+    $ make valgrind
 
 ## Running programs
 
