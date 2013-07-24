@@ -1,5 +1,3 @@
 language: c
-script: make
-compiler:
-  - clang
-  - gcc
+script: make valgrind
+compiler: clang

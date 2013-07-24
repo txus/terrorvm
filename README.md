@@ -1,4 +1,4 @@
-# TerrorVM
+# TerrorVM [![Build Status](https://travis-ci.org/txus/terrorvm.png)](https://travis-ci.org/txus/terrorvm)
 
 A lightweight Virtual Machine for dynamic, object-oriented languages. It aims to
 be fast, as simple as possible, easily optimizable, with LLVM support, and
