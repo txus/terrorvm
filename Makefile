@@ -61,7 +61,8 @@ build:
 
 # The Unit Tests
 .PHONY: tests kernel rubinius
-tests: CFLAGS += $(TARGET)
+$(TESTS): tests/%: tests/%.c
+				$(CC) $(CFLAGS) $< -o $@ $(TARGET) $(LDFLAGS)
 tests: $(TESTS)
 				sh ./tests/runtests.sh
 

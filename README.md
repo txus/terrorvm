@@ -298,8 +298,8 @@ That's it! :)
 
 ## Building the VM
 
-Since TerrorVM makes use of Apple's block extension, **you'll need clang to
-compile it**.
+Since TerrorVM makes use of Clang's block extension, **you'll need at least
+clang 3.4 to compile it**.
 
     $ git clone git://github.com/txus/terrorvm.git
     $ cd terrorvm
