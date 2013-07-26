@@ -3,6 +3,10 @@ CFLAGS=-g -std=c99 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libsweeper/include $(
 LIBS=$(OPTLIBS)
 LDFLAGS=deps/libsweeper/build/libsweeper.a
 
+ifneq ($(shell uname -s),Darwin)
+LDFLAGS+=-lBlocksRuntime
+endif
+
 PREFIX?=/usr/local
 
 DEPS=gc
@@ -63,7 +67,7 @@ build:
 # The Unit Tests
 .PHONY: tests kernel rubinius
 $(TESTS): tests/%: tests/%.c
-				$(CC) $(CFLAGS) $< -o $@ $(TARGET) $(LDFLAGS)
+				$(CC) $(CFLAGS) -fPIC -fblocks $< -o $@ $(TARGET) $(LDFLAGS)
 tests: $(TESTS)
 				sh ./tests/runtests.sh
 

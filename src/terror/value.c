@@ -7,6 +7,7 @@
 #include <terror/call_frame.h>
 #include <terror/vector.h>
 #include <terror/gc.h>
+#include <terror/util.h>
 
 VALUE Object_bp;
 VALUE Number_bp;
