@@ -2,7 +2,6 @@
 #define _tvm_vector_h
 
 #include <terror/value.h>
-#include <Block.h>
 typedef void (^Vector_iter)(VALUE);
 typedef void (^Vector_iter_idx)(VALUE, int);
 
