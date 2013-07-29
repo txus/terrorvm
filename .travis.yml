@@ -1,3 +1,6 @@
 language: c
-script: sudo apt-get install valgrind libblocksruntime-dev && make valgrind
 compiler: clang
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install valgrind libblocksruntime-dev
+script: make valgrind
