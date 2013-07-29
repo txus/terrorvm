@@ -19,9 +19,12 @@ kernel_files(STATE)
 {
   DArray *entries = DArray_create(sizeof(bstring), 10);
 
-  bstring absolute_path = resolve_path(state, bfromcstr("../kernel"));
+  bstring kernel_relative_path = bfromcstr("../kernel");
+  bstring absolute_path = resolve_path(state, kernel_relative_path);
 
   DIR *dirp = opendir(bdata(absolute_path));
+  bdestroy(absolute_path);
+  bdestroy(kernel_relative_path);
   struct dirent *dp;
   readdir(dirp); // .
   readdir(dirp); // ..

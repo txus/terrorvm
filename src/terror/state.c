@@ -80,5 +80,6 @@ State_destroy(STATE)
   DArray_destroy(state->files);
   DArray_destroy(state->native_fns);
   Hashmap_destroy(state->functions);
+  bdestroy(state->binary);
   free(state);
 }

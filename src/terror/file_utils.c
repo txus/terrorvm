@@ -17,17 +17,20 @@ resolve_path(STATE, bstring path)
 	bstring h = executable_name(state->binary);
 	struct bstrList *x = bsplit(h, '/');
 	bdestroy(h);
+	bstring slash = bfromcstr("/");
 	x->qty--;
-	h = bjoin(x, bfromcstr("/"));
+	h = bjoin(x, slash);
 	x->qty++;
 	bstrListDestroy(x);
-	bstring slash = bfromcstr("/");
 	bconcat(h, slash);
 	bconcat(h, path);
 	bdestroy(slash);
 
   realpath(bdata(h), absolute_path);
-  return bfromcstr(absolute_path);
+  bstring bpath = bfromcstr(absolute_path);
+  bdestroy(h);
+  free(absolute_path);
+  return bpath;
 }
 
 bstring
@@ -39,9 +42,13 @@ executable_name(bstring binary) {
 #ifdef __APPLE__
   uint32_t size = PATH_MAX;
   if(_NSGetExecutablePath(name, &size) == 0) {
-    return bfromcstr(name);
+    bstring bname = bfromcstr(name);
+    free(name);
+    return bname;
   } else if(realpath(binary_name, name)) {
-    return bfromcstr(name);
+    bstring bname = bfromcstr(name);
+    free(name);
+    return bname;
   }
 #elif defined(__FreeBSD__)
   size_t size = PATH_MAX;
@@ -53,24 +60,35 @@ executable_name(bstring binary) {
   oid[3] = getpid();
 
   if(sysctl(oid, 4, name, &size, 0, 0) == 0) {
-    return bfromcstr(name);
+    bstring bname = bfromcstr(name);
+    free(name);
+    return bname;
   } else if(realpath(binary_name, name)) {
-    return bfromcstr(name);
+    bstring bname = bfromcstr(name);
+    free(name);
+    return bname;
   }
 #elif defined(__linux__)
   {
     if(readlink("/proc/self/exe", name, PATH_MAX) >= 0) {
-      return bfromcstr(name);
+      bstring bname = bfromcstr(name);
+      free(name);
+      return bname;
     } else if(realpath(binary_name, name)) {
-      return bfromcstr(name);
+      bstring bname = bfromcstr(name);
+      free(name);
+      return bname;
     }
   }
 #else
   if(realpath(binary_name, name)) {
-    return bfromcstr(name);
+    bstring bname = bfromcstr(name);
+    free(name);
+    return bname;
   }
 #endif
 
+  free(name);
   return bstrcpy(binary);
 }
 
