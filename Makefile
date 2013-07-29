@@ -55,7 +55,9 @@ $(TARGET): build $(OBJECTS)
 				ar rcs $@ $(OBJECTS)
 				ranlib $@
 
-$(PROGRAMS): CFLAGS += -fblocks $(TARGET)
+$(PROGRAMS): bin/%: bin/%.c
+				$(CC) $(CFLAGS) -fblocks $< -o $@ $(TARGET) $(LDFLAGS)
+
 
 $(SO_TARGET): $(TARGET) $(OBJECTS)
 				$(CC) -shared -o $@ $(OBJECTS)
