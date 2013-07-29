@@ -25,13 +25,13 @@ kernel_files(STATE)
   DIR *dirp = opendir(bdata(absolute_path));
   bdestroy(absolute_path);
   bdestroy(kernel_relative_path);
-  struct dirent *dp;
-  readdir(dirp); // .
-  readdir(dirp); // ..
 
+  struct dirent *dp;
   while ((dp = readdir(dirp)) != NULL) {
-    printf("Detected kernel/%s\n", dp->d_name);
-    DArray_push(entries, bfromcstr(dp->d_name));
+    if(!strcmp(dp->d_name, ".") == 0 && !strcmp(dp->d_name, "..") == 0) {
+      printf("Detected kernel/%s\n", dp->d_name);
+      DArray_push(entries, bfromcstr(dp->d_name));
+    }
   }
   (void)closedir(dirp);
 
