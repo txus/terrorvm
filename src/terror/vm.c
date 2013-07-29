@@ -46,7 +46,7 @@ void Value_print_all(STATE, DArray* objs)
 #define DEEPLOCAL(D, A) CallFrame_getlocaldepth(CURR_FRAME, (D), (A))
 #define DEEPLOCALSET(D, A, B) CallFrame_setlocaldepth(CURR_FRAME, (D), (A), (B))
 
-void VM_start(bstring filename)
+void VM_start(bstring binary, bstring filename)
 {
   STATE = State_new();
 
@@ -54,6 +54,7 @@ void VM_start(bstring filename)
 
   VALUE lobby  = Lobby_new(state); // toplevel object
   state->lobby = lobby;
+  state->binary = binary;
 
   BytecodeFile *file = BytecodeFile_new(state, filename);
 

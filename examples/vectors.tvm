@@ -1,4 +1,4 @@
-/Users/txus/Code/terrorvm/compiler/examples/vectors.rb
+../compiler/examples/vectors.rb
 _0_main
 :11:62
 "* 
@@ -6,11 +6,11 @@ _0_main
 "world
 "to
 "everyone!
-"3_block_c0d46c23374953ba66683c2e6d8fa760
+"3_block_36ca14cb1a0aba5c5831856a2935cf26
 "each
 "done!
 "puts
-"9_block_1b3c0becce466d6ac3c3764606b7a9f3
+"9_block_e5e6d88c3461eb1ed5859f5de58d434b
 "map
 1 SETLINE
 1
@@ -35,7 +35,7 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-5 "3_block_c0d46c23374953ba66683c2e6d8fa760"
+5 "3_block_36ca14cb1a0aba5c5831856a2935cf26"
 33 SETLOCAL
 2
 1 SETLINE
@@ -63,7 +63,7 @@ _0_main
 32 PUSHLOCAL
 1
 67 DEFN
-9 "9_block_1b3c0becce466d6ac3c3764606b7a9f3"
+9 "9_block_e5e6d88c3461eb1ed5859f5de58d434b"
 128 SEND
 10 "map"
 1
@@ -74,7 +74,7 @@ _0_main
 5
 20 PUSHNIL
 144 RET
-_3_block_c0d46c23374953ba66683c2e6d8fa760
+_3_block_36ca14cb1a0aba5c5831856a2935cf26
 :2:15
 "+
 "puts
@@ -93,7 +93,7 @@ _3_block_c0d46c23374953ba66683c2e6d8fa760
 1 "puts"
 1
 144 RET
-_9_block_1b3c0becce466d6ac3c3764606b7a9f3
+_9_block_e5e6d88c3461eb1ed5859f5de58d434b
 :2:10
 "!!!!
 "+

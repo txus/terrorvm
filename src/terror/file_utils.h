@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <terror/bstrlib.h>
@@ -11,6 +12,7 @@
 
 bstring readfile(bstring filename);
 DArray *getlines(struct bstrList *file, int start, int end);
+bstring executable_name(bstring binary);
 
 #endif
 

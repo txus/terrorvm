@@ -10,9 +10,10 @@ int
 main(int argc, char *argv[])
 {
   bstring filename = bfromcstr(argv[1]);
+  bstring binary = bfromcstr(argv[0]);
   if(argc > 2 && strcmp(argv[2], "-d") == 0) {
     Debug = 1;
   }
-  VM_start(filename);
+  VM_start(binary, filename);
   return 0;
 }

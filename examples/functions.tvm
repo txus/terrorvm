@@ -1,8 +1,8 @@
-/Users/txus/Code/terrorvm/compiler/examples/functions.rb
+../compiler/examples/functions.rb
 _0_main
 :5:39
 123
-"3_block_a3f3d183fbb1cca6b6a4b534e9711955
+"3_block_3fda6c97f0a8f53eab3761f362560193
 "fn
 2
 "puts
@@ -26,7 +26,7 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-1 "3_block_a3f3d183fbb1cca6b6a4b534e9711955"
+1 "3_block_3fda6c97f0a8f53eab3761f362560193"
 65 SETSLOT
 2 "fn"
 1 SETLINE
@@ -45,7 +45,7 @@ _0_main
 3
 20 PUSHNIL
 144 RET
-_3_block_a3f3d183fbb1cca6b6a4b534e9711955
+_3_block_3fda6c97f0a8f53eab3761f362560193
 :1:11
 "+
 1 SETLINE

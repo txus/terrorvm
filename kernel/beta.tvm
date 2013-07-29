@@ -1,10 +1,10 @@
-/Users/txus/Code/terrorvm/compiler/kernel/beta.rb
+../compiler/kernel/beta.rb
 _0_main
 :5:22
 "Vector
-"1_block_a1084fc9c4cd203b15df6c785e6bf354
+"1_block_d84d1cc445a3d1a57d226f83b92d13f2
 "map
-"9_block_daab7f6755144aeda0121a33a8f9c258
+"9_block_1b10545f963108833832acc90252652d
 "length
 1 SETLINE
 1
@@ -12,7 +12,7 @@ _0_main
 64 GETSLOT
 0 "Vector"
 67 DEFN
-1 "1_block_a1084fc9c4cd203b15df6c785e6bf354"
+1 "1_block_d84d1cc445a3d1a57d226f83b92d13f2"
 65 SETSLOT
 2 "map"
 1 SETLINE
@@ -21,16 +21,16 @@ _0_main
 64 GETSLOT
 0 "Vector"
 67 DEFN
-3 "9_block_daab7f6755144aeda0121a33a8f9c258"
+3 "9_block_1b10545f963108833832acc90252652d"
 65 SETSLOT
 4 "length"
 69 CLEAR
 1
 20 PUSHNIL
 144 RET
-_1_block_a1084fc9c4cd203b15df6c785e6bf354
+_1_block_d84d1cc445a3d1a57d226f83b92d13f2
 :2:25
-"3_block_0fe8a8df4ab29bf470e37bbaef08e432
+"3_block_843c2aba9375952c58cc4a68f98427d2
 "each
 1 SETLINE
 2
@@ -45,7 +45,7 @@ _1_block_a1084fc9c4cd203b15df6c785e6bf354
 1 SETLINE
 3
 67 DEFN
-0 "3_block_0fe8a8df4ab29bf470e37bbaef08e432"
+0 "3_block_843c2aba9375952c58cc4a68f98427d2"
 128 SEND
 1 "each"
 1
@@ -57,7 +57,7 @@ _1_block_a1084fc9c4cd203b15df6c785e6bf354
 69 CLEAR
 1
 144 RET
-_3_block_0fe8a8df4ab29bf470e37bbaef08e432
+_3_block_843c2aba9375952c58cc4a68f98427d2
 :2:17
 "apply
 "push
@@ -78,10 +78,10 @@ _3_block_0fe8a8df4ab29bf470e37bbaef08e432
 1 "push"
 1
 144 RET
-_9_block_daab7f6755144aeda0121a33a8f9c258
+_9_block_1b10545f963108833832acc90252652d
 :3:23
 0
-"11_block_74be25f22e9750ab58243ce09099ef4c
+"11_block_804ec30903bd1d7c72401fca71778f6b
 "each
 1 SETLINE
 10
@@ -94,7 +94,7 @@ _9_block_daab7f6755144aeda0121a33a8f9c258
 11
 16 PUSHSELF
 67 DEFN
-1 "11_block_74be25f22e9750ab58243ce09099ef4c"
+1 "11_block_804ec30903bd1d7c72401fca71778f6b"
 128 SEND
 2 "each"
 1
@@ -106,7 +106,7 @@ _9_block_daab7f6755144aeda0121a33a8f9c258
 69 CLEAR
 2
 144 RET
-_11_block_74be25f22e9750ab58243ce09099ef4c
+_11_block_804ec30903bd1d7c72401fca71778f6b
 :2:14
 1
 "+

@@ -1,1 +1,1 @@
-CFLAGS=-Isrc -Ideps/libtreadmill/include
+CFLAGS=-Isrc -Ideps/libsweeper/include

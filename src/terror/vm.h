@@ -7,7 +7,7 @@
 #include <terror/input_reader.h>
 
 VALUE VM_run(STATE);
-void VM_start(bstring filename);
+void VM_start(bstring binary, bstring filename);
 
 void Stack_print(STATE, Stack* stack);
 void Value_print_all(STATE, DArray *objs);

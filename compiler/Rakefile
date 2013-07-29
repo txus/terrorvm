@@ -5,12 +5,14 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+vm_path = File.expand_path("../bin")
+
 desc 'Compiles kernel files'
 task :kernel do
   Dir['kernel/*.rb'].each do |src|
     dest = "../#{src.gsub('rb','tvm')}"
     puts "Compiling #{src} to #{dest}..."
-    `bin/terror #{src} > #{dest}`
+    `bin/terrorc #{vm_path} #{src} > #{dest}`
   end
 end
 
@@ -19,7 +21,7 @@ task :examples do
   Dir['examples/*.rb'].each do |src|
     dest = "../#{src.gsub('rb','tvm')}"
     puts "Compiling #{src} to #{dest}..."
-    `bin/terror #{src} > #{dest}`
+    `bin/terrorc #{vm_path} #{src} > #{dest}`
   end
 end
 
@@ -28,7 +30,7 @@ task :stdlib do
   Dir['stdlib/*.rb'].each do |src|
     dest = "../#{src.gsub('rb','tvm').gsub('std','')}"
     puts "Compiling #{src} to #{dest}..."
-    `bin/terror #{src} > #{dest}`
+    `bin/terrorc #{vm_path} #{src} > #{dest}`
   end
 end
 

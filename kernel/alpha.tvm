@@ -1,4 +1,4 @@
-/Users/txus/Code/terrorvm/compiler/kernel/alpha.rb
+../compiler/kernel/alpha.rb
 _0_main
 :53:680
 "VM
@@ -29,9 +29,9 @@ _0_main
 "<
 "number_>
 ">
-"18_block_477e230437c2b27a1624ac4c8c19223d
+"18_block_6258ea6f6e8c9bb7dfe1879537feef0c
 "<=
-"21_block_1e06fd075b66c45a339f251f72ec053c
+"21_block_4aa3f857be21822226092878c9588fae
 ">=
 "string
 "string_+
@@ -432,7 +432,7 @@ _0_main
 3 "[]"
 1
 67 DEFN
-28 "18_block_477e230437c2b27a1624ac4c8c19223d"
+28 "18_block_6258ea6f6e8c9bb7dfe1879537feef0c"
 65 SETSLOT
 29 "<="
 1 SETLINE
@@ -449,7 +449,7 @@ _0_main
 3 "[]"
 1
 67 DEFN
-30 "21_block_1e06fd075b66c45a339f251f72ec053c"
+30 "21_block_4aa3f857be21822226092878c9588fae"
 65 SETSLOT
 31 ">="
 1 SETLINE
@@ -734,7 +734,7 @@ _0_main
 28
 20 PUSHNIL
 144 RET
-_18_block_477e230437c2b27a1624ac4c8c19223d
+_18_block_6258ea6f6e8c9bb7dfe1879537feef0c
 :3:18
 "<
 "==
@@ -757,7 +757,7 @@ _18_block_477e230437c2b27a1624ac4c8c19223d
 2 "or"
 1
 144 RET
-_21_block_1e06fd075b66c45a339f251f72ec053c
+_21_block_4aa3f857be21822226092878c9588fae
 :3:18
 ">
 "==

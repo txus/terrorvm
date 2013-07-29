@@ -7,9 +7,11 @@
 #include <terror/stack.h>
 #include <terror/debugger.h>
 #include <terror/gc.h>
+#include <terror/bstrlib.h>
 
 struct state_s {
   Hashmap *functions;
+  bstring binary;
   Stack *frames;
   Stack *stack;
   DArray *files;
