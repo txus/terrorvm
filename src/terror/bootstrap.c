@@ -22,19 +22,23 @@ kernel_files(STATE)
   bstring kernel_relative_path = bfromcstr("../kernel");
   bstring absolute_path = resolve_path(state, kernel_relative_path);
 
-  DIR *dirp = opendir(bdata(absolute_path));
+  struct dirent **namelist;
+  int n = scandir(bdata(absolute_path), &namelist, 0, alphasort);
+
+  if (n < 0) {
+    perror("scandir");
+  } else {
+    for(int i = 0; i < n; i++) {
+      if(strcmp(namelist[i]->d_name, ".") != 0 && strcmp(namelist[i]->d_name, "..") != 0) {
+        DArray_push(entries, bfromcstr(namelist[i]->d_name));
+      }
+      free(namelist[i]);
+    }
+    free(namelist);
+  }
+
   bdestroy(absolute_path);
   bdestroy(kernel_relative_path);
-
-  struct dirent *dp;
-  while ((dp = readdir(dirp)) != NULL) {
-    if(!strcmp(dp->d_name, ".") == 0 && !strcmp(dp->d_name, "..") == 0) {
-      printf("Detected kernel/%s\n", dp->d_name);
-      DArray_push(entries, bfromcstr(dp->d_name));
-    }
-  }
-  (void)closedir(dirp);
-
   return entries;
 }
 
