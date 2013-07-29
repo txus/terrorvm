@@ -4,6 +4,7 @@
 #include <terror/runtime.h>
 #include <terror/primitives.h>
 #include <terror/debugger.h>
+#include <terror/file_utils.h>
 #include <dirent.h>
 
 VALUE Number_bp;
@@ -14,16 +15,19 @@ VALUE Closure_bp;
 int Debug;
 
 static inline DArray*
-kernel_files()
+kernel_files(STATE)
 {
   DArray *entries = DArray_create(sizeof(bstring), 10);
 
-  DIR *dirp = opendir("kernel"); // todo -- make it an absolute path
+  bstring absolute_path = resolve_path(state, bfromcstr("../kernel"));
+
+  DIR *dirp = opendir(bdata(absolute_path));
   struct dirent *dp;
   readdir(dirp); // .
   readdir(dirp); // ..
 
   while ((dp = readdir(dirp)) != NULL) {
+    printf("Detected kernel/%s\n", dp->d_name);
     DArray_push(entries, bfromcstr(dp->d_name));
   }
   (void)closedir(dirp);
@@ -94,7 +98,7 @@ expose_VM(STATE, VALUE lobby)
 void
 State_bootstrap(STATE)
 {
-  DArray *filenames = kernel_files();
+  DArray *filenames = kernel_files(state);
   int count = DArray_count(filenames);
 
   // Expose toplevel constants

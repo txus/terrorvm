@@ -13,6 +13,7 @@ VALUE NilObject;
 #define SETUP() \
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   STATE = State_new();                                  \
+  state->binary = bfromcstr("tests/gc_tests");          \
   Hashmap_destroy(state->functions);                    \
   state->functions = fns;                               \
   Runtime_init(state);                                  \

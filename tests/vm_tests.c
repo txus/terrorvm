@@ -22,6 +22,7 @@ bstring _fn_name = NULL;
 
 #define SETUP() \
   STATE = State_new();                                  \
+  state->binary = bfromcstr("tests/vm_tests");          \
   DArray *literals = DArray_create(sizeof(VALUE), 10);  \
   Hashmap *fns = Hashmap_create(NULL, NULL);            \
   Function *fn = calloc(1, sizeof(Function));           \

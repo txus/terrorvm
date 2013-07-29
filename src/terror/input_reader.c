@@ -3,26 +3,6 @@
 #include <terror/value.h>
 #include <terror/state.h>
 
-static inline bstring
-resolve_path(STATE, bstring path)
-{
-  char *absolute_path = malloc(PATH_MAX);
-	bstring h = executable_name(state->binary);
-	struct bstrList *x = bsplit(h, '/');
-	bdestroy(h);
-	x->qty--;
-	h = bjoin(x, bfromcstr("/"));
-	x->qty++;
-	bstrListDestroy(x);
-	bstring slash = bfromcstr("/");
-	bconcat(h, slash);
-	bconcat(h, path);
-	bdestroy(slash);
-
-  realpath(bdata(h), absolute_path);
-  return bfromcstr(absolute_path);
-}
-
 static inline void
 parse_string(STATE, bstring buf, BytecodeFile *file)
 {
