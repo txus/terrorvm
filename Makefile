@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -std=c99 -O3 -Wall -Werror -Isrc -DNDEBUG -Ideps/libsweeper/include $(OPTFLAGS)
+CFLAGS=-g -std=c99 -O3 -Wall -Werror -Isrc -DNDEBUG -D_XOPEN_SOURCE=700 -Ideps/libsweeper/include $(OPTFLAGS)
 LIBS=$(OPTLIBS)
 LDFLAGS=deps/libsweeper/build/libsweeper.a
 
@@ -26,7 +26,7 @@ SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 # The Target Build
 all: $(DEPS) $(TARGET) tests $(PROGRAMS)
 
-dev: CFLAGS=-g -std=c99 -Wall -Isrc -Wall -Werror -Ideps/libsweeper/include $(OPTFLAGS)
+dev: CFLAGS=-g -std=c99 -Wall -Isrc -Wall -Werror -D_XOPEN_SOURCE=700 -Ideps/libsweeper/include $(OPTFLAGS)
 dev: all
 
 deps/libsweeper/Makefile:

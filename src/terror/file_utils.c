@@ -1,11 +1,12 @@
 #include <terror/dbg.h>
 #include <terror/file_utils.h>
 
-#include <stdlib.h>
-#include <unistd.h>
 #ifdef __APPLE__
   #include <mach-o/dyld.h>
 #elif defined(__linux__)
+  #include <limits.h>
+  #include <unistd.h>
+  #include <stdlib.h>
   #include <linux/limits.h>
 #endif
 
