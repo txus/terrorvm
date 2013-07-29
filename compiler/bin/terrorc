@@ -1,0 +1,11 @@
+#!/usr/bin/env rbx
+require_relative '../lib/terror'
+
+unless ARGV.first
+  puts "Terror Compiler #{Terror::VERSION}\n================"
+  puts "\tUsage: terrorc my_file.rb > my_file.tc"
+  exit(1)
+end
+
+verbose = ARGV[1] == '-v'
+puts Terror.parse_file(ARGV[0], verbose)

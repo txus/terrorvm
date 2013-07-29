@@ -121,9 +121,9 @@ TerrorVM ships with a debugger that you can use to debug your programs. The
 debugger can set breakpoint at specific lines and step through either high-level
 lines of code or low-level bytecode instructions.
 
-To use the debugger, pass `-d` as a second argument to `tvm`:
+To use the debugger, pass `-d` as a second argument to `terror`:
 
-    $ bin/tvm examples/functions.tvm -d
+    $ bin/terror -d examples/functions.tvm
 
 Here's an example session:
 
@@ -323,7 +323,7 @@ leaks:
 TerrorVM runs `.tvm` bytecode files such as the `numbers.tvm` under the
 `examples` directory.
 
-    $ ./bin/tvm examples/numbers.tvm
+    $ bin/terror examples/numbers.tvm
 
 It ships with a simple compiler written in Ruby (Rubinius) that compiles a
 tiny subset of Ruby to `.tvm` files. Check out the `compiler` directory, which
@@ -332,6 +332,19 @@ has its own Readme, and the `compiler/examples` where we have the
 
 **TerrorVM doesn't need Ruby to run**; even the example compiler is a proof of
 concept and could be written in any language (even in C obviously).
+
+The `terror` executable acts as a wrapper for the example compiler as well. To
+compile and run on the fly a file written in our subset of Ruby:
+
+    $ bin/terror -x compiler/examples/numbers.rb
+
+To compile a file yourself:
+
+    $ bin/terror -c output.tvm path/to/my/input.rb
+
+In case of doubt, `-h` is your friend :)
+
+    $ bin/terror -h
 
 ## Who's this
 
