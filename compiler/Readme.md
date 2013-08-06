@@ -8,7 +8,7 @@ Rubinius) that compiles a subset of Ruby to Terror bytecode.
     $ rvm use rbx-head
     $ bin/terror examples/hello_world.rb > myprogram.tvm
 
-Or just use the easy shell script to compile and run on the fly:
+Or just use the terror binary to compile and run on the fly:
 
     $ rvm use rbx-head
-    $ ./tvm examples/hello_world.rb
+    $ ../bin/terror examples/hello_world.rb
