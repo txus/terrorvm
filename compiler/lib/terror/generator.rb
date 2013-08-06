@@ -64,7 +64,9 @@ module Terror
     def clear(count)
       @ip += 2
       @stack_size -= count
-      _clear count
+      if count > 0
+        _clear count
+      end
     end
 
     def pushtrue

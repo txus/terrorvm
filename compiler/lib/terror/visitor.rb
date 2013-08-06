@@ -147,12 +147,19 @@ module Terror
 
       g.jif else_label
 
+      before = g.stack_size
       node.body.lazy_visit(self, parent)
+      after = g.stack_size
+      g.clear after - before - 1
+
       g.jmp done
 
       else_label.set!
 
+      before = g.stack_size
       node.else.lazy_visit(self, parent)
+      after = g.stack_size
+      g.clear after - before - 1
 
       done.set!
     end
