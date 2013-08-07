@@ -1,9 +1,9 @@
 ../compiler/examples/hello_world.rb
 _0_main
-:5:36
+:5:40
 "hello
 "to_map
-"3_block_c8f8f8839f3b1effeaab2a3f4780b55d
+"3_block_4f6c9363a1b245308a35054ad0e1b968
 "greet
 "world
 1 SETLINE
@@ -12,6 +12,8 @@ _0_main
 0 "hello"
 33 SETLOCAL
 0
+66 POP
+1
 1 SETLINE
 2
 68 MAKEVEC
@@ -21,14 +23,18 @@ _0_main
 0
 33 SETLOCAL
 1
+66 POP
+1
 1 SETLINE
 3
 32 PUSHLOCAL
 1
 67 DEFN
-2 "3_block_c8f8f8839f3b1effeaab2a3f4780b55d"
+2 "3_block_4f6c9363a1b245308a35054ad0e1b968"
 65 SETSLOT
 3 "greet"
+66 POP
+1
 1 SETLINE
 6
 32 PUSHLOCAL
@@ -38,11 +44,9 @@ _0_main
 128 SEND
 3 "greet"
 1
-69 CLEAR
-2
 20 PUSHNIL
 144 RET
-_3_block_c8f8f8839f3b1effeaab2a3f4780b55d
+_3_block_4f6c9363a1b245308a35054ad0e1b968
 :4:25
 " 
 "+

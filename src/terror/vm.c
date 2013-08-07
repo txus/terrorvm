@@ -345,17 +345,6 @@ VALUE VM_run(STATE)
         while(count--) Stack_pop(STACK);
         break;
       }
-      case CLEAR: {
-        Debugger_evaluate(state);
-        ip++;
-        int count = *ip;
-        debugi("CLEAR %i", count);
-        check(Stack_count(STACK) > count, "Stack underflow.");
-        VALUE tos = Stack_pop(STACK);
-        while(count--) Stack_pop(STACK);
-        Stack_push(STACK, tos);
-        break;
-      }
       case RET: {
         Debugger_evaluate(state);
         debugi("RET");

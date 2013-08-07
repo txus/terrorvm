@@ -42,12 +42,12 @@ module Terror
 
     def block(node, parent)
       setline(node)
-      before = g.stack_size
       node.array.each_with_index do |expression, idx|
         expression.lazy_visit self, node
+        unless idx == node.array.length - 1 # last element
+          g.pop 1
+        end
       end
-      after = g.stack_size
-      g.clear after - before - 1
     end
 
     def nil_literal(node, parent)
@@ -147,19 +147,13 @@ module Terror
 
       g.jif else_label
 
-      before = g.stack_size
       node.body.lazy_visit(self, parent)
-      after = g.stack_size
-      g.clear after - before - 1
 
       g.jmp done
 
       else_label.set!
 
-      before = g.stack_size
       node.else.lazy_visit(self, parent)
-      after = g.stack_size
-      g.clear after - before - 1
 
       done.set!
     end
@@ -257,7 +251,6 @@ module Terror
     end
 
     def finalize(name)
-      g.clear_stack
       out = g.encode(name)
       fns = @fns.map { |fn| fn.finalize(fn.name) }
       [out, fns].flatten.join("\n")

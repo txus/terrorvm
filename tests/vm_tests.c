@@ -396,24 +396,6 @@ char *test_pop()
   TEARDOWN();
 }
 
-char *test_clear()
-{
-  SETUP();
-
-  RUN(
-    PUSHNIL,
-    PUSHTRUE,
-    PUSHFALSE,
-    CLEAR, 2,
-    RET
-  );
-
-  mu_assert(result == FalseObject, "Clear failed.");
-  mu_assert(Stack_count(STACK) == 0, "Clear failed");
-
-  TEARDOWN();
-}
-
 char *test_send()
 {
   SETUP();
@@ -558,7 +540,6 @@ char *all_tests() {
   mu_run_test(test_getslot);
   mu_run_test(test_setslot);
   mu_run_test(test_pop);
-  mu_run_test(test_clear);
   mu_run_test(test_send);
   mu_run_test(test_send_getslot);
   mu_run_test(test_send_apply);

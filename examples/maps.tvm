@@ -19,6 +19,8 @@ _0_main
 0
 33 SETLOCAL
 0
+66 POP
+1
 1 SETLINE
 2
 16 PUSHSELF
@@ -31,8 +33,6 @@ _0_main
 1
 128 SEND
 4 "puts"
-1
-69 CLEAR
 1
 20 PUSHNIL
 144 RET

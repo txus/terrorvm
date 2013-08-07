@@ -1,6 +1,6 @@
 ../compiler/kernel/alpha.rb
 _0_main
-:53:680
+:53:734
 "VM
 "types
 "object
@@ -29,9 +29,9 @@ _0_main
 "<
 "number_>
 ">
-"18_block_6258ea6f6e8c9bb7dfe1879537feef0c
+"18_block_79c13baa3a142abd67a015970f3493ea
 "<=
-"21_block_4aa3f857be21822226092878c9588fae
+"21_block_0e499befeffe466d8bad36f3f6674b1e
 ">=
 "string
 "string_+
@@ -80,6 +80,8 @@ _0_main
 1
 65 SETSLOT
 5 "to_s"
+66 POP
+1
 1 SETLINE
 4
 21 PUSHLOBBY
@@ -106,6 +108,8 @@ _0_main
 1
 65 SETSLOT
 6 "prototype"
+66 POP
+1
 1 SETLINE
 5
 21 PUSHLOBBY
@@ -132,6 +136,8 @@ _0_main
 1
 65 SETSLOT
 7 "or"
+66 POP
+1
 1 SETLINE
 6
 21 PUSHLOBBY
@@ -158,6 +164,8 @@ _0_main
 1
 65 SETSLOT
 9 "=="
+66 POP
+1
 1 SETLINE
 7
 21 PUSHLOBBY
@@ -184,6 +192,8 @@ _0_main
 1
 65 SETSLOT
 11 "==="
+66 POP
+1
 1 SETLINE
 8
 21 PUSHLOBBY
@@ -210,6 +220,8 @@ _0_main
 1
 65 SETSLOT
 12 "clone"
+66 POP
+1
 1 SETLINE
 9
 21 PUSHLOBBY
@@ -236,6 +248,8 @@ _0_main
 1
 65 SETSLOT
 13 "print"
+66 POP
+1
 1 SETLINE
 10
 21 PUSHLOBBY
@@ -262,6 +276,8 @@ _0_main
 1
 65 SETSLOT
 14 "puts"
+66 POP
+1
 1 SETLINE
 12
 21 PUSHLOBBY
@@ -288,6 +304,8 @@ _0_main
 1
 65 SETSLOT
 17 "+"
+66 POP
+1
 1 SETLINE
 13
 21 PUSHLOBBY
@@ -314,6 +332,8 @@ _0_main
 1
 65 SETSLOT
 19 "-"
+66 POP
+1
 1 SETLINE
 14
 21 PUSHLOBBY
@@ -340,6 +360,8 @@ _0_main
 1
 65 SETSLOT
 21 "/"
+66 POP
+1
 1 SETLINE
 15
 21 PUSHLOBBY
@@ -366,6 +388,8 @@ _0_main
 1
 65 SETSLOT
 23 "*"
+66 POP
+1
 1 SETLINE
 16
 21 PUSHLOBBY
@@ -392,6 +416,8 @@ _0_main
 1
 65 SETSLOT
 25 "<"
+66 POP
+1
 1 SETLINE
 17
 21 PUSHLOBBY
@@ -418,6 +444,8 @@ _0_main
 1
 65 SETSLOT
 27 ">"
+66 POP
+1
 1 SETLINE
 18
 21 PUSHLOBBY
@@ -432,9 +460,11 @@ _0_main
 3 "[]"
 1
 67 DEFN
-28 "18_block_6258ea6f6e8c9bb7dfe1879537feef0c"
+28 "18_block_79c13baa3a142abd67a015970f3493ea"
 65 SETSLOT
 29 "<="
+66 POP
+1
 1 SETLINE
 21
 21 PUSHLOBBY
@@ -449,9 +479,11 @@ _0_main
 3 "[]"
 1
 67 DEFN
-30 "21_block_4aa3f857be21822226092878c9588fae"
+30 "21_block_0e499befeffe466d8bad36f3f6674b1e"
 65 SETSLOT
 31 ">="
+66 POP
+1
 1 SETLINE
 25
 21 PUSHLOBBY
@@ -478,6 +510,8 @@ _0_main
 1
 65 SETSLOT
 17 "+"
+66 POP
+1
 1 SETLINE
 27
 21 PUSHLOBBY
@@ -504,6 +538,8 @@ _0_main
 1
 65 SETSLOT
 3 "[]"
+66 POP
+1
 1 SETLINE
 28
 21 PUSHLOBBY
@@ -530,6 +566,8 @@ _0_main
 1
 65 SETSLOT
 37 "push"
+66 POP
+1
 1 SETLINE
 29
 21 PUSHLOBBY
@@ -556,6 +594,8 @@ _0_main
 1
 65 SETSLOT
 39 "to_map"
+66 POP
+1
 1 SETLINE
 30
 21 PUSHLOBBY
@@ -582,6 +622,8 @@ _0_main
 1
 65 SETSLOT
 41 "each"
+66 POP
+1
 1 SETLINE
 31
 21 PUSHLOBBY
@@ -608,6 +650,8 @@ _0_main
 1
 65 SETSLOT
 43 "each_with_index"
+66 POP
+1
 1 SETLINE
 33
 21 PUSHLOBBY
@@ -634,6 +678,8 @@ _0_main
 1
 65 SETSLOT
 41 "each"
+66 POP
+1
 1 SETLINE
 35
 21 PUSHLOBBY
@@ -650,6 +696,8 @@ _0_main
 1
 65 SETSLOT
 46 "Object"
+66 POP
+1
 1 SETLINE
 36
 21 PUSHLOBBY
@@ -666,6 +714,8 @@ _0_main
 1
 65 SETSLOT
 47 "Number"
+66 POP
+1
 1 SETLINE
 37
 21 PUSHLOBBY
@@ -682,6 +732,8 @@ _0_main
 1
 65 SETSLOT
 48 "String"
+66 POP
+1
 1 SETLINE
 38
 21 PUSHLOBBY
@@ -698,6 +750,8 @@ _0_main
 1
 65 SETSLOT
 49 "Vector"
+66 POP
+1
 1 SETLINE
 39
 21 PUSHLOBBY
@@ -714,6 +768,8 @@ _0_main
 1
 65 SETSLOT
 51 "Closure"
+66 POP
+1
 1 SETLINE
 40
 21 PUSHLOBBY
@@ -730,11 +786,9 @@ _0_main
 1
 65 SETSLOT
 52 "Map"
-69 CLEAR
-28
 20 PUSHNIL
 144 RET
-_18_block_6258ea6f6e8c9bb7dfe1879537feef0c
+_18_block_79c13baa3a142abd67a015970f3493ea
 :3:18
 "<
 "==
@@ -757,7 +811,7 @@ _18_block_6258ea6f6e8c9bb7dfe1879537feef0c
 2 "or"
 1
 144 RET
-_21_block_4aa3f857be21822226092878c9588fae
+_21_block_0e499befeffe466d8bad36f3f6674b1e
 :3:18
 ">
 "==

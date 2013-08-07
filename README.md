@@ -282,7 +282,7 @@ That's it! :)
 
 #### Misc
 
-* **POP**: pops a value off the stack.
+* **POP N**: pops N values off the stack.
 * **DEFN A**: takes the closure with the name `A` (a literal) and pushes it to
   the stack.
 * **MAKEVEC A**: Pops as much as `A` elements off the stack and pushes a vector with all of them in the order they were popped (the reverse order they were pushed in the first place).

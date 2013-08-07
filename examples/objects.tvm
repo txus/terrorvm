@@ -1,6 +1,6 @@
 ../compiler/examples/objects.rb
 _0_main
-:13:119
+:13:141
 "to_map
 50
 "age
@@ -23,6 +23,8 @@ _0_main
 0
 33 SETLOCAL
 0
+66 POP
+1
 1 SETLINE
 2
 32 PUSHLOCAL
@@ -31,6 +33,8 @@ _0_main
 1 50
 65 SETSLOT
 2 "age"
+66 POP
+1
 1 SETLINE
 3
 32 PUSHLOCAL
@@ -39,6 +43,8 @@ _0_main
 3 1000
 65 SETSLOT
 4 "money"
+66 POP
+1
 1 SETLINE
 4
 32 PUSHLOCAL
@@ -48,6 +54,8 @@ _0_main
 0
 33 SETLOCAL
 1
+66 POP
+1
 1 SETLINE
 5
 32 PUSHLOCAL
@@ -56,6 +64,8 @@ _0_main
 6 25
 65 SETSLOT
 2 "age"
+66 POP
+1
 1 SETLINE
 7
 16 PUSHSELF
@@ -63,6 +73,8 @@ _0_main
 7 "Parent age:"
 128 SEND
 8 "print"
+1
+66 POP
 1
 1 SETLINE
 8
@@ -74,6 +86,8 @@ _0_main
 128 SEND
 9 "puts"
 1
+66 POP
+1
 1 SETLINE
 9
 16 PUSHSELF
@@ -81,6 +95,8 @@ _0_main
 10 "Parent money:"
 128 SEND
 8 "print"
+1
+66 POP
 1
 1 SETLINE
 10
@@ -92,6 +108,8 @@ _0_main
 128 SEND
 9 "puts"
 1
+66 POP
+1
 1 SETLINE
 12
 16 PUSHSELF
@@ -99,6 +117,8 @@ _0_main
 11 "Child age:"
 128 SEND
 8 "print"
+1
+66 POP
 1
 1 SETLINE
 13
@@ -110,6 +130,8 @@ _0_main
 128 SEND
 9 "puts"
 1
+66 POP
+1
 1 SETLINE
 14
 16 PUSHSELF
@@ -117,6 +139,8 @@ _0_main
 12 "Child money:"
 128 SEND
 8 "print"
+1
+66 POP
 1
 1 SETLINE
 15
@@ -129,8 +153,6 @@ _0_main
 128 SEND
 9 "puts"
 1
-69 CLEAR
-11
 20 PUSHNIL
 144 RET
 

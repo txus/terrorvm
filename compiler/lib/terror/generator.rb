@@ -61,14 +61,6 @@ module Terror
       _pop count
     end
 
-    def clear(count)
-      @ip += 2
-      @stack_size -= count
-      if count > 0
-        _clear count
-      end
-    end
-
     def pushtrue
       @ip += 1
       _pushtrue
@@ -177,14 +169,6 @@ module Terror
     def ret
       @ip += 1
       _ret
-    end
-
-    def clear_stack
-      extra = @stack_size - 1
-      if extra > 0
-        @stack_size = 1
-        clear extra
-      end
     end
 
     private

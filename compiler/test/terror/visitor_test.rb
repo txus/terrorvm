@@ -31,11 +31,14 @@ module Terror
       compiles("a = 3; b = 3; c = 4") do
         _push literal(3)
         _setlocal local(:a).index
+        _pop 1
+
         _push literal(3)
         _setlocal local(:b).index
+        _pop 1
+
         _push literal(4)
         _setlocal local(:c).index
-        _clear 2
       end
     end
 
@@ -43,9 +46,10 @@ module Terror
       compiles("a = 3; a = 4.3") do
         _push literal(3)
         _setlocal local(:a).index
+        _pop 1
+
         _push literal(4.3)
         _setlocal local(:a).index
-        _clear 1
       end
     end
 
@@ -61,8 +65,9 @@ module Terror
       compiles("a = 3; a") do
         _push literal(3)
         _setlocal local(:a).index
+        _pop 1
+
         _pushlocal local(:a).index
-        _clear 1
       end
     end
 
@@ -139,10 +144,11 @@ module Terror
         compiles("a = 3; a.foo = 9") do
           _push literal(3)
           _setlocal local(:a).index
+          _pop 1
+
           _pushlocal local(:a).index
           _push literal(9)
           _setslot literal(:foo)
-          _clear 1
         end
       end
     end
@@ -245,43 +251,18 @@ module Terror
         compiles("a = 2; a[:foo] = 'bar'; a[:foo]") do
           _push literal 2
           _setlocal local(:a).index
+          _pop 1
 
           _pushlocal local(:a).index
           _push literal 'bar'
           _setslot literal(:foo)
+          _pop 1
 
           _pushlocal local(:a).index
           _push literal(:foo)
           _send literal(:[]), 1
-          _clear 2
         end
       end
-    end
-
-    it 'cleans the stack' do
-      code = "a = 123; b = 999; c = 983"
-      ast = Rubinius::Melbourne19.parse_string(code)
-      visitor = Visitor.new
-      ast.lazy_visit(visitor, ast)
-      visitor.finalize(:main)
-
-      g = Generator.new
-      g.instance_eval do
-        setline 1
-        _push literal(123)
-        _setlocal local(:a).index
-
-        _push literal(999)
-        _setlocal local(:b).index
-
-        _push literal(983)
-        _setlocal local(:c).index
-
-        _clear 2
-        _ret
-      end
-
-      visitor.generator.instructions.must_equal g.instructions
     end
   end
 end
