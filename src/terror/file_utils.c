@@ -111,13 +111,14 @@ file_size(bstring filename) {
 
 bstring
 readfile(bstring filename) {
+  int fd = 0;
   off_t len = file_size(filename);
   check(len >= 0, "Invalid file length (%s).", bdata(filename));
 
   char *buf = calloc(1, len + 1);
   check_mem(buf);
 
-  int fd = open(bdata(filename), O_RDONLY);
+  fd = open(bdata(filename), O_RDONLY);
   check(fd >= 0, "Error opening file (%s).", bdata(filename));
 
   ssize_t size = read(fd, buf, len);
@@ -126,9 +127,11 @@ readfile(bstring filename) {
 
   bstring retval = bfromcstr(buf);
   free(buf);
+  close(fd);
   return retval;
 
 error:
+  if(fd) close(fd);
   return NULL;
 }
 
