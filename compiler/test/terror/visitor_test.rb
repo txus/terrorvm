@@ -172,48 +172,63 @@ module Terror
       end
     end
 
-    # todo: fix defn tests
-    # describe 'functions' do
-    #   it 'are compiled' do
-    #     compiles("a = -> { 3 }") do
-    #       _defn 0
-    #       _setlocal literal(:a)
-    #     end
-    #   end
+    describe 'functions' do
+      it 'are compiled' do
+        compiles("a = -> { 3 }") do
+          _defn 0
+          _setlocal literal(:a)
+        end
+      end
 
-    #   it 'are compiled with arguments' do
-    #     compiles("bar = 1; a = -> foo { bar }") do
-    #       _push literal(1)
-    #       _setlocal local(:bar).index
-    #       _defn 1
-    #       _setlocal local(:a).index
-    #     end
+      it 'are compiled with arguments' do
+        compiles("bar = 1; a = -> foo { bar }") do
+          _push literal(1)
+          _setlocal local(:bar).index
+          _pop 1
 
-    #     compiles_block("bar = 1; a = -> foo { foo + bar }") do
-    #       _pushlocal local(:foo).index
-    #       _pushlocaldepth 1, local(:bar).index
-    #       _send literal(:+), 1
-    #     end
-    #   end
+          _defn 1
+          _setlocal local(:a).index
+        end
 
-    #   it 'work with iterators' do
-    #     code = "[1,2,3].each(-> num { puts num })"
-    #     compiles(code) do
-    #       _push literal 1
-    #       _push literal 2
-    #       _push literal 3
-    #       _makevec 3
-    #       _defn 3
-    #       _send literal(:each), 1
-    #     end
+        compiles_block("bar = 1; a = -> foo { foo + bar }") do
+          _pushlocal 0
+          _pushlocaldepth 1, 0
+          _send literal(:+), 1
+        end
+      end
 
-    #     compiles_block(code) do
-    #       _pushself
-    #       _pushlocal 0
-    #       _send 0, 1
-    #     end
-    #   end
-    # end
+      it 'work with iterators' do
+        code = "[1,2,3].each(-> num { puts num })"
+        compiles(code) do
+          _push literal 1
+          _push literal 2
+          _push literal 3
+          _makevec 3
+          _defn literal(:block)
+          _send literal(:each), 1
+        end
+
+        compiles_block(code) do
+          _pushself
+          _pushlocal local(:num).index
+          _send literal(:puts), 1
+        end
+      end
+
+      it 'works' do
+        code = "fn = -> msg { m = msg }"
+
+        compiles(code) do
+          _defn 0
+          _setlocal local(:fn).index
+        end
+
+        compiles_block(code) do
+          _pushlocal 0
+          _setlocal 1
+        end
+      end
+    end
 
     describe 'vectors' do
       it 'are compiled' do

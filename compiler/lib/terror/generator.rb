@@ -189,12 +189,10 @@ module Terror
       inspect = value.is_a?(Symbol) ? value.to_s.inspect : value.inspect
       val = value.is_a?(Numeric) ? value : "\"#{value}"
 
-      idx = @literals.index(val) || begin
+      @literals.index(val) || begin
         @literals.push val
         @literals.index(val)
       end
-
-      "#{idx} #{inspect}"
     end
   end
 end

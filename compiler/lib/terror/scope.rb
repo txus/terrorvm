@@ -16,14 +16,16 @@ module Terror
     end
 
     def search_local(name)
+      try_local(name) || new_local(name)
+    end
+
+    def try_local(name)
       # Search in current scope
       if idx = @locals.index { |l| l == name }
         Local.new(name, idx, 0)
       # Search in parent scope
-      elsif @parent and local = @parent.search_local(name)
+      elsif @parent and @parent.try_local(name) and local = @parent.search_local(name)
         Local.new(local.name, local.index, local.depth + 1)
-      else
-        new_local(name)
       end
     end
 
