@@ -2,14 +2,14 @@
 _0_main
 :5:43
 123
-"3_block_09c0434e2caba26c7cfef22a031810f9
+"3_block_ea5014d8d17581f3ca1de243d286741c
 "fn
 2
 "puts
 1 SETLINE
 1
 17 PUSH
-0 123
+0
 33 SETLOCAL
 0
 66 POP
@@ -17,7 +17,7 @@ _0_main
 1 SETLINE
 2
 17 PUSH
-0 123
+0
 33 SETLOCAL
 1
 66 POP
@@ -30,9 +30,9 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-1 "3_block_09c0434e2caba26c7cfef22a031810f9"
+1
 65 SETSLOT
-2 "fn"
+2
 66 POP
 1
 1 SETLINE
@@ -40,16 +40,16 @@ _0_main
 16 PUSHSELF
 16 PUSHSELF
 17 PUSH
-3 2
+3
 128 SEND
-2 "fn"
+2
 1
 128 SEND
-4 "puts"
+4
 1
 20 PUSHNIL
 144 RET
-_3_block_09c0434e2caba26c7cfef22a031810f9
+_3_block_ea5014d8d17581f3ca1de243d286741c
 :1:11
 "+
 1 SETLINE
@@ -60,7 +60,7 @@ _3_block_09c0434e2caba26c7cfef22a031810f9
 32 PUSHLOCAL
 0
 128 SEND
-0 "+"
+0
 1
 144 RET
 

@@ -3,13 +3,13 @@ _0_main
 :5:40
 "hello
 "to_map
-"3_block_4f6c9363a1b245308a35054ad0e1b968
+"3_block_c23f61a0feeb6052055e9f0a863c89a4
 "greet
 "world
 1 SETLINE
 1
 17 PUSH
-0 "hello"
+0
 33 SETLOCAL
 0
 66 POP
@@ -19,7 +19,7 @@ _0_main
 68 MAKEVEC
 0
 128 SEND
-1 "to_map"
+1
 0
 33 SETLOCAL
 1
@@ -30,9 +30,9 @@ _0_main
 32 PUSHLOCAL
 1
 67 DEFN
-2 "3_block_4f6c9363a1b245308a35054ad0e1b968"
+2
 65 SETSLOT
-3 "greet"
+3
 66 POP
 1
 1 SETLINE
@@ -40,13 +40,13 @@ _0_main
 32 PUSHLOCAL
 1
 17 PUSH
-4 "world"
+4
 128 SEND
-3 "greet"
+3
 1
 20 PUSHNIL
 144 RET
-_3_block_4f6c9363a1b245308a35054ad0e1b968
+_3_block_c23f61a0feeb6052055e9f0a863c89a4
 :4:25
 " 
 "+
@@ -59,22 +59,22 @@ _3_block_4f6c9363a1b245308a35054ad0e1b968
 1
 0
 17 PUSH
-0 " "
+0
 128 SEND
-1 "+"
+1
 1
 32 PUSHLOCAL
 0
 128 SEND
-1 "+"
+1
 1
 17 PUSH
-2 "!"
+2
 128 SEND
-1 "+"
+1
 1
 128 SEND
-3 "puts"
+3
 1
 144 RET
 

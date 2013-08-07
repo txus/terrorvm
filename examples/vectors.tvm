@@ -6,16 +6,16 @@ _0_main
 "world
 "to
 "everyone!
-"3_block_b291a93b2936a3628e44ff5b74eefb2c
+"3_block_1d671a9d9fcb3b0dda3c48fdb2fc6ef1
 "each
 "done!
 "puts
-"9_block_fdc4a16197870033761ec9e5f9607a49
+"9_block_cc1645d107b5e3146bbb5531a20d0865
 "map
 1 SETLINE
 1
 17 PUSH
-0 "* "
+0
 33 SETLOCAL
 0
 66 POP
@@ -23,13 +23,13 @@ _0_main
 1 SETLINE
 2
 17 PUSH
-1 "hello"
+1
 17 PUSH
-2 "world"
+2
 17 PUSH
-3 "to"
+3
 17 PUSH
-4 "everyone!"
+4
 68 MAKEVEC
 4
 33 SETLOCAL
@@ -39,7 +39,7 @@ _0_main
 1 SETLINE
 3
 67 DEFN
-5 "3_block_b291a93b2936a3628e44ff5b74eefb2c"
+5
 33 SETLOCAL
 2
 66 POP
@@ -51,7 +51,7 @@ _0_main
 32 PUSHLOCAL
 2
 128 SEND
-6 "each"
+6
 1
 66 POP
 1
@@ -59,9 +59,9 @@ _0_main
 7
 16 PUSHSELF
 17 PUSH
-7 "done!"
+7
 128 SEND
-8 "puts"
+8
 1
 66 POP
 1
@@ -73,16 +73,16 @@ _0_main
 32 PUSHLOCAL
 1
 67 DEFN
-9 "9_block_fdc4a16197870033761ec9e5f9607a49"
+9
 128 SEND
-10 "map"
+10
 1
 128 SEND
-8 "puts"
+8
 1
 20 PUSHNIL
 144 RET
-_3_block_b291a93b2936a3628e44ff5b74eefb2c
+_3_block_1d671a9d9fcb3b0dda3c48fdb2fc6ef1
 :2:15
 "+
 "puts
@@ -95,13 +95,13 @@ _3_block_b291a93b2936a3628e44ff5b74eefb2c
 32 PUSHLOCAL
 0
 128 SEND
-0 "+"
+0
 1
 128 SEND
-1 "puts"
+1
 1
 144 RET
-_9_block_fdc4a16197870033761ec9e5f9607a49
+_9_block_cc1645d107b5e3146bbb5531a20d0865
 :2:10
 "!!!!
 "+
@@ -110,9 +110,9 @@ _9_block_fdc4a16197870033761ec9e5f9607a49
 32 PUSHLOCAL
 0
 17 PUSH
-0 "!!!!"
+0
 128 SEND
-1 "+"
+1
 1
 144 RET
 

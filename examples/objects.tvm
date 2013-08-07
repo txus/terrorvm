@@ -19,7 +19,7 @@ _0_main
 68 MAKEVEC
 0
 128 SEND
-0 "to_map"
+0
 0
 33 SETLOCAL
 0
@@ -30,9 +30,9 @@ _0_main
 32 PUSHLOCAL
 0
 17 PUSH
-1 50
+1
 65 SETSLOT
-2 "age"
+2
 66 POP
 1
 1 SETLINE
@@ -40,9 +40,9 @@ _0_main
 32 PUSHLOCAL
 0
 17 PUSH
-3 1000
+3
 65 SETSLOT
-4 "money"
+4
 66 POP
 1
 1 SETLINE
@@ -50,7 +50,7 @@ _0_main
 32 PUSHLOCAL
 0
 128 SEND
-5 "clone"
+5
 0
 33 SETLOCAL
 1
@@ -61,18 +61,18 @@ _0_main
 32 PUSHLOCAL
 1
 17 PUSH
-6 25
+6
 65 SETSLOT
-2 "age"
+2
 66 POP
 1
 1 SETLINE
 7
 16 PUSHSELF
 17 PUSH
-7 "Parent age:"
+7
 128 SEND
-8 "print"
+8
 1
 66 POP
 1
@@ -82,9 +82,9 @@ _0_main
 32 PUSHLOCAL
 0
 64 GETSLOT
-2 "age"
+2
 128 SEND
-9 "puts"
+9
 1
 66 POP
 1
@@ -92,9 +92,9 @@ _0_main
 9
 16 PUSHSELF
 17 PUSH
-10 "Parent money:"
+10
 128 SEND
-8 "print"
+8
 1
 66 POP
 1
@@ -104,9 +104,9 @@ _0_main
 32 PUSHLOCAL
 0
 64 GETSLOT
-4 "money"
+4
 128 SEND
-9 "puts"
+9
 1
 66 POP
 1
@@ -114,9 +114,9 @@ _0_main
 12
 16 PUSHSELF
 17 PUSH
-11 "Child age:"
+11
 128 SEND
-8 "print"
+8
 1
 66 POP
 1
@@ -126,9 +126,9 @@ _0_main
 32 PUSHLOCAL
 1
 64 GETSLOT
-2 "age"
+2
 128 SEND
-9 "puts"
+9
 1
 66 POP
 1
@@ -136,9 +136,9 @@ _0_main
 14
 16 PUSHSELF
 17 PUSH
-12 "Child money:"
+12
 128 SEND
-8 "print"
+8
 1
 66 POP
 1
@@ -148,10 +148,10 @@ _0_main
 32 PUSHLOCAL
 1
 128 SEND
-4 "money"
+4
 0
 128 SEND
-9 "puts"
+9
 1
 20 PUSHNIL
 144 RET

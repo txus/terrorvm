@@ -1,15 +1,15 @@
 ../compiler/examples/gcstress.rb
 _0_main
 :3:24
-"1_block_3ddced09e4534867c63b07cdcf540d1f
+"1_block_25402932b1e29dcc1b9fd896549d11fa
 1
 "apply
 1 SETLINE
 1
 67 DEFN
-0 "1_block_3ddced09e4534867c63b07cdcf540d1f"
+0
 33 SETLOCAL
-1
+0
 66 POP
 1
 1 SETLINE
@@ -18,38 +18,37 @@ _0_main
 49 JIF
 9
 32 PUSHLOCAL
-1
+0
 17 PUSH
-1 1
+1
 128 SEND
-2 "apply"
+2
 1
 51 GOTO
 12
 20 PUSHNIL
 144 RET
-_1_block_3ddced09e4534867c63b07cdcf540d1f
-:3:19
+_1_block_25402932b1e29dcc1b9fd896549d11fa
+:3:18
 123
 2
 "*
 1 SETLINE
 2
 17 PUSH
-0 123
-35 SETLOCALDEPTH
-1
+0
+33 SETLOCAL
 0
 66 POP
 1
 1 SETLINE
 3
 17 PUSH
-1 2
+1
 17 PUSH
-1 2
+1
 128 SEND
-2 "*"
+2
 1
 144 RET
 
