@@ -1,8 +1,8 @@
-../compiler/examples/vectors.rb
+../compiler/stdlib/test_case_better.rb
 _0_main
 :0:4:18
-"examples
-"vectors
+"stdlib
+"test_case_better
 "rb
 "/
 1 SETLINE

@@ -1,80 +1,26 @@
 ../compiler/examples/hello_world.rb
 _0_main
-:2:5:40
-"hello
-"to_map
-"3_block_a83decdc64230c6338c6a2c0d7588049
-"greet
-"world
+:0:4:18
+"examples
+"hello_world
+"rb
+"/
 1 SETLINE
 1
-17 PUSH
+16 PUSHSELF
+128 SEND
 0
-33 SETLOCAL
 0
-66 POP
-1
-1 SETLINE
-2
-68 MAKEVEC
-0
+16 PUSHSELF
 128 SEND
 1
 0
-33 SETLOCAL
-1
-66 POP
-1
-1 SETLINE
-3
-32 PUSHLOCAL
-1
-67 DEFN
+128 SEND
 2
-65 SETSLOT
-3
-66 POP
-1
-1 SETLINE
-6
-32 PUSHLOCAL
-1
-17 PUSH
-4
+0
 128 SEND
 3
 1
 20 PUSHNIL
-144 RET
-_3_block_a83decdc64230c6338c6a2c0d7588049
-:1:4:25
-" 
-"+
-"!
-"puts
-1 SETLINE
-4
-16 PUSHSELF
-34 PUSHLOCALDEPTH
-1
-0
-17 PUSH
-0
-128 SEND
-1
-1
-32 PUSHLOCAL
-0
-128 SEND
-1
-1
-17 PUSH
-2
-128 SEND
-1
-1
-128 SEND
-3
-1
 144 RET
 
