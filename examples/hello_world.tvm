@@ -1,9 +1,9 @@
 ../compiler/examples/hello_world.rb
 _0_main
-:5:40
+:2:5:40
 "hello
 "to_map
-"3_block_c23f61a0feeb6052055e9f0a863c89a4
+"3_block_a83decdc64230c6338c6a2c0d7588049
 "greet
 "world
 1 SETLINE
@@ -46,8 +46,8 @@ _0_main
 1
 20 PUSHNIL
 144 RET
-_3_block_c23f61a0feeb6052055e9f0a863c89a4
-:4:25
+_3_block_a83decdc64230c6338c6a2c0d7588049
+:1:4:25
 " 
 "+
 "!

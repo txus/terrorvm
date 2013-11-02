@@ -36,7 +36,7 @@ module Terror
       instrs = instructions.map(&:encode).flatten
 
       output = "_#{name}\n"
-      output << ":%i:%i\n" % [@literals.size, @ip]
+      output << ":%i:%i:%i\n" % [@scope.locals.size, @literals.size, @ip]
 
       output << [@literals, instrs].flatten.join("\n")
       output

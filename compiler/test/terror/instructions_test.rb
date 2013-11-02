@@ -1,6 +1,5 @@
 $: << 'lib'
 require 'terror/instructions'
-require 'minitest/autorun'
 
 module Terror
   describe Instructions do

@@ -166,7 +166,7 @@ module Terror
 
     def attribute_assignment(node, parent)
       setline(node)
-      receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
+      receiver_name = if node.receiver.is_a?(Rubinius::ToolSet::Runtime::AST::Self)
                         :self
                       else
                         node.receiver.name
@@ -194,7 +194,7 @@ module Terror
 
     def element_assignment(node, parent)
       setline(node)
-      receiver_name = if node.receiver.is_a?(Rubinius::AST::Self)
+      receiver_name = if node.receiver.is_a?(Rubinius::ToolSet::Runtime::AST::Self)
                         :self
                       else
                         node.receiver.name

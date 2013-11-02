@@ -1,13 +1,13 @@
 $: << 'lib'
 require 'terror/visitor'
+require 'rubinius/melbourne'
 require 'terror/core_ext/node'
-require 'minitest/autorun'
 
 module Terror
   describe Visitor do
     include Instructions
     def visit(code)
-      ast = Rubinius::Melbourne19.parse_string(code)
+      ast = code.to_ast
       visitor = Visitor.new
       ast.lazy_visit(visitor, ast)
       visitor.generator

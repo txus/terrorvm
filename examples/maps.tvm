@@ -1,6 +1,6 @@
 ../compiler/examples/maps.rb
 _0_main
-:5:30
+:1:5:30
 "hello world
 "foo
 "to_map

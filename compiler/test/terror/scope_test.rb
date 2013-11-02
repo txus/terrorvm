@@ -1,6 +1,5 @@
 $: << 'lib'
 require 'terror/scope'
-require 'minitest/autorun'
 
 module Terror
   describe Scope do

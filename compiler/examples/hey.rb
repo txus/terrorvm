@@ -1,0 +1,1 @@
+puts lambda { |a| a * 2 }

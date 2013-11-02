@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.0.8)
+    rake (10.1.0)
+    rubinius-ast (2.0.9)
+    rubinius-melbourne (2.0.0.19)
+      rubinius-toolset
+    rubinius-toolset (0.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  minitest
+  rake
+  rubinius-ast
+  rubinius-melbourne

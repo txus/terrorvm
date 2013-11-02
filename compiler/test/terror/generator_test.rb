@@ -1,6 +1,5 @@
-$: << 'lib'
+require 'test_helper'
 require 'terror/generator'
-require 'minitest/autorun'
 
 module Terror
   describe Generator do
