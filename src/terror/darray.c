@@ -125,6 +125,7 @@ error:
 
 void DArray_set(DArray *array, int i, void *el)
 {
+  debug("I < array %p -max ? %i < %i", array, i, array->max);
   check(i < array->max, "darray attempt to set past max");
   array->contents[i] = el;
 error:

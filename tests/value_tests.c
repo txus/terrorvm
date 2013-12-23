@@ -30,7 +30,7 @@ char *test_string_new()
 
 char *test_closure_new()
 {
-  Function *fn = Function_new(NULL, NULL, NULL);
+  Function *fn = Function_new(NULL, 0, NULL, NULL);
   DArray_push(state->native_fns, fn);
 
   VALUE closure = Closure_new(state, fn, NULL);

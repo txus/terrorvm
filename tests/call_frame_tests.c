@@ -9,7 +9,8 @@ STATE = NULL;
 static inline CallFrame*
 fixture()
 {
-  return CallFrame_new(NULL, NULL, NULL);
+  Function *fn = Function_new(NULL, 1, NULL, NULL);
+  return CallFrame_new(NULL, fn, NULL);
 }
 
 #define PUSH(F, L) DArray_push((F)->locals, (L))

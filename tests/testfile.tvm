@@ -1,6 +1,6 @@
 /path/to/highlevel/code.tr
 _0_main
-:3:9
+:0:3:9
 "add
 1.2
 4
@@ -14,7 +14,7 @@ _0_main
 145 DUMP
 144 RET
 _4_add
-:0:6
+:1:0:6
 16  PUSHSELF
 32  PUSHLOCAL
 0

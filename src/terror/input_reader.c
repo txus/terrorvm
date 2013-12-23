@@ -29,7 +29,7 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
     bdestroy(prefix);
 
     // Get method name
-    int num_literals, num_instructions, linenum;
+    int num_locals, num_literals, num_instructions, linenum;
     {
       struct bstrList *fn_params = bsplit(*line, '_');
       bstring *fnptr = fn_params->entry;
@@ -42,17 +42,17 @@ parse_string(STATE, bstring buf, BytecodeFile *file)
     line++; cnt++;
 
     // Get counts
-    sscanf(bdata(*line), ":%i:%i",
-      &num_literals, &num_instructions);
+    sscanf(bdata(*line), ":%i:%i:%i",
+      &num_locals, &num_literals, &num_instructions);
 
     line++; cnt++;
 
     // We have to create the function here for all the literals to be
     // automatically included in the rootset, otherwise they will be GC'd as we
     // create them. And we don't want that now do we.
-    DArray *literals = DArray_create(sizeof(VALUE), 10);
+    DArray *literals = DArray_create(sizeof(VALUE), num_literals||1);
     int *instructions = calloc(num_instructions, sizeof(int));
-    Function *fn = Function_new(bdata(file->filename), instructions, literals);
+    Function *fn = Function_new(bdata(file->filename), num_locals, instructions, literals);
 
     fn->line = linenum;
     DArray_push(file->function_names, method);

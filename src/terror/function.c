@@ -6,13 +6,14 @@
 #include <terror/vm.h>
 
 Function*
-Function_new(char *filename, int *code, DArray *literals)
+Function_new(char *filename, unsigned int locals_count, int *code, DArray *literals)
 {
   Function *fn = calloc(1, sizeof(Function));
   fn->filename = filename;
   fn->code = code;
   fn->line = 0;
   fn->literals = literals;
+  fn->locals_count = locals_count;
   fn->scope = NULL;
   fn->c_fn = NULL;
   return fn;

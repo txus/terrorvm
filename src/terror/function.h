@@ -14,12 +14,13 @@ struct function_s {
   int line;
   int *code;
   DArray *literals;
+  unsigned int locals_count;
   struct call_frame_s *scope;
   native_fn c_fn;
 };
 typedef struct function_s Function;
 
-Function* Function_new(char*, int*, DArray*);
+Function* Function_new(char*, unsigned int, int*, DArray*);
 void Function_destroy(Function*);
 Function* Function_native_new(struct state_s*, native_fn);
 struct val_s* Function_native_call(struct state_s*, Function*, struct val_s*, DArray*);

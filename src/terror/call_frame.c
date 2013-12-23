@@ -13,7 +13,9 @@ CallFrame_new(VALUE self, Function *fn, int *ret)
   cf->fn = fn;
   cf->name = NULL;
   cf->ret = ret;
-  cf->locals = DArray_create(sizeof(VALUE), 10);
+  int locals_count = fn->locals_count > 0 ? fn->locals_count : 1;
+  cf->locals = DArray_create(sizeof(VALUE), locals_count);
+  debug("Locals count is %i, array %p max is %i", locals_count, cf->locals, cf->locals->max);
   cf->parent = NULL;
   cf->refcount = 0;
   return cf;
@@ -42,6 +44,7 @@ CallFrame_getlocal(CallFrame *frame, int idx)
 void
 CallFrame_setlocal(CallFrame *frame, int idx, VALUE value)
 {
+  debug("SETTING LOCAL %i on fn %p with local count %i", idx, frame->fn, frame->fn->locals_count);
   DArray_set(frame->locals, idx, value);
 }
 
